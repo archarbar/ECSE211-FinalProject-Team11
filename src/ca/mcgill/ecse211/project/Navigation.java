@@ -73,10 +73,10 @@ public class Navigation extends Thread {
   }
 
   /**
-   * the travelTo function takes a waypoint in cm as input. It retrieve the current robot's coordinates using the odometer and
-   * calculates the difference of the waypoint's coordinates and the robot coordinates to get the distance it still has
-   * to travel to reach the next waypoint. Depending on the deltaX and deltaY coordinate we can know in which quadrant
-   * the next waypoint is located.
+   * the travelTo function takes a waypoint in cm as input. It retrieve the current robot's coordinates using the
+   * odometer and calculates the difference of the waypoint's coordinates and the robot coordinates to get the distance
+   * it still has to travel to reach the next waypoint. Depending on the deltaX and deltaY coordinate we can know in
+   * which quadrant the next waypoint is located.
    * 
    * then using the Math.atan the angle theta ( the direction of where the next waypoint is) will be calculated, it will
    * then be substracted from the current robot's heading and we will therefore know the correction we have to apply to
@@ -90,6 +90,7 @@ public class Navigation extends Thread {
 
   /**
    * Moves robot to (x,y) location.
+   * 
    * @param x
    * @param y
    */
@@ -146,6 +147,7 @@ public class Navigation extends Thread {
 
   /**
    * Turns the robot to face a position given x, and y in cm.
+   * 
    * @param x
    * @param y
    */
@@ -216,19 +218,21 @@ public class Navigation extends Thread {
   }
 
 
-/**
- * Finds angle to rotate wheels by to rotate by in order to turn <angle> degrees.
- * @param radius
- * @param width
- * @param angle
- * @return
- */
+  /**
+   * Finds angle to rotate wheels by to rotate by in order to turn <angle> degrees.
+   * 
+   * @param radius
+   * @param width
+   * @param angle
+   * @return
+   */
   private static int convertAngle(double radius, double width, double angle) {
     return convertDistance(radius, Math.PI * width * angle / 360.0);
   }
 
   /**
    * determines if a location is completely outside of the grid.
+   * 
    * @param x
    * @param y
    * @return
@@ -299,8 +303,9 @@ public class Navigation extends Thread {
   }
 
   /**
-   * Finds the valid launch location along the diagonal and return it. 
-   * Each target location will have 1 valid diagonal launch location. 
+   * Finds the valid launch location along the diagonal and return it. Each target location will have 1 valid diagonal
+   * launch location.
+   * 
    * @param targetLocation
    * @return
    */
@@ -341,6 +346,7 @@ public class Navigation extends Thread {
 
   /**
    * Calculates euclidean distance to a location.
+   * 
    * @param location
    * @return
    */
@@ -352,6 +358,7 @@ public class Navigation extends Thread {
 
   /**
    * Determines if a given location to travel to is within the grid.
+   * 
    * @param targetLocation
    * @return
    */
@@ -362,6 +369,7 @@ public class Navigation extends Thread {
 
   /**
    * Converts from grid location to location in cm.
+   * 
    * @param waypoint
    * @return
    */

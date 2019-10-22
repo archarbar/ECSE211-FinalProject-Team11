@@ -6,6 +6,7 @@ public class LauncherControl {
 
   /**
    * Launch the ping pong ball.
+   *
    * @param speed
    */
   public static void launch(int speed) {
@@ -32,6 +33,7 @@ public class LauncherControl {
   @Deprecated
   /**
    * Calculates the needed speed to launch the necessary distance.
+   *
    * @return
    */
   public static int calculateSpeed() {

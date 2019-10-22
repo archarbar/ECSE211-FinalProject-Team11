@@ -18,13 +18,13 @@ public class Resources {
    */
   public static final TextLCD LCD = LocalEV3.get().getTextLCD();
 
-  public static final int LAUNCH_ANGLE = 55;
+  public static final int LAUNCH_ANGLE = 55; // angle at which launching motor is placed before launch
 
-  public static final int LAUNCH_HEIGHT = 35;
+  public static final int LAUNCH_HEIGHT = 35; // height of the launcher motor when extended
 
-  public static final double LAUNCH_ARM_LENGTH = 18;
+  public static final double LAUNCH_ARM_LENGTH = 18; // length of launcher arm
 
-  public static final double G = 9.81;
+  public static final double G = 9.81; // gravity constant
 
 
   /**

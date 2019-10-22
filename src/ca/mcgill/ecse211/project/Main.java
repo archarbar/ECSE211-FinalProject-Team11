@@ -36,7 +36,7 @@ public class Main {
     Odometer odometer = Odometer.getOdometer();
     Display odometryDisplay = new Display(lcd);
 
-    do { //select method
+    do { // select method
       // clear the displays
       lcd.clear();
 
@@ -48,7 +48,7 @@ public class Main {
       buttonChoice = Button.waitForAnyPress();
     } while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
 
-    //if mobile launch
+    // if mobile launch
     if (buttonChoice == Button.ID_RIGHT) {
       launchTarget = chooseTargetLocation();
       double[][] targetTile = new double[1][2];
@@ -62,11 +62,10 @@ public class Main {
       UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(leftMotor, rightMotor, odometer, TRACK, WHEEL_RAD,
           UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
       initThreads(odometer, odometryDisplay);
-      
-      
-      
 
-      //Localization methods
+
+
+      // Localization methods
       usLocalizer.mainMethod();
       lsLocalizer.mainMethod();
 
@@ -75,8 +74,8 @@ public class Main {
       Sound.beep();
 
     }
-    //both options launch 5 times
-    
+    // both options launch 5 times
+
     // launch
     LauncherControl.reset();
     for (int i = 0; i < 5; i++) {
@@ -88,8 +87,10 @@ public class Main {
 
 
   }
+
   /**
    * Enables the user to input a target location from the console.
+   * 
    * @return
    */
   private static int[] chooseTargetLocation() {
@@ -103,23 +104,23 @@ public class Main {
         + numberFormat.format(pos[3]) + ")", 0, 0);
     lcd.drawString(spaces + "^", 0, 1);
     int buttonPress = Button.waitForAnyPress();
-    while (buttonPress != Button.ID_ENTER) {
+    while (buttonPress != Button.ID_ENTER) { // press enter to continue
       if (buttonPress == Button.ID_ESCAPE) {
         System.exit(0);
-      } else if (buttonPress == Button.ID_LEFT) {
+      } else if (buttonPress == Button.ID_LEFT) { // move left in the menu
         index--;
         if (index < 0) {
           index += 4;
         }
         index %= 4;
 
-      } else if (buttonPress == Button.ID_RIGHT) {
+      } else if (buttonPress == Button.ID_RIGHT) { // move right in the menu
         index++;
         index %= 4;
-      } else if (buttonPress == Button.ID_UP) {
+      } else if (buttonPress == Button.ID_UP) { // increase coordinate
         pos[index]++;
         pos[index] %= 10;
-      } else if (buttonPress == Button.ID_DOWN) {
+      } else if (buttonPress == Button.ID_DOWN) { // decrease coordinate
         pos[index]--;
         if (pos[index] < 0) {
           pos[index] += 10;
@@ -185,6 +186,7 @@ public class Main {
 
   /**
    * Returns array getLaunchTarget.
+   * 
    * @return
    */
   public static int[] getLaunchTarget() {
