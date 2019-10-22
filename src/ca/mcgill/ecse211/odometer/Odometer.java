@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import static ca.mcgill.ecse211.project.Resources.*;
 
-//static import to avoid duplicating variables and make the code easier to read
+// static import to avoid duplicating variables and make the code easier to read
 
 /**
  * The odometer class keeps track of the robot's (x, y, theta) position.
@@ -20,23 +20,23 @@ import static ca.mcgill.ecse211.project.Resources.*;
  */
 
 public class Odometer implements Runnable {
-  
+
   /**
    * The x-axis position in cm.
    */
-  private volatile double x; // x-axis position 
-  
+  private volatile double x; // x-axis position
+
   /**
    * The y-axis position in cm.
    */
   private volatile double y; // y-axis position
-  
+
   /**
    * The orientation in degrees.
    */
   private volatile double theta; // Head angle
-  
-  
+
+
   /**
    * The (x, y, theta) position as an array
    */
@@ -47,7 +47,7 @@ public class Odometer implements Runnable {
    * Fair lock for concurrent writing
    */
   private static Lock lock = new ReentrantLock(true);
-  
+
   /**
    * Indicates if a thread is trying to reset any position parameters
    */
@@ -63,21 +63,21 @@ public class Odometer implements Runnable {
   // Motor-related variables
   private static int leftMotorTachoCount = 0;
   private static int rightMotorTachoCount = 0;
-  
+
   // additional variables
-  double displacementL,displacementR;
-  int lastLeftMotorTacho,lastRightMotorTacho; 
-   
-  
+  double displacementL, displacementR;
+  int lastLeftMotorTacho, lastRightMotorTacho;
+
+
   /**
    * The odometer update period in ms.
    */
   private static final long ODOMETER_PERIOD = 25;
 
-  
+
   /**
-   * This is the default constructor of this class. It initiates all motors and variables once.It
-   * cannot be accessed externally.
+   * This is the default constructor of this class. It initiates all motors and variables once.It cannot be accessed
+   * externally.
    */
   // this sets the values to 0
   private Odometer() {
@@ -93,7 +93,7 @@ public class Odometer implements Runnable {
     if (odo == null) {
       odo = new Odometer();
     }
-    
+
     return odo;
   }
 
@@ -102,51 +102,45 @@ public class Odometer implements Runnable {
    */
   public void run() {
     long updateStart, updateEnd;
-   
-    
+
+
     /**
-     * the way the odometer works is the following:
-     * 1- get the new tacho counts 
-     * 2-Calculate displacement for left and right wheels 
-     * 3-Update TachoCount
-     * 4-Calculate distance travelled and angle( in radians)
-     * 5- Calculate change in displacement and angle
-     * 6-convert angle in degrees
-     * 7-update x,y coordinates as well as the angle
+     * the way the odometer works is the following: 1- get the new tacho counts 2-Calculate displacement for left and
+     * right wheels 3-Update TachoCount 4-Calculate distance travelled and angle( in radians) 5- Calculate change in
+     * displacement and angle 6-convert angle in degrees 7-update x,y coordinates as well as the angle
      * 
      */
 
     while (true) {
       updateStart = System.currentTimeMillis();
-      
-       
+
+
       leftMotorTachoCount = leftMotor.getTachoCount();
       rightMotorTachoCount = rightMotor.getTachoCount();
 
       double dX, dY, dDisplacement;
       double dTheta, dRadian;
-    
-     
-      
-    
-      displacementL = Math.PI*WHEEL_RAD*(leftMotorTachoCount - lastLeftMotorTacho)/180;
-      displacementR = Math.PI*WHEEL_RAD*(rightMotorTachoCount - lastRightMotorTacho)/180;
-      
-      
+
+
+
+      displacementL = Math.PI * WHEEL_RAD * (leftMotorTachoCount - lastLeftMotorTacho) / 180;
+      displacementR = Math.PI * WHEEL_RAD * (rightMotorTachoCount - lastRightMotorTacho) / 180;
+
+
       lastLeftMotorTacho = leftMotorTachoCount;
       lastRightMotorTacho = rightMotorTachoCount;
-      
-      
-      dDisplacement = (displacementL+displacementR)/2;
-      dRadian = (displacementL-displacementR)/TRACK;
-     
 
-      
+
+      dDisplacement = (displacementL + displacementR) / 2;
+      dRadian = (displacementL - displacementR) / TRACK;
+
+
+
       dX = dDisplacement * Math.sin(Math.toRadians(theta));
       dY = dDisplacement * Math.cos(Math.toRadians(theta));
-      dTheta = dRadian*180/Math.PI; 
+      dTheta = dRadian * 180 / Math.PI;
       theta += dRadian;
-      
+
       update(dX, dY, dTheta);
 
 
@@ -161,9 +155,9 @@ public class Odometer implements Runnable {
       }
     }
   }
-  
+
   // IT IS NOT NECESSARY TO MODIFY ANYTHING BELOW THIS LINE
-  
+
   /**
    * Returns the Odometer data.
    * <p>
@@ -194,8 +188,7 @@ public class Odometer implements Runnable {
   }
 
   /**
-   * Adds dx, dy and dtheta to the current values of x, y and theta, respectively. Useful for
-   * odometry.
+   * Adds dx, dy and dtheta to the current values of x, y and theta, respectively. Useful for odometry.
    * 
    * @param dx
    * @param dy
