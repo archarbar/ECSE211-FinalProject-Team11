@@ -44,6 +44,7 @@ public class LauncherControl {
 
   /**
    * An improved method of calculating the speed of the launcher.
+   * Source: https://en.wikipedia.org/wiki/Range_of_a_projectile.
    * @param distance
    * @return
    */
