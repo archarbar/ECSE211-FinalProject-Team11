@@ -19,6 +19,7 @@ import ca.mcgill.ecse211.odometer.Odometer;
 public class Main {
   private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 //  private static final Port sensorPortUS = LocalEV3.get().getPort("S4"); // port will likely change
+  private static int[] launchTarget = new int[2];
 
 
 /**
@@ -59,7 +60,7 @@ public static void main(String[] args) {
     while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
 
         if(buttonChoice == Button.ID_RIGHT) {
-          int[] launchTarget = chooseTargetLocation();
+          launchTarget = chooseTargetLocation();
 //          double[] destination = Navigation.findLaunchLocation(launchTarget);
           double[][] targetTile = new double[1][2];
           double[] destination = Navigation.waypointToLocation(launchTarget);
@@ -88,7 +89,7 @@ public static void main(String[] args) {
             
 
             // call navigation
-
+           
            navigation.run();
            Sound.beep();
 
@@ -215,6 +216,10 @@ public static void waitForPress() {
   } catch (Exception e) {
     
   }
+}
+
+public static int[] getLaunchTarget() {
+  return launchTarget;
 }
 
 

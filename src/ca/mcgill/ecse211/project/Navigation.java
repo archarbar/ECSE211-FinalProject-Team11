@@ -59,8 +59,13 @@ private double[][]
         }
         
        
-      
-            travelTo(targetTile[0][0], targetTile[0][1]);
+            
+            double[] destination = findLaunchLocation(Main.getLaunchTarget());
+            travelTo(destination[0], destination[1]);
+            double[] target = new double[2];
+            target[0] = (Main.getLaunchTarget()[0]+0.5)*TILE_SIZE;
+            target[1] = (Main.getLaunchTarget()[1]+0.5)*TILE_SIZE;
+            turnTo(target[0],target[1]);
         
     }
     /**
@@ -76,6 +81,7 @@ private double[][]
      * @param y
      */
    
+    /*
     void travelTo(double x, double y) {
         
         boolean isClose = false; 
@@ -189,110 +195,21 @@ private double[][]
          
 
       }
-      
+      */
     
-    /*
+    
     void travelTo(double x, double y) {
-    boolean isClose = false; 
-    double position[] = new double[3]; 
-    position = odometer.getXYT(); 
-    currentX = position[0];
-    currentY = position[1];
-    currentT = position[2]; 
-    
-    deltaX = x - currentX; 
-    deltaY = y - currentY; 
-    dist = Math.sqrt(deltaX * deltaX + deltaY*deltaY); 
-    if(dist > 120) {
-      dist = dist-120; // make the robot move to destination, but stop 120 cm before
+        turnTo(x,y);
+        
+        
+        leftMotor.setSpeed(180);
+        rightMotor.setSpeed(180);
+        leftMotor.rotate(convertDistance(WHEEL_RAD, dist), true);
+        rightMotor.rotate(convertDistance(WHEEL_RAD, dist), false);
       
-    } else if(dist < 120) { //if the robot is closer than 120 cm to destination, make it go over desination by 120 cm and turn around
-      dist = dist + 128; 
-      isClose = true;  //set is close boolean to true
-    }
-    
-    if(deltaY >= 0) {
-      // quadrant 1 and 2
-        
-        dTheta = Math.atan(deltaX/deltaY); 
-    
         
     }
-    else if(deltaY <=0 && deltaX >= 0) {
-        
-        // quadrant 4
-        
-        // this is done because the range of arctan is between -pi/2 and pi/2 so we have to factor in Math.PI
-
-        dTheta = Math.atan(deltaX/deltaY) + Math.PI; 
-        
-    }
-    else {
-        
-        // quadrant 3
-      
-        dTheta = Math.atan(deltaX/deltaY) - Math.PI; 
-    }
     
-    double thetaDiff = (Math.toDegrees(dTheta)-currentT);
-   
-    turnTo(thetaDiff); 
-    
-    leftMotor.setSpeed(180);
-    rightMotor.setSpeed(180);
-    leftMotor.rotate(convertDistance(WHEEL_RAD, dist), true);
-    rightMotor.rotate(convertDistance(WHEEL_RAD, dist), false);
-  
-    
-   
-    if(isClose && x == 30.48) {
-      leftMotor.setSpeed(ROTATE_SPEED);
-      leftMotor.rotate(convertAngle(WHEEL_RAD, TRACK, 90), true);
-      rightMotor.setSpeed(ROTATE_SPEED);
-      rightMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, 90), false);
-       leftMotor.setSpeed(180);
-       rightMotor.setSpeed(180);
-       leftMotor.rotate(convertDistance(WHEEL_RAD, 13), true);
-       rightMotor.rotate(convertDistance(WHEEL_RAD, 13), false); 
-       turnTo(90); 
-     } else if(isClose && x == 0) {
-       leftMotor.setSpeed(ROTATE_SPEED);
-       leftMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, 90), true);
-       rightMotor.setSpeed(ROTATE_SPEED);
-       rightMotor.rotate(convertAngle(WHEEL_RAD, TRACK, 90), false);
-       leftMotor.setSpeed(180);
-       rightMotor.setSpeed(180);
-       leftMotor.rotate(convertDistance(WHEEL_RAD, 13), true);
-       rightMotor.rotate(convertDistance(WHEEL_RAD, 13), false);
-       turnTo(90); 
-       
-     } else if( isClose && y == 30.48) {
-       leftMotor.setSpeed(ROTATE_SPEED);
-       leftMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, 90), true);
-       rightMotor.setSpeed(ROTATE_SPEED);
-       rightMotor.rotate(convertAngle(WHEEL_RAD, TRACK, 90), false);
-       leftMotor.setSpeed(180);
-       rightMotor.setSpeed(180);
-       leftMotor.rotate(convertDistance(WHEEL_RAD, 13), true);
-       rightMotor.rotate(convertDistance(WHEEL_RAD, 13), false);
-       turnTo(-90);
-       
-     } else if( isClose && y == 0) {
-       leftMotor.setSpeed(ROTATE_SPEED);
-       leftMotor.rotate(convertAngle(WHEEL_RAD, TRACK, 90), true);
-       rightMotor.setSpeed(ROTATE_SPEED);
-       rightMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, 90), false);
-       leftMotor.setSpeed(180);
-       rightMotor.setSpeed(180);
-       leftMotor.rotate(convertDistance(WHEEL_RAD, 13), true);
-       rightMotor.rotate(convertDistance(WHEEL_RAD, 13), false);
-       turnTo(90); 
-     }
-     else {
-       turnTo(180); 
-     }
-    }
-    */
 
    /**
     * this method takes  an angle and returns the minimum  angle needed to turn to reach the next waypoint. 
@@ -331,6 +248,45 @@ private double[][]
             
             }
         }
+        
+        void turnTo(double x, double y) {
+          double position[] = new double[3]; 
+          position = odometer.getXYT(); 
+          currentX = position[0];
+          currentY = position[1];
+          currentT = position[2]; 
+          
+          deltaX = x - currentX; 
+          deltaY = y - currentY;
+          dist = Math.sqrt(deltaX * deltaX + deltaY*deltaY);
+          
+          if(deltaY >= 0) {
+            // quadrant 1 and 2
+              
+              dTheta = Math.atan(deltaX/deltaY); 
+          
+              
+          }
+          else if(deltaY <=0 && deltaX >= 0) {
+              
+              // quadrant 4
+              
+              // this is done because the range of arctan is between -pi/2 and pi/2 so we have to factor in Math.PI
+
+              dTheta = Math.atan(deltaX/deltaY) + Math.PI; 
+              
+          }
+          else {
+              
+              // quadrant 3
+            
+              dTheta = Math.atan(deltaX/deltaY) - Math.PI; 
+          }
+          
+          double thetaDiff = (Math.toDegrees(dTheta)-currentT);
+         
+          turnTo(thetaDiff); 
+        } 
 
 /**
  * this boolean check  if the robot's motors are moving and therefore we know if the robot is navigating or not
@@ -431,29 +387,62 @@ private double[][]
       }
       
       public static double[] findLaunchLocation(int targetLocation[]) {
-        double []location = new double[2];
+        boolean spaceX = false, spaceY= false, spacex= false, spacey= false;
+        if (targetLocation[0]+4<=7) {
+          spaceX=true;
+        }
+        if (targetLocation[0]-4>=0) {
+          spacex=true;
+        }
+        if (targetLocation[1]+4<=7) {
+          spaceY=true;
+        }
+        if (targetLocation[1]-4>=0) {
+          spacey=true;
+        }
+        
+        double[] destination = new double[2];
+        if (spacex&&spacey) {
+          destination[0]=(targetLocation[0]-3)*TILE_SIZE;
+          destination[1]=(targetLocation[1]-3)*TILE_SIZE;
+        }
+        if (spaceX&&spacey) {
+          destination[0]=(targetLocation[0]+4)*TILE_SIZE;
+          destination[1]=(targetLocation[1]-3)*TILE_SIZE;
+        }
+        if (spacex&&spaceY) {
+          destination[0]=(targetLocation[0]-3)*TILE_SIZE;
+          destination[1]=(targetLocation[1]+4)*TILE_SIZE;
+        }
+        if (spaceX&&spaceY) {
+          destination[0]=(targetLocation[0]+4)*TILE_SIZE;
+          destination[1]=(targetLocation[1]+4)*TILE_SIZE;
+        }
+        return destination;
+        /*double []location = new double[2];
         LinkedList<double[]> validLocations = new LinkedList<double[]>();
+        double distance = Math.sqrt(2)*TILE_SIZE/2+Math.sqrt(2)*120/2;
         //higher Y
-        location[0] = (targetLocation[0]+0.5)*TILE_SIZE;
-        location[1] = (targetLocation[1]+5)*TILE_SIZE;
+        location[0] = (targetLocation[0]+0.5)*TILE_SIZE-distance;
+        location[1] = (targetLocation[1]+0.5)*TILE_SIZE-distance;
         if (isValidLaunchLocation(location)) {
           validLocations.add(location);
         }
         //higher X
-        location[0] = (targetLocation[0]+5)*TILE_SIZE;
-        location[1] = (targetLocation[1]+0.5)*TILE_SIZE;
+        location[0] = (targetLocation[0]+0.5)*TILE_SIZE-distance;
+        location[1] = (targetLocation[1]+0.5)*TILE_SIZE+distance;
         //lower Y
         if (isValidLaunchLocation(location)) {
           validLocations.add(location);
         }
-        location[0] = (targetLocation[0]+0.5)*TILE_SIZE;
-        location[1] = (targetLocation[1]-4)*TILE_SIZE;
+        location[0] = (targetLocation[0]+0.5)*TILE_SIZE+distance;
+        location[1] = (targetLocation[1]+0.5)*TILE_SIZE+distance;
         if (isValidLaunchLocation(location)) {
           validLocations.add(location);
         }
         //lower X
-        location[0] = (targetLocation[0]-4)*TILE_SIZE;
-        location[1] = (targetLocation[1]+0.5)*TILE_SIZE;
+        location[0] = (targetLocation[0]+0.5)*TILE_SIZE+distance;
+        location[1] = (targetLocation[1]+0.5)*TILE_SIZE-distance;
         if (isValidLaunchLocation(location)) {
           validLocations.add(location);
         }
@@ -467,6 +456,7 @@ private double[][]
           }
         }
         return location;
+        */
       }
 
 
@@ -477,12 +467,12 @@ private double[][]
       }
 
       private static boolean isValidLaunchLocation(double targetLocation[]) {
-        return targetLocation[0]>TILE_SIZE && targetLocation[1]>TILE_SIZE && targetLocation[0]<(numTilesX-1)*TILE_SIZE && targetLocation[1]<(numTilesY-1)*TILE_SIZE;
+        return targetLocation[0]>=TILE_SIZE && targetLocation[1]>=TILE_SIZE && targetLocation[0]<=(numTilesX-1)*TILE_SIZE && targetLocation[1]<=(numTilesY-1)*TILE_SIZE;
       }
       public static double[] waypointToLocation(int[] waypoint) {
         double[] location = new double[waypoint.length];
         for (int i=0;i<waypoint.length;i++) {
-          location[i] = waypoint[i]*TILE_SIZE;
+          location[i] = waypoint[i]*TILE_SIZE+TILE_SIZE/2; 
         }
         return location;
       }

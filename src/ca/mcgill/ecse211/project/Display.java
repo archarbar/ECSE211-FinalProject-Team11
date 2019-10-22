@@ -53,12 +53,14 @@ public class Display implements Runnable {
 
       
       position = odo.getXYT();
+      int []target = Main.getLaunchTarget();
       
       
       DecimalFormat numberFormat = new DecimalFormat("######0.00");
       lcd.drawString("X: " + numberFormat.format(position[0]), 0, 0);
       lcd.drawString("Y: " + numberFormat.format(position[1]), 0, 1);
       lcd.drawString("T: " + numberFormat.format(position[2]), 0, 2);
+      lcd.drawString("Target Location ("+target[0]+","+target[1]+")", 0, 3);
       
       //ensures that the data is updated only once every period
       updateEnd = System.currentTimeMillis();
