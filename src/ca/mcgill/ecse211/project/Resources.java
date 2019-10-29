@@ -57,8 +57,7 @@ public class Resources {
 
   public static double[][] targetTile = new double[][] {{3 * TILE_SIZE, 1 * TILE_SIZE},
 
-  };;
-
+  };
 
   public static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 
@@ -73,6 +72,8 @@ public class Resources {
   public static final EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4"));
 
   public static final EV3ColorSensor centerLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S3"));
+  
+  public static final EV3ColorSensor sideLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
 
   public static final int CORRECTION_PERIOD = 50;
 
