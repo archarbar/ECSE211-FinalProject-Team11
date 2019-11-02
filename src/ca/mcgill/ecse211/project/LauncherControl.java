@@ -10,9 +10,13 @@ public class LauncherControl {
    * @param speed
    */
   public static void launch(int speed) {
-    launcher.setAcceleration(LAUNCHER_ACCELERATION);
-    launcher.setSpeed(speed);
-    launcher.rotate(LAUNCHER_ANGLE, false);
+    launcher1.setAcceleration(LAUNCHER_ACCELERATION);
+    launcher1.setSpeed(speed);
+    launcher2.setAcceleration(LAUNCHER_ACCELERATION);
+    launcher2.setSpeed(speed);
+    
+    launcher1.rotate(LAUNCHER_ANGLE, true);
+    launcher2.rotate(LAUNCHER_ANGLE, false);
     try {
       Thread.sleep(3000);
     } catch (Exception e) {
@@ -25,9 +29,14 @@ public class LauncherControl {
    * Move the launcher to the ready position.
    */
   public static void reset() {
-    launcher.setSpeed(RESET_SPEED);
-    launcher.rotate(-LAUNCHER_ANGLE, false);
-    launcher.stop();
+    launcher1.setSpeed(RESET_SPEED);
+    launcher2.setSpeed(RESET_SPEED);
+    
+    launcher1.rotate(-LAUNCHER_ANGLE, true);
+    launcher2.rotate(-LAUNCHER_ANGLE, false);
+    
+    launcher1.stop();
+    launcher2.stop();
   }
 
   @Deprecated
@@ -45,8 +54,9 @@ public class LauncherControl {
   }
 
   /**
-   * An improved method of calculating the speed of the launcher.
-   * Source: https://en.wikipedia.org/wiki/Range_of_a_projectile.
+   * An improved method of calculating the speed of the launcher. Source:
+   * https://en.wikipedia.org/wiki/Range_of_a_projectile.
+   * 
    * @param distance
    * @return
    */

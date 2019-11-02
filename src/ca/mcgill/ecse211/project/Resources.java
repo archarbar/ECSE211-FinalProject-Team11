@@ -11,7 +11,11 @@ public class Resources {
   /**
    * The launcher motor.
    */
-  public static final EV3LargeRegulatedMotor launcher = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
+  public static final EV3LargeRegulatedMotor launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
+  /**
+   * The launcher motor.
+   */
+  public static final EV3LargeRegulatedMotor launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 
   /**
    * The LCD.
@@ -72,7 +76,7 @@ public class Resources {
   public static final EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4"));
 
   public static final EV3ColorSensor centerLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S3"));
-  
+
   public static final EV3ColorSensor sideLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
 
   public static final int CORRECTION_PERIOD = 50;
