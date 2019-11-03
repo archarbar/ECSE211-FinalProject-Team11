@@ -8,4 +8,9 @@ public interface LineDetectorController {
   public Edge edgeDetected();
   
   public double processCSData(double lightVal);
+  
+  public double getEdgeX();
+  
+  public double getEdgeY();
+  
 }

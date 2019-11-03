@@ -75,7 +75,7 @@ public class Resources {
 
   public static final EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4"));
 
-  public static final EV3ColorSensor centerLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S3"));
+  public static final EV3ColorSensor centreLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S3"));
 
   public static final EV3ColorSensor sideLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
 
