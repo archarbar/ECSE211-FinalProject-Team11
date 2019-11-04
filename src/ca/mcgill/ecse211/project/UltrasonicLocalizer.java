@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.project;
 
+import ca.mcgill.ecse211.navigation.Navigation;
 import ca.mcgill.ecse211.odometer.Odometer;
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.Arrays;
@@ -9,11 +10,9 @@ import lejos.robotics.SampleProvider;
 
 
 
-public class UltrasonicLocalizer {
+public class UltrasonicLocalizer extends Navigation{
 
 
-  private EV3LargeRegulatedMotor leftMotor;
-  private EV3LargeRegulatedMotor rightMotor;
 
 
   private float[] usData;
@@ -69,15 +68,9 @@ public class UltrasonicLocalizer {
    * @param usSamples
    * @throws OdometerExceptions
    */
-  public UltrasonicLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odometer,
-      final double TRACK, final double WHEEL_RAD, edgeType type, SampleProvider usSamples) {
+  public UltrasonicLocalizer(edgeType type, SampleProvider usSamples) {
 
-
-    this.leftMotor = leftMotor;
-    this.rightMotor = rightMotor;
-
-
-    this.odometer = odometer;
+    this.odometer = Odometer.getOdometer();
 
 
     this.type = type;
@@ -162,8 +155,8 @@ public class UltrasonicLocalizer {
     double turnAngle = deltaT + odometer.getXYT()[2];
 
     // rotate to 0 degree axis
-    leftMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, turnAngle - TURNING_ERROR), true);
-    rightMotor.rotate(convertAngle(WHEEL_RAD, TRACK, turnAngle - TURNING_ERROR), false);
+    leftMotor.rotate(-convertAngle(turnAngle - TURNING_ERROR), true);
+    rightMotor.rotate(convertAngle(turnAngle - TURNING_ERROR), false);
 
     odometer.setXYT(0.0, 0.0, 0.0);
 
@@ -220,8 +213,8 @@ public class UltrasonicLocalizer {
     double turnAngle = deltaT + odometer.getXYT()[2];
 
     // rotate to 0 degree axis
-    leftMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, turnAngle - TURNING_ERROR), true);
-    rightMotor.rotate(convertAngle(WHEEL_RAD, TRACK, turnAngle - TURNING_ERROR), false);
+    leftMotor.rotate(-convertAngle(turnAngle - TURNING_ERROR), true);
+    rightMotor.rotate(convertAngle(turnAngle - TURNING_ERROR), false);
 
 
     odometer.setXYT(0.0, 0.0, 0.0);
@@ -237,26 +230,6 @@ public class UltrasonicLocalizer {
     int distance = (int) (usData[0] * 100);
     return medianFilter(distance);
 
-  }
-
-  /**
-   * convert distance and convert angles were both methods taken from the the SquareDriver class they convert distance
-   * or angle respectively into the appropriate number of tacho counts the motors have to perform.
-   * 
-   * 
-   * @param radius
-   * @param distance
-   * @return tacho counts
-   */
-
-
-  private static int convertDistance(double radius, double distance) {
-    return (int) ((180.0 * distance) / (Math.PI * radius));
-  }
-
-
-  private static int convertAngle(double radius, double width, double angle) {
-    return convertDistance(radius, Math.PI * width * angle / 360.0);
   }
 
   /**

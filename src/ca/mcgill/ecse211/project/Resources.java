@@ -103,5 +103,7 @@ public class Resources {
    */
   public static final int RESET_SPEED = 70;
 
+  public static final int ROTATE_SPEED = 50;
+  public static final int MOTOR_SPEED = 100;
 
 }

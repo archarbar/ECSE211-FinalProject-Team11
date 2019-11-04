@@ -15,10 +15,6 @@ public class LightLocalizer extends Navigation{
   // the SENSOR_OFFSET represents the distance between the center of the wheelbase and the light sensor
   private final double SENSOR_OFFSET = 13;
 
-
-  private static int ROTATE_SPEED = 50;
-  private static int MOTOR_SPEED = 100;
-
   // threshold that will be used for the light sensor values
   private static double initValue;
   // private static final double lineThreshold = 185;
