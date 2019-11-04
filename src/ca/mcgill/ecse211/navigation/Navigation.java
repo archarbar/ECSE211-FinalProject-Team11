@@ -156,40 +156,79 @@ public abstract class Navigation {
    * Takes 4 integers as inputs, which are coordinates of the two tunnel corners
    * Returns the entrance coordinates as an array
    */
-  public static int[] findTunnelEntrance(int hole1_x, int hole1_y, int hole2_x, int hole2_y) {
-    int[] entrance = {,};
-    double currentX = Odometer.getOdometer().getXYT()[0];
-    double currentY = Odometer.getOdometer().getXYT()[1];
+  public static Point findTunnelEntrance(Point hole1, Point hole2) {
+    Point entrance = new Point(0, 0);
+    Point currentPos = new Point(Odometer.getOdometer().getXYT()[0], Odometer.getOdometer().getXYT()[1]);
     boolean xTunnel = false; // set default as false
-    if (Math.abs(hole1_x - hole2_x) == 2) { // if x length of tunnel is 2, then it is a horizontal tunnel
+    if (Math.abs(hole1.x - hole2.x) == 2) { // if x length of tunnel is 2, then it is a horizontal tunnel
       xTunnel = true;
     }
-    double dist1 = calculateDistanceTo(hole1_x, hole1_y);
-    double dist2 = calculateDistanceTo(hole2_x, hole2_y);
+    double dist1 = calculateDistanceTo(hole1.x, hole1.y);
+    double dist2 = calculateDistanceTo(hole2.x, hole2.y);
     if (dist1 >= dist2) { // if hole 2 is closer, set it as entrance
-      entrance[0] = hole2_x;
-      entrance[1] = hole2_y;
+      entrance = hole2;
     }
     else {                // if hole 1 is closer, set it as entrance
-      entrance[0] = hole1_x;
-      entrance[1] = hole1_y;
+      entrance = hole1;
     }
     if (xTunnel) { // if horizontal tunnel
-      if (currentX >= entrance[0]) { // if current x position bigger or equal to entrance x position
-        entrance[1] -= 1;
+      if (currentPos.x >= entrance.x) { // if current x position bigger or equal to entrance x position
+        entrance.y -= 1;
       }
       else {                         // if current x position smaller than entrance x position
-        entrance[0] -= 1;
+        entrance.x -= 1;
       }
     }
     else {         // if vertical tunnel
-      if (currentY >= entrance[1]) { // if current y position greater or equal to entrance y position
-        entrance[0] -= 1;
+      if (currentPos.y >= entrance.y) { // if current y position greater or equal to entrance y position
+        entrance.x -= 1;
       }
       else {                         // if current y position smaller than entrance y position
-        entrance[1] -= 1;
+        entrance.y -= 1;
       }
     }
     return entrance;
+  }
+  
+  /**
+   * Finds the point in the launching zone that is closest to the bin
+   */
+  public static Point findClosestLaunchPoint(Point binLocation, GridRectangle launchZone) {
+    Point location = new Point(0, 0);
+    if (binLocation.x <= launchZone.getxLow()) {
+      location.x = launchZone.getxLow() + TILE_SIZE/2;
+    }
+    else if (binLocation.x >= launchZone.getxHigh()) {
+      location.x = launchZone.getxHigh() - TILE_SIZE/2;
+    }
+    else {
+      location.x = binLocation.x;
+    }
+    if (binLocation.y <= launchZone.getyLow()) {
+      location.y = launchZone.getyLow() + TILE_SIZE/2;
+    }
+    else if (binLocation.y >= launchZone.getyHigh()) {
+      location.y = launchZone.getyHigh() - TILE_SIZE/2;
+    }
+    else {
+      location.y = binLocation.y;
+    }
+    return location;
+    
+//    Point location = new Point(0, 0);
+//    Point currentPoint = new Point(0, 0);
+//    double minDist = 0;
+//    int launchZoneX = launchZone.getxHigh() - launchZone.getxLow();
+//    int launchZoneY = launchZone.getyHigh() - launchZone.getyLow();
+//    for (int i=0; i < launchZoneX; i++) {
+//      currentPoint.x = launchZone.getxLow() + i;
+//      for (int y=0; y < launchZoneY; y++) {
+//        currentPoint.y = launchZone.getyLow() + y;
+//        if (hyp(Math.abs(currentPoint.x - binLocation.x), Math.abs(currentPoint.y - binLocation.y)) < minDist) {
+//          location = currentPoint;
+//        }
+//      }
+//    }
+//    return location;
   }
 }

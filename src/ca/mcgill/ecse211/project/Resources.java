@@ -102,6 +102,35 @@ public class Resources {
    * The speed at which the launcher rotates in degrees per second.
    */
   public static final int RESET_SPEED = 70;
+  
+  /**
+   * Represents a coordinate point on the competition map grid.
+   * 
+   * @author Younes Boubekeur
+   */
+  public static class Point {
+    /** The x coordinate. */
+    public double x;
+    
+    /** The y coordinate. */
+    public double y;
+    
+    /**
+     * Constructs a Point.
+     * 
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
+    public Point(double x, double y) {
+      this.x = x;
+      this.y = y;
+    }
+    
+    public String toString() {
+      return "(" + x + ", " + y + ")";
+    }
+    
+  }
 
 
 }
