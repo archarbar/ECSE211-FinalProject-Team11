@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.navigation;
+package ca.mcgill.ecse211.lightSensor;
 
 public interface LineDetectorController {
   public enum Edge {NoEdge, RisingEdge, FallingEdge}

@@ -4,10 +4,13 @@ import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.LinkedList;
 import ca.mcgill.ecse211.odometer.OdometryCorrection;
 
-public class LineNavigation {
+public class LineNavigation extends Navigation{
   private static boolean lineNavigating = false;
   public static boolean turning = false;
 
+  
+  
+  
   public static void findLine() {
     lineNavigating = true;
     long startTime;
@@ -15,19 +18,19 @@ public class LineNavigation {
 
     leftMotor.stop();
     rightMotor.stop();
-    Navigation.turn(-90);
+    turnTo(-90);
     while (true) {
       startTime = System.currentTimeMillis();
       direction *= -1;
       count++;
-      int angle = Navigation.convertDistance(count * direction * searchDistance);
+      int angle = convertDistance(count * direction * searchDistance);
       leftMotor.rotate(angle, true);
       rightMotor.rotate(angle, true);
 
-      while (!OdometryCorrection.lineDetected(Resources.centerLightSensor)
+      while (!OdometryCorrection.lineDetected(centreLightSensor)
           || (System.currentTimeMillis() - startTime) / 1000 > searchTime * count) {
         try {
-          Thread.sleep(Resources.CORRECTION_PERIOD);
+          Thread.sleep(CORRECTION_PERIOD);
         } catch (InterruptedException e) {
           // there is nothing to be done
         }
@@ -55,6 +58,8 @@ public class LineNavigation {
   public static boolean isTurning() {
     return turning;
   }
+  
+  public static void travelTo() {}
 
 
 }

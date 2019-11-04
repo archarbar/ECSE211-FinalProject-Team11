@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.navigation;
+package ca.mcgill.ecse211.lightSensor;
 
 import ca.mcgill.ecse211.odometer.Odometer;
 import lejos.robotics.SampleProvider;

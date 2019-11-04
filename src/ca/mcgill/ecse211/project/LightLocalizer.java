@@ -1,18 +1,16 @@
 package ca.mcgill.ecse211.project;
 
 
-import lejos.hardware.ev3.LocalEV3;
-import lejos.hardware.lcd.LCD;
-import lejos.hardware.motor.EV3LargeRegulatedMotor;
-import lejos.hardware.port.Port;
+import lejos.hardware.sensor.BaseSensor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.SampleProvider;
 import ca.mcgill.ecse211.odometer.Odometer;
 import lejos.hardware.Sound;
 import static ca.mcgill.ecse211.project.Resources.*;
+import ca.mcgill.ecse211.navigation.Navigation;
 
 
-public class LightLocalizer {
+public class LightLocalizer extends Navigation{
 
   // the SENSOR_OFFSET represents the distance between the center of the wheelbase and the light sensor
   private final double SENSOR_OFFSET = 13;
@@ -30,22 +28,12 @@ public class LightLocalizer {
   double[] ThetaArray = new double[4];
 
 
-  private Odometer odometer;
-
-
-  private EV3LargeRegulatedMotor leftMotor, rightMotor;
-
+  private Odometer odometer = Odometer.getOdometer();
 
   // private static final Port lsPort = LocalEV3.get().getPort("S1");
   // EV3ColorSensor colSensor = new EV3ColorSensor(lsPort);
   SampleProvider lsValue;
   private float[] lsData;
-
-
-
-  private double TRACK;
-  private double WHEEL_RAD;
-
 
   /**
    * 
@@ -55,16 +43,9 @@ public class LightLocalizer {
    * @param TRACK
    * @param WHEEL_RAD
    */
-  public LightLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odometer,
-      double TRACK, double WHEEL_RAD) {
-    this.odometer = odometer;
-    this.leftMotor = leftMotor;
-    this.rightMotor = rightMotor;
-
-    this.TRACK = TRACK;
-    this.WHEEL_RAD = WHEEL_RAD;
-    centerLightSensor.setCurrentMode("Red");
-    this.lsValue = centerLightSensor.getMode("Red");
+  public LightLocalizer() {
+    centreLightSensor.setCurrentMode("Red");
+    this.lsValue = centreLightSensor.getMode("Red");
     this.lsData = new float[lsValue.sampleSize()];
     initValue = getIntensity();
     lineThreshold = 0.88 * initValue;
@@ -109,8 +90,8 @@ public class LightLocalizer {
 
     leftMotor.setSpeed(MOTOR_SPEED);
     rightMotor.setSpeed(MOTOR_SPEED);
-    leftMotor.rotate(convertDistance(WHEEL_RAD, -SENSOR_OFFSET), true);
-    rightMotor.rotate(convertDistance(WHEEL_RAD, -SENSOR_OFFSET), false);
+    leftMotor.rotate(convertDistance(-SENSOR_OFFSET), true);
+    rightMotor.rotate(convertDistance(-SENSOR_OFFSET), false);
 
 
 
@@ -218,12 +199,13 @@ public class LightLocalizer {
 
     leftMotor.setSpeed(250);
     rightMotor.setSpeed(250);
-    leftMotor.rotate(convertDistance(WHEEL_RAD, dist), true);
-    rightMotor.rotate(convertDistance(WHEEL_RAD, dist), false);
+    leftMotor.rotate(convertDistance(dist), true);
+    rightMotor.rotate(convertDistance(dist), false);
 
 
 
   }
+
 
   /**
    * this method takes an angle and returns the minimum angle needed to turn to reach the next waypoint. ex: if
@@ -234,6 +216,7 @@ public class LightLocalizer {
    * 
    * @param theta
    */
+  /*
   private void turnTo(double theta) {
 
     if (theta > 180) {
@@ -267,24 +250,7 @@ public class LightLocalizer {
       rightMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, theta), false);
 
     }
-  }
-
-  /**
-   * this boolean check if the robot's motors are moving and therefore we know if the robot is navigating or not
-   * 
-   * @return
-   */
-
-  private boolean isNavigating() {
-
-    boolean result = false;
-    if (leftMotor.isMoving() && rightMotor.isMoving()) {
-      result = true;
-    }
-
-    return result;
-  }
-
+  } */
 
   /**
    * This is a simple getter function that gets the value read by the light sensor and simply returns it .
@@ -292,7 +258,7 @@ public class LightLocalizer {
    * @return a double value of the light sensor reading.
    */
   private double getIntensity() {
-    centerLightSensor.fetchSample(lsData, 0);
+    centreLightSensor.fetchSample(lsData, 0);
     double lsValue = lsData[0] * 1000;
     return lsValue;
 
@@ -325,24 +291,4 @@ public class LightLocalizer {
     return avg;
 
   }
-
-  /**
-   * convert distance and convert angles were both methods taken from the the SquareDriver class they convert distance
-   * or angle respectively into the appropriate number of tacho counts the motor has to perform.
-   * 
-   * 
-   * @param radius
-   * @param distance
-   * @return
-   */
-
-  private static int convertDistance(double radius, double distance) {
-    return (int) ((180.0 * distance) / (Math.PI * radius));
-  }
-
-
-  private static int convertAngle(double radius, double width, double angle) {
-    return convertDistance(radius, Math.PI * width * angle / 360.0);
-  }
-
 }

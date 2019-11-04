@@ -1,9 +1,9 @@
 package ca.mcgill.ecse211.odometer;
 
 import static ca.mcgill.ecse211.project.Resources.*;
-import ca.mcgill.ecse211.navigation.DifferentialLineDetector;
-import ca.mcgill.ecse211.navigation.LineDetectorController;
-import ca.mcgill.ecse211.navigation.LineDetectorController.Edge;
+import ca.mcgill.ecse211.lightSensor.DifferentialLineDetector;
+import ca.mcgill.ecse211.lightSensor.LineDetectorController;
+import ca.mcgill.ecse211.lightSensor.LineDetectorController.Edge;
 import ca.mcgill.ecse211.navigation.LineNavigation;
 
 public class OdometryCorrection {

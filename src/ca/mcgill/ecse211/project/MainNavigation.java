@@ -7,7 +7,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.LinkedList;
 
-public class Navigation extends Thread {
+public class MainNavigation extends Thread {
 
   private EV3LargeRegulatedMotor leftMotor;
   private EV3LargeRegulatedMotor rightMotor;
@@ -20,7 +20,7 @@ public class Navigation extends Thread {
 
   int ROTATE_SPEED = 155;
 
-  public Navigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, final double TRACK,
+  public MainNavigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, final double TRACK,
       final double WHEEL_RAD, double[][] targetTile) {
 
     this.leftMotor = leftMotor;

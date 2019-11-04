@@ -52,13 +52,13 @@ public class Main {
     if (buttonChoice == Button.ID_RIGHT) {
       launchTarget = chooseTargetLocation();
       double[][] targetTile = new double[1][2];
-      double[] destination = Navigation.waypointToLocation(launchTarget);
+      double[] destination = MainNavigation.waypointToLocation(launchTarget);
       targetTile[0][0] = destination[0];
       targetTile[0][1] = destination[1];
 
       // init localizer and navigation
       LightLocalizer lsLocalizer = new LightLocalizer(leftMotor, rightMotor, odometer, TRACK, WHEEL_RAD);
-      Navigation navigation = new Navigation(leftMotor, rightMotor, TRACK, WHEEL_RAD, targetTile);
+      MainNavigation navigation = new MainNavigation(leftMotor, rightMotor, TRACK, WHEEL_RAD, targetTile);
       UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(leftMotor, rightMotor, odometer, TRACK, WHEEL_RAD,
           UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
       initThreads(odometer, odometryDisplay);

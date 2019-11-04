@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.navigation;
+package ca.mcgill.ecse211.lightSensor;
 
 import lejos.hardware.sensor.EV3ColorSensor;
 
@@ -16,6 +16,6 @@ public class PDifferentialLineDetector extends DifferentialLineDetector {
     
     //optionally use mean filter.
 //    newVal = meanFilter();
-    return (newVal - oldVal)/newVal;
+    return (newVal - oldVal)/(newVal+oldVal)*2;
   }
 }
