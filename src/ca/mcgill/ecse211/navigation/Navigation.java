@@ -78,6 +78,8 @@ public abstract class Navigation {
    * @param theta
    */
   public static void turnTo(double theta) {
+    leftMotor.setSpeed(ROTATE_SPEED);
+    rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.rotate(convertAngle(minimumAngle(theta)), true);
     rightMotor.rotate(-convertAngle(minimumAngle(theta)), false);
   }
@@ -92,6 +94,14 @@ public abstract class Navigation {
     double angle = theta - positions[2];
     angle = minimumAngle(angle);
     turnTo(angle);
+  }
+  
+  public static void moveTo(double distance) {
+    leftMotor.setSpeed(MOTOR_SPEED);
+    rightMotor.setSpeed(MOTOR_SPEED);
+    int angle = convertDistance(distance);
+    leftMotor.rotate(angle, true);
+    rightMotor.rotate(angle, false);
   }
   
   public static double calculateDistanceTo(double x, double y) {
@@ -112,6 +122,9 @@ public abstract class Navigation {
   }
   public static double convertGridToLocation(int a) {
     return a*TILE_SIZE;
+  }
+  public static int convertLocationToGrid(double a) {
+    return (int) Math.round(a/TILE_SIZE);
   }
   
   /**
