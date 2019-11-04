@@ -163,5 +163,46 @@ public abstract class Navigation {
     double ay = convertGridToLocation(y);
     return angleToTarget(ax, ay);
   }
-
+  
+  /**
+   * Determines the entrance of a tunnel
+   * Takes 4 integers as inputs, which are coordinates of the two tunnel corners
+   * Returns the entrance coordinates as an array
+   */
+  public static int[] findTunnelEntrance(int hole1_x, int hole1_y, int hole2_x, int hole2_y) {
+    int[] entrance = {,};
+    double currentX = Odometer.getOdometer().getXYT()[0];
+    double currentY = Odometer.getOdometer().getXYT()[1];
+    boolean xTunnel = false; // set default as false
+    if (Math.abs(hole1_x - hole2_x) == 2) { // if x length of tunnel is 2, then it is a horizontal tunnel
+      xTunnel = true;
+    }
+    double dist1 = calculateDistanceTo(hole1_x, hole1_y);
+    double dist2 = calculateDistanceTo(hole2_x, hole2_y);
+    if (dist1 >= dist2) { // if hole 2 is closer, set it as entrance
+      entrance[0] = hole2_x;
+      entrance[1] = hole2_y;
+    }
+    else {                // if hole 1 is closer, set it as entrance
+      entrance[0] = hole1_x;
+      entrance[1] = hole1_y;
+    }
+    if (xTunnel) { // if horizontal tunnel
+      if (currentX >= entrance[0]) { // if current x position bigger or equal to entrance x position
+        entrance[1] -= 1;
+      }
+      else {                         // if current x position smaller than entrance x position
+        entrance[0] -= 1;
+      }
+    }
+    else {         // if vertical tunnel
+      if (currentY >= entrance[1]) { // if current y position greater or equal to entrance y position
+        entrance[0] -= 1;
+      }
+      else {                         // if current y position smaller than entrance y position
+        entrance[1] -= 1;
+      }
+    }
+    return entrance;
+  }
 }
