@@ -36,7 +36,7 @@ public class ProportionalLineDetector implements LineDetectorController {
       edgeY = position[1];
       return Edge.FallingEdge;
     }
-    return Edge.NoEdge;
+    return Edge.RisingEdge;
   }
 
   @Override

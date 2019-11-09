@@ -5,6 +5,7 @@ import ca.mcgill.ecse211.lightSensor.DifferentialLineDetector;
 import ca.mcgill.ecse211.lightSensor.LineDetectorController;
 import ca.mcgill.ecse211.lightSensor.LineDetectorController.Edge;
 import ca.mcgill.ecse211.navigation.LineNavigation;
+import lejos.hardware.Sound;
 
 public class OdometryCorrection {
 
@@ -51,24 +52,25 @@ public class OdometryCorrection {
           final double acceptableAngle = 25;
           double angle = odometer.getXYT()[2];
           if (angle >= 360-acceptableAngle || angle <= 0+acceptableAngle) {
-            odometer.setTheta(0);
+//            odometer.setTheta(0);
             double yPos = (odometer.getXYT()[1]+sideDetector.getEdgeY())/2;
             odometer.setY(roundToLine(yPos));
           } else if (angle >= 90-acceptableAngle && angle <= 90+acceptableAngle) {
-            odometer.setTheta(90);
+//            odometer.setTheta(90);
             double xPos = (odometer.getXYT()[0]+sideDetector.getEdgeX())/2;
             odometer.setX(roundToLine(xPos));
           } else if (angle >= 180-acceptableAngle && angle <= 180+acceptableAngle) {
-            odometer.setTheta(180);
+//            odometer.setTheta(180);
             double yPos = (odometer.getXYT()[1]+sideDetector.getEdgeY())/2;
             odometer.setY(roundToLine(yPos));
           } else if (angle >= 270-acceptableAngle && angle <= 270+acceptableAngle) {
-            odometer.setTheta(270);
+//            odometer.setTheta(270);
             double xPos = (odometer.getXYT()[0]+sideDetector.getEdgeX())/2;
             odometer.setX(roundToLine(xPos));
           }
         } else { //if isLineNavigating && !isTurning &&
-          LineNavigation.findLine();
+//          LineNavigation.findLine();
+          Sound.beep();
         }
       }
 

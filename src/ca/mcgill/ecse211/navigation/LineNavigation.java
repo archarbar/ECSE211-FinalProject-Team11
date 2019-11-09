@@ -47,6 +47,19 @@ public class LineNavigation extends Navigation{
     // if still no line detected, expand a bit more
   }
   */
+  
+  public static void findLine() {
+    double theta = Odometer.getOdometer().getXYT()[2];
+    double heading = Math.round(theta/90)*90;
+    double dTheta = heading - theta;
+    if (dTheta>=0) {
+      dTheta+=90;
+    }
+    else {
+      dTheta-=90;
+    }
+    
+  }
 
   /**
    * @return the lineNavigating
@@ -76,23 +89,37 @@ public class LineNavigation extends Navigation{
     
     
     double[] position = Odometer.getOdometer().getXYT();
-    double dx = x-position[0];
-    double dy = y-position[1];
+    double[] nearestInt = nearestIntersect(x,y);
+    double dx = Math.abs(nearestInt[0]-position[0]);
+    double dy = Math.abs(nearestInt[1]-position[1]);
     double angle;
     double distance;
     
+    
     angle = angleToTarget(x, y);
     angle = Math.round(angle/90)*90;
+    turning = true;
     turnToHeading(angle);
-    if(Math.abs(dx)>Math.abs(dy)) {
-     
+    turning = false;
+    if(dx>dy) {
+     moveTo(dx);
+     turning = true;
+     turnTo(angleToTarget(nearestInt[0],nearestInt[1]));
+     turning = false;
+     moveTo(dy);
     }
     else {
-      
+      moveTo(dy);
+      turning = true;
+      turnTo(angleToTarget(nearestInt[0],nearestInt[1]));
+      turning = false;
+      moveTo(dx);
     }
     angle = angleToTarget(x, y);
     distance = calculateDistanceTo(x, y);
+    turning = true;
     turnTo(angle);
+    turning = false;
     moveTo(distance);
     lineNavigating = false;
   }
@@ -107,7 +134,12 @@ public class LineNavigation extends Navigation{
     double position[] = Odometer.getOdometer().getXYT();
     intersect[0] = Math.round(x/TILE_SIZE)*TILE_SIZE;
     intersect[1] = Math.round(y/TILE_SIZE)*TILE_SIZE;
-    
+    if (position[0]>intersect[0]+TILE_SIZE/2) {
+      intersect[0]+=TILE_SIZE;
+    }
+    if (position[1]>intersect[1]+TILE_SIZE/2) {
+      intersect[1]+=TILE_SIZE;
+    }
     return intersect;
   }
   
