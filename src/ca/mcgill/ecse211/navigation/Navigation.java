@@ -205,6 +205,8 @@ public abstract class Navigation {
   
   /**
    * Finds the point in the launching zone that is closest to the bin
+   * Takes 2 inputs: the point representing the coordinates of the bin, and a GridRectagle for the launch zone
+   * returns a point, which is the closest launch point in the zone
    */
   public static Point findClosestLaunchPoint(Point binLocation, GridRectangle launchZone) {
     Point location = new Point(0, 0);
@@ -227,21 +229,31 @@ public abstract class Navigation {
       location.y = binLocation.y;
     }
     return location;
-    
-//    Point location = new Point(0, 0);
-//    Point currentPoint = new Point(0, 0);
-//    double minDist = 0;
-//    int launchZoneX = launchZone.getxHigh() - launchZone.getxLow();
-//    int launchZoneY = launchZone.getyHigh() - launchZone.getyLow();
-//    for (int i=0; i < launchZoneX; i++) {
-//      currentPoint.x = launchZone.getxLow() + i;
-//      for (int y=0; y < launchZoneY; y++) {
-//        currentPoint.y = launchZone.getyLow() + y;
-//        if (hyp(Math.abs(currentPoint.x - binLocation.x), Math.abs(currentPoint.y - binLocation.y)) < minDist) {
-//          location = currentPoint;
-//        }
-//      }
-//    }
-//    return location;
+  }
+  
+  /*
+   * Finds the point in the launching zone that is at a given distance to the bin
+   * Takes 3 inputs: the point representing the coordinates of the bin, a GridRectagle for the launch zone,
+   * and the desired distance in cm
+   * Returns a point, which is the launch point in the zone with the given distance to the bin,
+   * within a margin of error of 0.5 cm.
+   */
+  public static Point findLaunchPoint(Point binLocation, GridRectangle launchZone, double distance) {
+    Point location = new Point(0, 0);
+    Point currentPoint = new Point(launchZone.getxLow(), launchZone.getyLow());
+    double offset = 0.5;
+    int launchZoneX = launchZone.getxHigh() - launchZone.getxLow();
+    int launchZoneY = launchZone.getyHigh() - launchZone.getyLow();
+    for (int i=0; i < launchZoneX; i++) {
+      currentPoint.x = launchZone.getxLow() + i;
+      for (int y=0; y < launchZoneY; y++) {
+        currentPoint.y = launchZone.getyLow() + y;
+        if (hyp(Math.abs(currentPoint.x - binLocation.x), Math.abs(currentPoint.y - binLocation.y)) >= distance - offset
+            && hyp(Math.abs(currentPoint.x - binLocation.x), Math.abs(currentPoint.y - binLocation.y)) <= distance + offset) {
+          location = currentPoint;
+        }
+      }
+    }
+    return location;
   }
 }
