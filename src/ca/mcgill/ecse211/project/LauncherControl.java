@@ -10,19 +10,24 @@ public class LauncherControl {
    * @param speed
    */
   public static void launch(int speed) {
+    reset();
+    try {
+      Thread.sleep(1500);
+    } catch (Exception e) {
+      // do nothing
+    }
     launcher1.setAcceleration(LAUNCHER_ACCELERATION);
     launcher1.setSpeed(speed);
     launcher2.setAcceleration(LAUNCHER_ACCELERATION);
     launcher2.setSpeed(speed);
-    
+
     launcher1.rotate(LAUNCHER_ANGLE, true);
     launcher2.rotate(LAUNCHER_ANGLE, false);
     try {
-      Thread.sleep(3000);
+      Thread.sleep(1500);
     } catch (Exception e) {
       // do nothing
     }
-    reset();
   }
 
   /**
@@ -31,14 +36,34 @@ public class LauncherControl {
   public static void reset() {
     launcher1.setSpeed(RESET_SPEED);
     launcher2.setSpeed(RESET_SPEED);
-    
+
     launcher1.rotate(-LAUNCHER_ANGLE, true);
     launcher2.rotate(-LAUNCHER_ANGLE, false);
-    
+
     launcher1.stop();
     launcher2.stop();
   }
 
+  public static void lowerArm() {
+    launcher1.setSpeed(RESET_SPEED/2);
+    launcher2.setSpeed(RESET_SPEED/2);
+
+    launcher1.rotate(-LOWER_ANGLE, true);
+    launcher2.rotate(-LOWER_ANGLE, false);
+
+    launcher1.stop();
+    launcher2.stop();
+  }
+  public static void raiseArm() {
+    launcher1.setSpeed(RESET_SPEED/2);
+    launcher2.setSpeed(RESET_SPEED/2);
+
+    launcher1.rotate(LOWER_ANGLE, true);
+    launcher2.rotate(LOWER_ANGLE, false);
+
+    launcher1.flt();
+    launcher2.flt();
+  }
   @Deprecated
   /**
    * Calculates the needed speed to launch the necessary distance.

@@ -8,16 +8,25 @@ import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
+import static ca.mcgill.ecse211.Lab3.Resources.odometer;
+import static ca.mcgill.ecse211.lab5.Resources.TRACK;
+import static ca.mcgill.ecse211.lab5.Resources.US_SENSOR;
+import static ca.mcgill.ecse211.lab5.Resources.WHEEL_RAD;
+import static ca.mcgill.ecse211.lab5.Resources.leftMotor;
+import static ca.mcgill.ecse211.lab5.Resources.rightMotor;
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.text.DecimalFormat;
 import ca.mcgill.ecse211.project.Display;
 import ca.mcgill.ecse211.project.LightLocalizer;
 import ca.mcgill.ecse211.project.UltrasonicLocalizer;
+import ca.mcgill.ecse211.navigation.LineNavigation;
+import ca.mcgill.ecse211.navigation.Navigation;
 import ca.mcgill.ecse211.odometer.Odometer;
 
 public class Main {
-  private static final TextLCD lcd = LocalEV3.get().getTextLCD();
-  private static int[] launchTarget = new int[2];
+  private static Odometer odometer;
+  private static Point TNG_LL, TNG_UR, BIN;
+  private static int TNR_UR_x;
 
 
   /**
@@ -27,172 +36,81 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
+    betaDemo();
+  }
 
-    @SuppressWarnings("resource")
+  private static void localize() {
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
+    LightLocalizer lsLocalizer = new LightLocalizer();
+    UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
+    usLocalizer.mainMethod();
+    lsLocalizer.mainMethod();
+    
+  }
 
-    int buttonChoice;
-
-    Odometer odometer = Odometer.getOdometer();
-    Display odometryDisplay = new Display(lcd);
-
-    do { // select method
-      // clear the displays
-      lcd.clear();
-
-      lcd.drawString("Stationa-| Mobile  >", 0, 0);
-      lcd.drawString("ry Launch| Launch   ", 0, 1);
-      lcd.drawString("         |          ", 0, 2);
-      lcd.drawString("    <    |     >    ", 0, 3);
-      lcd.drawString("         |          ", 0, 4);
-      buttonChoice = Button.waitForAnyPress();
-    } while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
-
-    // if mobile launch
-    if (buttonChoice == Button.ID_RIGHT) {
-      launchTarget = chooseTargetLocation();
-      double[][] targetTile = new double[1][2];
-      double[] destination = MainNavigation.waypointToLocation(launchTarget);
-      targetTile[0][0] = destination[0];
-      targetTile[0][1] = destination[1];
-
-      // init localizer and navigation
-      LightLocalizer lsLocalizer = new LightLocalizer(leftMotor, rightMotor, odometer, TRACK, WHEEL_RAD);
-      MainNavigation navigation = new MainNavigation(leftMotor, rightMotor, TRACK, WHEEL_RAD, targetTile);
-      UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(leftMotor, rightMotor, odometer, TRACK, WHEEL_RAD,
-          UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
-      initThreads(odometer, odometryDisplay);
-
-
-
-      // Localization methods
-      usLocalizer.mainMethod();
-      lsLocalizer.mainMethod();
-
-      // call navigation to go to destination
-      navigation.run();
-      Sound.beep();
-
+  private static void startOdometer() {
+    odometer = Odometer.getOdometer();
+    new Thread(odometer).start();
+  }
+  
+  private static void navigateThroughTunnel() {
+    Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
+    LineNavigation.travelTo(tunnelEntr.x, tunnelEntr.y);
+   
+    //find angle of tunnel
+    double aveX, aveY, theta;
+    aveX = (TNG_LL.x+TNG_UR.x)/2;
+    aveY = (TNG_LL.y+TNG_UR.y)/2;
+    theta = Navigation.angleToTarget(aveX, aveY);
+    Navigation.turnTo(theta);
+    LauncherControl.lowerArm();
+    Navigation.moveTo(3*TILE_SIZE);
+    LauncherControl.raiseArm();
+  }
+  
+  private static void navigateToLaunch() {
+    LineNavigation.travelTo(BIN.x, BIN.y);
+    Navigation.turnToHeading(TNR_UR_x);
+  }
+  
+  private static void importData() {}
+  
+  private static void launch(int numLaunches, int speed) {
+    for(int i=0;i<numLaunches;++i) {
+      LauncherControl.launch(speed);
     }
-    // both options launch 5 times
+  }
+  
+  private static void mainFlow() {
 
-    // launch
-    LauncherControl.reset();
-    for (int i = 0; i < 5; i++) {
-      waitForPress();
-      LauncherControl.launch(LAUNCH_SPEED);
+  }
 
-    }
+  private static void betaDemo() {
+    //import wifi data
+    importData();
+    //odometry start
+    startOdometer();
+    
+    //localize
+    localize();
+    Sound.beep();
+    
+    //navigate to tunnel
+    navigateThroughTunnel();
+    
+    //navigate to specified coords
+    //turn to specified angle
+    navigateToLaunch();
+    Sound.beep();
+    Sound.beep();
+    Sound.beep();
+    //launch
+    int maxSpeed = 1300;
+    launch(1, maxSpeed);
+    Sound.beep();
+    
     System.exit(0);
 
-
   }
-
-  /**
-   * Enables the user to input a target location from the console.
-   * 
-   * @return
-   */
-  private static int[] chooseTargetLocation() {
-
-    DecimalFormat numberFormat = new DecimalFormat("0");
-    int index = 0;
-    int pos[] = {0, 0, 0, 0};
-    String spaces = " ";
-    lcd.clear();
-    lcd.drawString("(" + numberFormat.format(pos[0]) + numberFormat.format(pos[1]) + "," + numberFormat.format(pos[2])
-        + numberFormat.format(pos[3]) + ")", 0, 0);
-    lcd.drawString(spaces + "^", 0, 1);
-    int buttonPress = Button.waitForAnyPress();
-    while (buttonPress != Button.ID_ENTER) { // press enter to continue
-      if (buttonPress == Button.ID_ESCAPE) {
-        System.exit(0);
-      } else if (buttonPress == Button.ID_LEFT) { // move left in the menu
-        index--;
-        if (index < 0) {
-          index += 4;
-        }
-        index %= 4;
-
-      } else if (buttonPress == Button.ID_RIGHT) { // move right in the menu
-        index++;
-        index %= 4;
-      } else if (buttonPress == Button.ID_UP) { // increase coordinate
-        pos[index]++;
-        pos[index] %= 10;
-      } else if (buttonPress == Button.ID_DOWN) { // decrease coordinate
-        pos[index]--;
-        if (pos[index] < 0) {
-          pos[index] += 10;
-        }
-        pos[index] %= 10;
-      }
-
-      spaces = "";
-      for (int i = 0; i <= index; i++) {
-        spaces += " ";
-      }
-      if (index > 1) {
-        spaces += " ";
-      }
-      lcd.clear();
-      lcd.drawString("(" + numberFormat.format(pos[0]) + numberFormat.format(pos[1]) + "," + numberFormat.format(pos[2])
-          + numberFormat.format(pos[3]) + ")", 0, 0);
-      lcd.drawString(spaces + "^", 0, 1);
-
-
-
-      buttonPress = Button.waitForAnyPress();
-    }
-
-    lcd.clear();
-    int positions[] = new int[2];
-    positions[0] = 10 * pos[0] + pos[1];
-    positions[1] = 10 * pos[2] + pos[3];
-    return positions;
-  }
-
-  /**
-   * this method simply initiates the threads for the odometer and odometer display
-   * 
-   * @param odometer
-   * @param odometryDisplay
-   */
-  private static void initThreads(Odometer odometer, Display odometryDisplay) {
-    Thread odoThread = new Thread(odometer);
-    odoThread.start();
-    Thread odoDisplayThread = new Thread(odometryDisplay);
-    odoDisplayThread.start();
-  }
-
-
-  /**
-   * Waits for any button to be pressed, if it's escape, exit the program early, otherwise wait 5 seconds to stabalize.
-   */
-  public static void waitForPress() {
-    lcd.clear();
-    Display.showText("Please press any ", "button to start  ", "the launcher    ", "                ",
-        "                ");
-    if (Button.waitForAnyPress() == Button.ID_ESCAPE) {
-      System.exit(0);
-    }
-    lcd.clear();
-    try {
-      Thread.sleep(5000);
-    } catch (Exception e) {
-
-    }
-  }
-
-  /**
-   * Returns array getLaunchTarget.
-   * 
-   * @return
-   */
-  public static int[] getLaunchTarget() {
-    return launchTarget;
-  }
-
-
 
 }

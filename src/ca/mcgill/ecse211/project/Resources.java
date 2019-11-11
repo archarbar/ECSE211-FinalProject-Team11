@@ -92,6 +92,8 @@ public class Resources {
    * The angle which the launcher rotates by in degrees.
    */
   public static final int LAUNCHER_ANGLE = 120;
+  
+  public static final int LOWER_ANGLE = 70;
 
   /**
    * The speed at which the launcher rotates in degrees per second.
