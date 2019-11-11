@@ -242,7 +242,7 @@ public abstract class Navigation {
    * within a margin of error of 0.5 cm.
    */
   public static Point findLaunchPoint(Point bin, GridRectangle launchZone, double distance) {
-    double[] t = {0, 0, 0, 0};
+    double[] t = {0, 0, 0, 0, 0, 0, 0, 0};
     double minDist = 500;
     double newDist;
     double minAngle = 0;
@@ -261,9 +261,13 @@ public abstract class Navigation {
     }
     else {
       t[0] = Math.acos(launchZone.getxLow()/distance);
-      t[1] = Math.acos(launchZone.getxHigh()/distance);
-      t[2] = Math.asin(launchZone.getyLow()/distance);
-      t[3] = Math.asin(launchZone.getyHigh()/distance);
+      t[1] = -1*t[0];
+      t[2] = Math.acos(launchZone.getxHigh()/distance);
+      t[3] = -1*t[3];
+      t[4] = Math.asin(launchZone.getyLow()/distance);
+      t[5] = Math.PI - t[4];
+      t[6] = Math.asin(launchZone.getyHigh()/distance);
+      t[7] = Math.PI - t[6];
       for (double angle: t) {
         Point edgePoint = new Point(distance*Math.cos(angle), distance*Math.sin(angle));
         if (launchZone.contains(edgePoint)) {
