@@ -1,5 +1,7 @@
 package ca.mcgill.ecse211.navigation;
 
+import ca.mcgill.ecse211.project.Resources.Point;
+
 public class GridRectangle {
   private int xLow, xHigh, yLow, yHigh;
   public GridRectangle (int x1, int y1, int x2, int y2) {
@@ -47,4 +49,8 @@ public class GridRectangle {
     return yHigh;
   }
   
+  public boolean contains(Point point) {
+    return (point.x <= getxHigh() && point.x >= getxLow()
+        && point.y <= getyHigh() && point.y >= getyLow());
+  }
 }
