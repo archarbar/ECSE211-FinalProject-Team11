@@ -235,25 +235,68 @@ public abstract class Navigation {
    * Finds the point in the launching zone that is at a given distance to the bin
    * Takes 3 inputs: the point representing the coordinates of the bin, a GridRectagle for the launch zone,
    * and the desired distance in cm
+   * First, checks if the point on the circle closest to current position is in the launch zone.
+   * If it is, return it, if not, then find the closest point on the circle to current position that is inside the launch zone.
+   * This second point will be part of the list of edge angle values for the circle.
    * Returns a point, which is the launch point in the zone with the given distance to the bin,
    * within a margin of error of 0.5 cm.
    */
-  public static Point findLaunchPoint(Point binLocation, GridRectangle launchZone, double distance) {
-    Point location = new Point(0, 0);
-    Point currentPoint = new Point(launchZone.getxLow(), launchZone.getyLow());
-    double offset = 0.5;
-    int launchZoneX = launchZone.getxHigh() - launchZone.getxLow();
-    int launchZoneY = launchZone.getyHigh() - launchZone.getyLow();
-    for (int i=0; i < launchZoneX; i++) {
-      currentPoint.x = launchZone.getxLow() + i;
-      for (int y=0; y < launchZoneY; y++) {
-        currentPoint.y = launchZone.getyLow() + y;
-        if (hyp(Math.abs(currentPoint.x - binLocation.x), Math.abs(currentPoint.y - binLocation.y)) >= distance - offset
-            && hyp(Math.abs(currentPoint.x - binLocation.x), Math.abs(currentPoint.y - binLocation.y)) <= distance + offset) {
-          location = currentPoint;
+  public static Point findLaunchPoint(Point bin, GridRectangle launchZone, double distance) {
+    double[] t = {0, 0, 0, 0, 0, 0, 0, 0};
+    double minDist = 500;
+    double newDist;
+    double minAngle = 0;
+    Point closestPoint = new Point(0, 0); // closest point on circle to current location
+    Point location = new Point(0, 0); // final launch location at given distance
+    Point currentLocation = new Point(0, 0); // current location of robot
+    double[] position = Odometer.getOdometer().getXYT();
+    currentLocation.x = position[0];
+    currentLocation.y = position[1];
+    closestPoint.x = bin.x + distance*((currentLocation.x - bin.x)/
+        Math.sqrt(Math.pow(currentLocation.x - bin.x, 2) + Math.pow(currentLocation.y - bin.y, 2)));
+    closestPoint.y = bin.y + distance*((currentLocation.y - bin.y)/
+        Math.sqrt(Math.pow(currentLocation.x - bin.x, 2) + Math.pow(currentLocation.y - bin.y, 2)));
+    if (launchZone.contains(closestPoint)) {
+      return closestPoint;
+    }
+    else {
+      t[0] = Math.acos(launchZone.getxLow()/distance);
+      t[1] = -1*t[0];
+      t[2] = Math.acos(launchZone.getxHigh()/distance);
+      t[3] = -1*t[3];
+      t[4] = Math.asin(launchZone.getyLow()/distance);
+      t[5] = Math.PI - t[4];
+      t[6] = Math.asin(launchZone.getyHigh()/distance);
+      t[7] = Math.PI - t[6];
+      for (double angle: t) {
+        Point edgePoint = new Point(distance*Math.cos(angle), distance*Math.sin(angle));
+        if (launchZone.contains(edgePoint)) {
+          newDist = hyp(Math.abs(currentLocation.x - edgePoint.x), Math.abs(currentLocation.y - edgePoint.y));
+          if (newDist < minDist) {
+            minAngle = angle;
+          }
         }
       }
+      location.x = distance*Math.cos(minAngle);
+      location.y = distance*Math.sin(minAngle);
+      return location;
     }
-    return location;
   }
+    
+//    Point location = new Point(0, 0);
+//    Point currentPoint = new Point(launchZone.getxLow(), launchZone.getyLow());
+//    double offset = 0.5;
+//    int launchZoneX = launchZone.getxHigh() - launchZone.getxLow();
+//    int launchZoneY = launchZone.getyHigh() - launchZone.getyLow();
+//    for (int i=0; i < launchZoneX; i++) {
+//      currentPoint.x = launchZone.getxLow() + i;
+//      for (int y=0; y < launchZoneY; y++) {
+//        currentPoint.y = launchZone.getyLow() + y;
+//        if (hyp(Math.abs(currentPoint.x - binLocation.x), Math.abs(currentPoint.y - binLocation.y)) >= distance - offset
+//            && hyp(Math.abs(currentPoint.x - binLocation.x), Math.abs(currentPoint.y - binLocation.y)) <= distance + offset) {
+//          location = currentPoint;
+//        }
+//      }
+//    }
+//    return location;
 }
