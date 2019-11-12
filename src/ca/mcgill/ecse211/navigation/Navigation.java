@@ -299,4 +299,21 @@ public abstract class Navigation {
 //      }
 //    }
 //    return location;
+  
+  public void stop() {
+    leftMotor.stop();
+    rightMotor.stop();
+  }
+  public void travelTo(int x, int y, boolean centre) {
+    double aX = x;
+    double aY = y;
+    if (centre) {
+      aX+=0.5;
+      aY+=0.5;
+    }
+    travelTo(aX*TILE_SIZE, aY*TILE_SIZE);
+  }
+  
+  public abstract void travelTo(double x, double y);
+  
 }

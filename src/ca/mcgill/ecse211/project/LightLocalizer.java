@@ -8,12 +8,18 @@ import ca.mcgill.ecse211.odometer.Odometer;
 import lejos.hardware.Sound;
 import static ca.mcgill.ecse211.project.Resources.*;
 import ca.mcgill.ecse211.navigation.Navigation;
+import ca.mcgill.ecse211.navigation.PlainNavigation;
 
 
-public class LightLocalizer extends Navigation{
+public class LightLocalizer extends PlainNavigation{
+
 
   // the SENSOR_OFFSET represents the distance between the center of the wheelbase and the light sensor
-  private final double SENSOR_OFFSET = 13;
+//  private final double x = 3.25, y = 3;
+//  private final double SENSOR_OFFSET = -Math.sqrt(x*x+y*y), OFFSET_ANGLE = Math.atan(x/y);
+  private final double SENSOR_OFFSET = 19;
+  
+  
 
   // threshold that will be used for the light sensor values
   private static double initValue;
@@ -61,10 +67,10 @@ public class LightLocalizer extends Navigation{
    * 
    * 
    */
-  public void mainMethod() {
+  public void mainMethod(int x, int y) {
 
 
-    turnTo(45);
+    turnToHeading(45);
 
 
 
@@ -81,7 +87,10 @@ public class LightLocalizer extends Navigation{
     }
     leftMotor.stop(true);
     rightMotor.stop();
-    Sound.beep();
+    if (!SILENT_VERIFICATION) {
+      Sound.beep();
+    }
+    
 
 
     leftMotor.setSpeed(MOTOR_SPEED);
@@ -90,19 +99,19 @@ public class LightLocalizer extends Navigation{
     rightMotor.rotate(convertDistance(-SENSOR_OFFSET), false);
 
 
-
+    
+    turnClockwise();
     while (lineCounter < 4) {
-      turnClockwise();
-
-
       if (getIntensity() < lineThreshold) {
         ThetaArray[lineCounter] = odometer.getXYT()[2];
-        Sound.setVolume(10);
-        Sound.systemSound(false, 4);
-        lineCounter++;
+        if (!SILENT_VERIFICATION) {
+          Sound.setVolume(10);
+          Sound.systemSound(false, 4);
+        }
+        ++lineCounter;
       }
     }
-
+    stop();
 
     double dX, dY, anglex, angley;
 
@@ -118,21 +127,22 @@ public class LightLocalizer extends Navigation{
     // we set the current position in odometer to the x and y coordinate we just calculated
     odometer.setXYT(dX, dY, odometer.getXYT()[2]);
 
-    this.travelTo(0.0, 0.0);
+    travelTo(0.0, 0.0);
     do {
       LCD.drawString("X: " + dX, 0, 5);
       LCD.drawString("Y: " + dY, 0, 6);
     } while (isNavigating());
 
-
-    Sound.setVolume(20);
-    Sound.systemSound(false, 2);
+    if (!SILENT_VERIFICATION) {
+      Sound.setVolume(20);
+      Sound.systemSound(false, 2);
+    }
 
     // rotate the robot by the negative of its current heading to align it with the 0-degree axis
     double currentangle = odometer.getXYT()[2];
     turnTo(-currentangle);
-    odometer.setX(TILE_SIZE);
-    odometer.setY(TILE_SIZE);
+    odometer.setX(x*TILE_SIZE);
+    odometer.setY(y*TILE_SIZE);
 
   }
 
@@ -156,51 +166,51 @@ public class LightLocalizer extends Navigation{
    * @param x - x coordinate of the waypoint it has to travel to
    * @param y - y coordinate of the waypoint it has to travel to
    */
-  void travelTo(double x, double y) {
-
-    double currentX, currentY, currentT, deltaX, deltaY, dist;
-    double dTheta = 0;
-    double position[] = new double[3];
-    position = odometer.getXYT();
-    currentX = position[0];
-    currentY = position[1];
-    currentT = position[2];
-
-    deltaX = x - currentX;
-    deltaY = y - currentY;
-    dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-
-
-    if (deltaY >= 0) {
-
-
-      dTheta = Math.atan(deltaX / deltaY);
-
-
-    } else if (deltaY <= 0 && deltaX >= 0) {
-
-
-      dTheta = Math.atan(deltaX / deltaY) + Math.PI;
-
-    } else {
-
-
-      dTheta = Math.atan(deltaX / deltaY) - Math.PI;
-    }
-
-    double thetaDiff = (Math.toDegrees(dTheta) - currentT);
-
-    turnTo(thetaDiff);
-
-    leftMotor.setSpeed(250);
-    rightMotor.setSpeed(250);
-    leftMotor.rotate(convertDistance(dist), true);
-    rightMotor.rotate(convertDistance(dist), false);
-
-
-
-  }
+//  void travelTo(double x, double y) {
+//
+//    double currentX, currentY, currentT, deltaX, deltaY, dist;
+//    double dTheta = 0;
+//    double position[] = new double[3];
+//    position = odometer.getXYT();
+//    currentX = position[0];
+//    currentY = position[1];
+//    currentT = position[2];
+//
+//    deltaX = x - currentX;
+//    deltaY = y - currentY;
+//    dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+//
+//
+//
+//    if (deltaY >= 0) {
+//
+//
+//      dTheta = Math.atan(deltaX / deltaY);
+//
+//
+//    } else if (deltaY <= 0 && deltaX >= 0) {
+//
+//
+//      dTheta = Math.atan(deltaX / deltaY) + Math.PI;
+//
+//    } else {
+//
+//
+//      dTheta = Math.atan(deltaX / deltaY) - Math.PI;
+//    }
+//
+//    double thetaDiff = (Math.toDegrees(dTheta) - currentT);
+//
+//    turnTo(thetaDiff);
+//
+//    leftMotor.setSpeed(250);
+//    rightMotor.setSpeed(250);
+//    leftMotor.rotate(convertDistance(dist), true);
+//    rightMotor.rotate(convertDistance(dist), false);
+//
+//
+//
+//  }
 
 
   /**

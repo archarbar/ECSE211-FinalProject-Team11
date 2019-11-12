@@ -95,7 +95,7 @@ public class MainNavigation extends Thread {
    * @param y
    */
   void travelTo(double x, double y) {
-    turnTo(x, y);
+    turnTo(angleToTarget(x, y));
 
 
     leftMotor.setSpeed(180);

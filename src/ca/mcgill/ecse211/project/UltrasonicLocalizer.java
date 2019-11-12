@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.project;
 
 import ca.mcgill.ecse211.navigation.Navigation;
+import ca.mcgill.ecse211.navigation.PlainNavigation;
 import ca.mcgill.ecse211.odometer.Odometer;
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import lejos.robotics.SampleProvider;
 
 
 
-public class UltrasonicLocalizer extends Navigation{
+public class UltrasonicLocalizer extends PlainNavigation{
 
 
 
@@ -123,7 +124,9 @@ public class UltrasonicLocalizer extends Navigation{
       turnCounterclockwise();
 
     }
-    Sound.beep();
+    if (!SILENT_VERIFICATION) {
+      Sound.beep();
+    }
     double firstAngle = odometer.getXYT()[2];
 
 
@@ -135,7 +138,9 @@ public class UltrasonicLocalizer extends Navigation{
     while (getDistance() > WALL_DISTANCE) {
       turnClockwise();
     }
-    Sound.beep();
+    if (!SILENT_VERIFICATION) {
+      Sound.beep();
+    }
     double secondAngle = odometer.getXYT()[2];
 
     stop();
@@ -183,7 +188,9 @@ public class UltrasonicLocalizer extends Navigation{
     while (getDistance() < WALL_DISTANCE + errorMargin) {
       turnCounterclockwise();
     }
-    Sound.beep();
+    if (!SILENT_VERIFICATION) {
+      Sound.beep();
+    }
     double firstAngle = odometer.getXYT()[2];
 
 
@@ -195,7 +202,9 @@ public class UltrasonicLocalizer extends Navigation{
     while (getDistance() < WALL_DISTANCE + errorMargin) {
       turnClockwise();
     }
-    Sound.beep();
+    if (!SILENT_VERIFICATION) {
+      Sound.beep();
+    }
     double secondAngle = odometer.getXYT()[2];
 
     stop();

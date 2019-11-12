@@ -5,6 +5,7 @@ import ca.mcgill.ecse211.lightSensor.DifferentialLineDetector;
 import ca.mcgill.ecse211.lightSensor.LineDetectorController;
 import ca.mcgill.ecse211.lightSensor.LineDetectorController.Edge;
 import ca.mcgill.ecse211.navigation.LineNavigation;
+import ca.mcgill.ecse211.project.Display;
 import lejos.hardware.Sound;
 
 public class OdometryCorrection implements Runnable{
@@ -14,7 +15,7 @@ public class OdometryCorrection implements Runnable{
   /**
    * Diplacement from sensor to wheelbase parallel to the direction of travel in cm.
    */
-  private static double sensorOffset = -2.5;
+  private static double sensorOffset = -3;
 
   public void run() {
     long updateStart, updateEnd;
@@ -26,13 +27,34 @@ public class OdometryCorrection implements Runnable{
       // side
       updateStart = System.currentTimeMillis();
       if (sideDetector.lineDetected()) {
+        boolean north = false, south = false, east = false, west = false;
         double angle = odometer.getXYT()[2];
-        if ((angle >= 350 || angle <= 10) || ((angle >= 170 && angle <= 190))) {
-          double xPos = (odometer.getXYT()[0] + sideDetector.getEdgeX()) / 2;
-          odometer.setX(roundToLine(xPos));
-        } else if ((angle >= 80 && angle <= 100) || (angle >= 260 && angle <= 280)) {
-          double yPos = (odometer.getXYT()[1] + sideDetector.getEdgeY()) / 2;
+        if (angle >= 350 || angle <= 10) {
+          north = true;
+        } else if (angle >= 170 && angle <= 190) {
+          south = true;
+        } else if (angle >= 80 && angle <= 100) {
+          east = true;
+        } else if (angle >= 260 && angle <= 280) {
+          west = true;
+        }
+        
+        if (north || south) {
+          double yPos = (odometer.getXYT()[0] + sideDetector.getEdgeY()) / 2;
           odometer.setY(roundToLine(yPos));
+        } else if (east || west) {
+          double xPos = (odometer.getXYT()[1] + sideDetector.getEdgeX()) / 2;
+          odometer.setX(roundToLine(xPos));
+        }
+        double[] xy = odometer.getXYT();
+        if (north) {
+          odometer.setY(xy[0]+sensorOffset);
+        } else if (south) {
+          odometer.setY(xy[0]-sensorOffset);
+        } else if (east) {
+          odometer.setX(xy[1]+sensorOffset);
+        } else if (west) {
+          odometer.setX(xy[1]-sensorOffset);
         }
       }
       updateEnd = System.currentTimeMillis();
@@ -75,6 +97,10 @@ public class OdometryCorrection implements Runnable{
         }
       }
 
+      double[] xyt = odometer.getXYT();
+      String x = "X:"+xyt[0];
+      String y = "Y:"+xyt[1];
+      Display.showText(x,y);
 
       updateEnd = System.currentTimeMillis();
       if (updateEnd - updateStart < CORRECTION_PERIOD / 2) {

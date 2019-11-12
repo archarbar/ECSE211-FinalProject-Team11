@@ -8,19 +8,15 @@ import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
-import static ca.mcgill.ecse211.Lab3.Resources.odometer;
-import static ca.mcgill.ecse211.lab5.Resources.TRACK;
-import static ca.mcgill.ecse211.lab5.Resources.US_SENSOR;
-import static ca.mcgill.ecse211.lab5.Resources.WHEEL_RAD;
-import static ca.mcgill.ecse211.lab5.Resources.leftMotor;
-import static ca.mcgill.ecse211.lab5.Resources.rightMotor;
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.text.DecimalFormat;
 import ca.mcgill.ecse211.project.Display;
 import ca.mcgill.ecse211.project.LightLocalizer;
 import ca.mcgill.ecse211.project.UltrasonicLocalizer;
+import ca.mcgill.ecse211.navigation.GridRectangle;
 import ca.mcgill.ecse211.navigation.LineNavigation;
 import ca.mcgill.ecse211.navigation.Navigation;
+import ca.mcgill.ecse211.navigation.PlainNavigation;
 import ca.mcgill.ecse211.odometer.Odometer;
 
 public class Main {
@@ -36,15 +32,23 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
-    betaDemo();
+//    betaDemo();
+//    startOdometer();
+//    localize();
+//    localizationTimeTest();
+//    lineNavigationTest();
+//    plainNavigationTest();
+//    tunnelTest();
+    launchTest();
+
   }
 
-  private static void localize() {
+  private static void localize(int x, int y) {
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.mainMethod();
-    lsLocalizer.mainMethod();
+    lsLocalizer.mainMethod(x,y);
     
   }
 
@@ -53,9 +57,9 @@ public class Main {
     new Thread(odometer).start();
   }
   
-  private static void navigateThroughTunnel() {
+  private static void navigateThroughTunnel(Navigation navigator) {
     Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
-    LineNavigation.travelTo(tunnelEntr.x, tunnelEntr.y);
+    navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
    
     //find angle of tunnel
     double aveX, aveY, theta;
@@ -68,12 +72,14 @@ public class Main {
     LauncherControl.raiseArm();
   }
   
-  private static void navigateToLaunch() {
-    LineNavigation.travelTo(BIN.x, BIN.y);
+  private static void navigateToLaunch(Navigation navigator) {
+    navigator.travelTo(BIN.x, BIN.y);
     Navigation.turnToHeading(TNR_UR_x);
   }
   
-  private static void importData() {}
+  private static void importData() {
+    
+  }
   
   private static void launch(int numLaunches, int speed) {
     for(int i=0;i<numLaunches;++i) {
@@ -92,15 +98,15 @@ public class Main {
     startOdometer();
     
     //localize
-    localize();
+    localize(1,1);
     Sound.beep();
     
     //navigate to tunnel
-    navigateThroughTunnel();
+    navigateThroughTunnel(new LineNavigation());
     
     //navigate to specified coords
     //turn to specified angle
-    navigateToLaunch();
+    navigateToLaunch(new LineNavigation());
     Sound.beep();
     Sound.beep();
     Sound.beep();
@@ -112,5 +118,38 @@ public class Main {
     System.exit(0);
 
   }
+  private static void lineNavigationTest() {
+    double x=3*TILE_SIZE,y=4*TILE_SIZE;
+    Navigation navigator = new LineNavigation();
+    navigator.safeArea = new GridRectangle(0,0,15,15);
+    navigator.travelTo(x, y);
+    System.exit(0);
+  }
+  
+  private static void plainNavigationTest() {
+    double x=3*TILE_SIZE,y=4*TILE_SIZE;
+    Navigation navigator = new PlainNavigation();
+    navigator.safeArea = new GridRectangle(0,0,15,15);
+    navigator.travelTo(x, y);
+    System.exit(0);
+  }
 
+  private static void localizationTimeTest() {
+    long startTime = System.currentTimeMillis();
+    localize(1,1);
+    long endTime = System.currentTimeMillis();
+    long totalTime = endTime-startTime;
+    if (totalTime>30*1000) Sound.beepSequence();
+    else Sound.beepSequenceUp();
+  }
+  private static void tunnelTest() {
+    TNG_LL = new Point(2,3);
+    TNG_UR = new Point(4,4);
+    navigateThroughTunnel(new PlainNavigation());
+  }
+  
+  private static void launchTest() {
+    int maxSpeed = 1300;
+    launch(3,maxSpeed);
+  }
 }
