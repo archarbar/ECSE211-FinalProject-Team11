@@ -8,7 +8,7 @@ import ca.mcgill.ecse211.navigation.LineNavigation;
 import ca.mcgill.ecse211.project.Display;
 import lejos.hardware.Sound;
 
-public class OdometryCorrection implements Runnable{
+public class OdometryCorrection implements Runnable {
 
   private static Odometer odometer = Odometer.getOdometer();
 
@@ -41,7 +41,7 @@ public class OdometryCorrection implements Runnable{
         } else if (angle >= 260 && angle <= 280) {
           west = true;
         }
-        
+
         if (north || south) {
           double yPos = (odometer.getXYT()[0] + sideDetector.getEdgeY()) / 2;
           odometer.setY(roundToLine(yPos));
@@ -51,13 +51,13 @@ public class OdometryCorrection implements Runnable{
         }
         double[] xy = odometer.getXYT();
         if (north) {
-          odometer.setY(xy[0]+sensorOffset);
+          odometer.setY(xy[0] + sensorOffset);
         } else if (south) {
-          odometer.setY(xy[0]-sensorOffset);
+          odometer.setY(xy[0] - sensorOffset);
         } else if (east) {
-          odometer.setX(xy[1]+sensorOffset);
+          odometer.setX(xy[1] + sensorOffset);
         } else if (west) {
-          odometer.setX(xy[1]-sensorOffset);
+          odometer.setX(xy[1] - sensorOffset);
         }
       }
       updateEnd = System.currentTimeMillis();
@@ -95,15 +95,15 @@ public class OdometryCorrection implements Runnable{
           }
         } else { // if isLineNavigating && !isTurning &&
           // LineNavigation.findLine();
-//          Sound.beep();
+          // Sound.beep();
           int a = 1;
         }
       }
 
       double[] xyt = odometer.getXYT();
-      String x = "X:"+xyt[0];
-      String y = "Y:"+xyt[1];
-      Display.showText(x,y);
+      String x = "X:" + xyt[0];
+      String y = "Y:" + xyt[1];
+      Display.showText(x, y);
 
       updateEnd = System.currentTimeMillis();
       if (updateEnd - updateStart < CORRECTION_PERIOD / 2) {

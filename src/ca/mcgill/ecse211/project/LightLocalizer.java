@@ -11,15 +11,15 @@ import ca.mcgill.ecse211.navigation.Navigation;
 import ca.mcgill.ecse211.navigation.PlainNavigation;
 
 
-public class LightLocalizer extends PlainNavigation{
+public class LightLocalizer extends PlainNavigation {
 
 
   // the SENSOR_OFFSET represents the distance between the center of the wheelbase and the light sensor
-//  private final double x = 3.25, y = 3;
-//  private final double SENSOR_OFFSET = -Math.sqrt(x*x+y*y), OFFSET_ANGLE = Math.atan(x/y);
+  // private final double x = 3.25, y = 3;
+  // private final double SENSOR_OFFSET = -Math.sqrt(x*x+y*y), OFFSET_ANGLE = Math.atan(x/y);
   private final double SENSOR_OFFSET = 19;
-  
-  
+
+
 
   // threshold that will be used for the light sensor values
   private static double initValue;
@@ -90,7 +90,7 @@ public class LightLocalizer extends PlainNavigation{
     if (!SILENT_VERIFICATION) {
       Sound.beep();
     }
-    
+
 
 
     leftMotor.setSpeed(MOTOR_SPEED);
@@ -99,7 +99,7 @@ public class LightLocalizer extends PlainNavigation{
     rightMotor.rotate(convertDistance(-SENSOR_OFFSET), false);
 
 
-    
+
     turnClockwise();
     while (lineCounter < 4) {
       if (getIntensity() < lineThreshold) {
@@ -141,8 +141,8 @@ public class LightLocalizer extends PlainNavigation{
     // rotate the robot by the negative of its current heading to align it with the 0-degree axis
     double currentangle = odometer.getXYT()[2];
     turnTo(-currentangle);
-    odometer.setX(x*TILE_SIZE);
-    odometer.setY(y*TILE_SIZE);
+    odometer.setX(x * TILE_SIZE);
+    odometer.setY(y * TILE_SIZE);
 
   }
 
@@ -166,51 +166,51 @@ public class LightLocalizer extends PlainNavigation{
    * @param x - x coordinate of the waypoint it has to travel to
    * @param y - y coordinate of the waypoint it has to travel to
    */
-//  void travelTo(double x, double y) {
-//
-//    double currentX, currentY, currentT, deltaX, deltaY, dist;
-//    double dTheta = 0;
-//    double position[] = new double[3];
-//    position = odometer.getXYT();
-//    currentX = position[0];
-//    currentY = position[1];
-//    currentT = position[2];
-//
-//    deltaX = x - currentX;
-//    deltaY = y - currentY;
-//    dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-//
-//
-//
-//    if (deltaY >= 0) {
-//
-//
-//      dTheta = Math.atan(deltaX / deltaY);
-//
-//
-//    } else if (deltaY <= 0 && deltaX >= 0) {
-//
-//
-//      dTheta = Math.atan(deltaX / deltaY) + Math.PI;
-//
-//    } else {
-//
-//
-//      dTheta = Math.atan(deltaX / deltaY) - Math.PI;
-//    }
-//
-//    double thetaDiff = (Math.toDegrees(dTheta) - currentT);
-//
-//    turnTo(thetaDiff);
-//
-//    leftMotor.setSpeed(250);
-//    rightMotor.setSpeed(250);
-//    leftMotor.rotate(convertDistance(dist), true);
-//    rightMotor.rotate(convertDistance(dist), false);
-//
-//
-//
-//  }
+  // void travelTo(double x, double y) {
+  //
+  // double currentX, currentY, currentT, deltaX, deltaY, dist;
+  // double dTheta = 0;
+  // double position[] = new double[3];
+  // position = odometer.getXYT();
+  // currentX = position[0];
+  // currentY = position[1];
+  // currentT = position[2];
+  //
+  // deltaX = x - currentX;
+  // deltaY = y - currentY;
+  // dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+  //
+  //
+  //
+  // if (deltaY >= 0) {
+  //
+  //
+  // dTheta = Math.atan(deltaX / deltaY);
+  //
+  //
+  // } else if (deltaY <= 0 && deltaX >= 0) {
+  //
+  //
+  // dTheta = Math.atan(deltaX / deltaY) + Math.PI;
+  //
+  // } else {
+  //
+  //
+  // dTheta = Math.atan(deltaX / deltaY) - Math.PI;
+  // }
+  //
+  // double thetaDiff = (Math.toDegrees(dTheta) - currentT);
+  //
+  // turnTo(thetaDiff);
+  //
+  // leftMotor.setSpeed(250);
+  // rightMotor.setSpeed(250);
+  // leftMotor.rotate(convertDistance(dist), true);
+  // rightMotor.rotate(convertDistance(dist), false);
+  //
+  //
+  //
+  // }
 
 
   /**
@@ -223,40 +223,32 @@ public class LightLocalizer extends PlainNavigation{
    * @param theta
    */
   /*
-  private void turnTo(double theta) {
-
-    if (theta > 180) {
-
-
-      theta = 360 - theta;
-      leftMotor.setSpeed(ROTATE_SPEED);
-      leftMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, theta), true);
-      rightMotor.setSpeed(ROTATE_SPEED);
-      rightMotor.rotate(convertAngle(WHEEL_RAD, TRACK, theta), false);
-
-    }
-
-    else if (theta < -180) {
-
-
-      theta = 360 + theta;
-      leftMotor.setSpeed(ROTATE_SPEED);
-      leftMotor.rotate(convertAngle(WHEEL_RAD, TRACK, theta), true);
-      rightMotor.setSpeed(ROTATE_SPEED);
-      rightMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, theta), false);
-
-    }
-
-    else {
-
-
-      leftMotor.setSpeed(ROTATE_SPEED);
-      leftMotor.rotate(convertAngle(WHEEL_RAD, TRACK, theta), true);
-      rightMotor.setSpeed(ROTATE_SPEED);
-      rightMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, theta), false);
-
-    }
-  } */
+   * private void turnTo(double theta) {
+   * 
+   * if (theta > 180) {
+   * 
+   * 
+   * theta = 360 - theta; leftMotor.setSpeed(ROTATE_SPEED); leftMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, theta),
+   * true); rightMotor.setSpeed(ROTATE_SPEED); rightMotor.rotate(convertAngle(WHEEL_RAD, TRACK, theta), false);
+   * 
+   * }
+   * 
+   * else if (theta < -180) {
+   * 
+   * 
+   * theta = 360 + theta; leftMotor.setSpeed(ROTATE_SPEED); leftMotor.rotate(convertAngle(WHEEL_RAD, TRACK, theta),
+   * true); rightMotor.setSpeed(ROTATE_SPEED); rightMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, theta), false);
+   * 
+   * }
+   * 
+   * else {
+   * 
+   * 
+   * leftMotor.setSpeed(ROTATE_SPEED); leftMotor.rotate(convertAngle(WHEEL_RAD, TRACK, theta), true);
+   * rightMotor.setSpeed(ROTATE_SPEED); rightMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, theta), false);
+   * 
+   * } }
+   */
 
   /**
    * This is a simple getter function that gets the value read by the light sensor and simply returns it .

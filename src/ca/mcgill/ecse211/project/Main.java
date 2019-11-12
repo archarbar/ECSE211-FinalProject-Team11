@@ -32,13 +32,13 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
-//    betaDemo();
-//    startOdometer();
-//    localize();
-//    localizationTimeTest();
-//    lineNavigationTest();
-//    plainNavigationTest();
-//    tunnelTest();
+    // betaDemo();
+    // startOdometer();
+    // localize();
+    // localizationTimeTest();
+    // lineNavigationTest();
+    // plainNavigationTest();
+    // tunnelTest();
     launchTest();
 
   }
@@ -48,107 +48,111 @@ public class Main {
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.mainMethod();
-    lsLocalizer.mainMethod(x,y);
-    
+    lsLocalizer.mainMethod(x, y);
+
   }
 
   private static void startOdometer() {
     odometer = Odometer.getOdometer();
     new Thread(odometer).start();
   }
-  
+
   private static void navigateThroughTunnel(Navigation navigator) {
     Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
     navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
-   
-    //find angle of tunnel
+
+    // find angle of tunnel
     double aveX, aveY, theta;
-    aveX = (TNG_LL.x+TNG_UR.x)/2;
-    aveY = (TNG_LL.y+TNG_UR.y)/2;
+    aveX = (TNG_LL.x + TNG_UR.x) / 2;
+    aveY = (TNG_LL.y + TNG_UR.y) / 2;
     theta = Navigation.angleToTarget(aveX, aveY);
     Navigation.turnTo(theta);
     LauncherControl.lowerArm();
-    Navigation.moveTo(3*TILE_SIZE);
+    Navigation.moveTo(3 * TILE_SIZE);
     LauncherControl.raiseArm();
   }
-  
+
   private static void navigateToLaunch(Navigation navigator) {
     navigator.travelTo(BIN.x, BIN.y);
     Navigation.turnToHeading(TNR_UR_x);
   }
-  
+
   private static void launch(int numLaunches, int speed) {
-    for(int i=0;i<numLaunches;++i) {
+    for (int i = 0; i < numLaunches; ++i) {
       LauncherControl.launch(speed);
     }
   }
-  
+
   private static void mainFlow() {
-  //set to silent verification
+    // set to silent verification
     Resources.SILENT_VERIFICATION = true;
 
   }
 
   private static void betaDemo() {
-  //set to silent verification
+    // set to silent verification
     Resources.SILENT_VERIFICATION = true;
-    //import wifi data is done by default
-    //odometry start
+    // import wifi data is done by default
+    // odometry start
     startOdometer();
-    
-    //localize
-    localize(1,1);
+
+    // localize
+    localize(1, 1);
     Sound.beep();
-    
-    //navigate to tunnel
+
+    // navigate to tunnel
     navigateThroughTunnel(new LineNavigation());
-    
-    //navigate to specified coords
-    //turn to specified angle
+
+    // navigate to specified coords
+    // turn to specified angle
     navigateToLaunch(new LineNavigation());
     Sound.beep();
     Sound.beep();
     Sound.beep();
-    //launch
+    // launch
     int maxSpeed = 1300;
     launch(1, maxSpeed);
     Sound.beep();
-    
+
     System.exit(0);
 
   }
+
   private static void lineNavigationTest() {
-    double x=3*TILE_SIZE,y=4*TILE_SIZE;
+    double x = 3 * TILE_SIZE, y = 4 * TILE_SIZE;
     Navigation navigator = new LineNavigation();
-    navigator.safeArea = new GridRectangle(0,0,15,15);
+    navigator.safeArea = new GridRectangle(0, 0, 15, 15);
     navigator.travelTo(x, y);
     System.exit(0);
   }
-  
+
   private static void plainNavigationTest() {
-    double x=3*TILE_SIZE,y=4*TILE_SIZE;
+    double x = 3 * TILE_SIZE, y = 4 * TILE_SIZE;
     Navigation navigator = new PlainNavigation();
-    navigator.safeArea = new GridRectangle(0,0,15,15);
+    navigator.safeArea = new GridRectangle(0, 0, 15, 15);
     navigator.travelTo(x, y);
     System.exit(0);
   }
 
   private static void localizationTimeTest() {
     long startTime = System.currentTimeMillis();
-    localize(1,1);
+    localize(1, 1);
     long endTime = System.currentTimeMillis();
-    long totalTime = endTime-startTime;
-    if (totalTime>30*1000) Sound.beepSequence();
-    else Sound.beepSequenceUp();
+    long totalTime = endTime - startTime;
+    if (totalTime > 30 * 1000)
+      Sound.beepSequence();
+    else
+      Sound.beepSequenceUp();
   }
+
   private static void tunnelTest() {
-    TNG_LL = new Point(2,3);
-    TNG_UR = new Point(4,4);
+    TNG_LL = new Point(2, 3);
+    TNG_UR = new Point(4, 4);
     navigateThroughTunnel(new PlainNavigation());
   }
-  
+
   private static void launchTest() {
     int maxSpeed = 1300;
-    launch(3,maxSpeed);
+    launch(3, maxSpeed);
   }
 }

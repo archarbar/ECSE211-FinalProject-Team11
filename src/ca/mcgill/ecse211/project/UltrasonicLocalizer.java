@@ -11,8 +11,7 @@ import lejos.robotics.SampleProvider;
 
 
 
-public class UltrasonicLocalizer extends PlainNavigation{
-
+public class UltrasonicLocalizer extends PlainNavigation {
 
 
 

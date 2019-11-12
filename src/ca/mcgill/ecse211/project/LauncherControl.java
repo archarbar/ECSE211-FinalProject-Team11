@@ -13,7 +13,7 @@ public class LauncherControl {
     reset();
     try {
       Thread.sleep(1500);
-//      Thread.sleep(5000);
+      // Thread.sleep(5000);
     } catch (Exception e) {
       // do nothing
     }
@@ -46,8 +46,8 @@ public class LauncherControl {
   }
 
   public static void lowerArm() {
-    launcher1.setSpeed(RESET_SPEED/2);
-    launcher2.setSpeed(RESET_SPEED/2);
+    launcher1.setSpeed(RESET_SPEED / 2);
+    launcher2.setSpeed(RESET_SPEED / 2);
 
     launcher1.rotate(-LOWER_ANGLE, true);
     launcher2.rotate(-LOWER_ANGLE, false);
@@ -55,9 +55,10 @@ public class LauncherControl {
     launcher1.stop();
     launcher2.stop();
   }
+
   public static void raiseArm() {
-    launcher1.setSpeed(RESET_SPEED/2);
-    launcher2.setSpeed(RESET_SPEED/2);
+    launcher1.setSpeed(RESET_SPEED / 2);
+    launcher2.setSpeed(RESET_SPEED / 2);
 
     launcher1.rotate(LOWER_ANGLE, true);
     launcher2.rotate(LOWER_ANGLE, false);
@@ -65,6 +66,7 @@ public class LauncherControl {
     launcher1.flt();
     launcher2.flt();
   }
+
   @Deprecated
   /**
    * Calculates the needed speed to launch the necessary distance.

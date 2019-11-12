@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 /**
- * Integrate this carefully with your existing Resources class (See below for where to add your
- * code from your current Resources file). The order in which things are declared matters!
+ * Integrate this carefully with your existing Resources class (See below for where to add your code from your current
+ * Resources file). The order in which things are declared matters!
  *
  * When you're done, replace this javadoc comment with the one you have from your Resources class.
  *
@@ -28,8 +28,8 @@ public class Resources {
   public static final String DEFAULT_SERVER_IP = "192.168.2.3";
 
   /**
-   * The IP address of the server that transmits data to the robot. Set this to the default for the
-   * beta demo and competition.
+   * The IP address of the server that transmits data to the robot. Set this to the default for the beta demo and
+   * competition.
    */
   public static final String SERVER_IP = "192.168.2.21";
 
@@ -146,7 +146,7 @@ public class Resources {
   /**
    * The speed at which the launcher rotates in degrees per second.
    */
-//  public static final int RESET_SPEED = 70;
+  // public static final int RESET_SPEED = 70;
   public static final int RESET_SPEED = 100;
 
   /**
@@ -171,14 +171,17 @@ public class Resources {
       this.x = x;
       this.y = y;
     }
+
     public Point(int x, int y) {
-      this.x = x*TILE_SIZE;
-      this.y = y*TILE_SIZE;
+      this.x = x * TILE_SIZE;
+      this.y = y * TILE_SIZE;
     }
+
     public Point(Point p) {
       this.x = p.x;
       this.y = p.y;
     }
+
     public String toString() {
       return "(" + x + ", " + y + ")";
     }
@@ -187,7 +190,7 @@ public class Resources {
 
   public static final int ROTATE_SPEED = 50;
   public static final int MOTOR_SPEED = 100;
-  
+
   public static boolean SILENT_VERIFICATION = false;
 
   /**
@@ -237,8 +240,7 @@ public class Resources {
   /**
    * The Island.
    */
-  public static Region island =
-      new Region("Island_LL_x", "Island_LL_y", "Island_UR_x", "Island_UR_y");
+  public static Region island = new Region("Island_LL_x", "Island_LL_y", "Island_UR_x", "Island_UR_y");
   public static GridRectangle islandRectangle =
       new GridRectangle(get("Island_LL_x"), get("Island_LL_y"), get("Island_UR_x"), get("Island_UR_y"));
 
@@ -306,8 +308,7 @@ public class Resources {
   }
 
   /**
-   * Represents a region on the competition map grid, delimited by its lower-left and upper-right
-   * corners (inclusive).
+   * Represents a region on the competition map grid, delimited by its lower-left and upper-right corners (inclusive).
    *
    * @author Younes Boubekeur
    */
@@ -333,14 +334,10 @@ public class Resources {
     /**
      * Helper constructor to make a Region directly from parameter names.
      *
-     * @param llX
-     *     the Wi-Fi parameter key representing the lower left corner of the region x coordinate
-     * @param llY
-     *     the Wi-Fi parameter key representing the lower left corner of the region y coordinate
-     * @param urX
-     *     the Wi-Fi parameter key representing the upper right corner of the region x coordinate
-     * @param urY
-     *     the Wi-Fi parameter key representing the upper right corner of the region y coordinate
+     * @param llX the Wi-Fi parameter key representing the lower left corner of the region x coordinate
+     * @param llY the Wi-Fi parameter key representing the lower left corner of the region y coordinate
+     * @param urX the Wi-Fi parameter key representing the upper right corner of the region x coordinate
+     * @param urY the Wi-Fi parameter key representing the upper right corner of the region y coordinate
      */
     public Region(String llX, String llY, String urX, String urY) {
       this(new Point(get(llX), get(llY)), new Point(get(urX), get(urY)));
@@ -354,8 +351,7 @@ public class Resources {
      */
     private void validateCoordinates(Point lowerLeft, Point upperRight) {
       if (lowerLeft.x > upperRight.x || lowerLeft.y > upperRight.y) {
-        throw new IllegalArgumentException(
-            "Upper right cannot be below or to the left of lower left!");
+        throw new IllegalArgumentException("Upper right cannot be below or to the left of lower left!");
       }
     }
 

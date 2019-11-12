@@ -53,9 +53,9 @@ public class LineNavigation extends Navigation {
   }
 
   public void travelTo(double x, double y) {
-//    if (outOfBounds(x, y)) {
-//      return;
-//    }
+    // if (outOfBounds(x, y)) {
+    // return;
+    // }
     lineNavigating = true;
 
     new Thread(new OdometryCorrection()).start();
@@ -92,7 +92,7 @@ public class LineNavigation extends Navigation {
     turnTo(angle);
     turning = false;
     moveTo(distance);
-    
+
   }
 
   private static double[] nearestIntersect() {

@@ -26,7 +26,7 @@ public class DifferentialLineDetector implements LineDetectorController {
   Double edgeY;
 
   public DifferentialLineDetector(SampleProvider cs) {
-    this.cs =cs; 
+    this.cs = cs;
     lastEdge = Edge.NoEdge;
     sample = new float[cs.sampleSize()];
     cs.fetchSample(sample, 0);
