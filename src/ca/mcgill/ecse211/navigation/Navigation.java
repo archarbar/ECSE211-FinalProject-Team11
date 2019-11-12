@@ -170,36 +170,38 @@ public abstract class Navigation {
    * Returns the entrance coordinates as an array
    */
   public static Point findTunnelEntrance(Point hole1, Point hole2) {
-    Point entrance = new Point(0, 0);
+    Point entrance;
     Point currentPos = new Point(Odometer.getOdometer().getXYT()[0], Odometer.getOdometer().getXYT()[1]);
     boolean xTunnel = false; // set default as false
-    if (Math.abs(hole1.x - hole2.x) == 2) { // if x length of tunnel is 2, then it is a horizontal tunnel
+    if ((int) Math.abs((hole1.x - hole2.x)/TILE_SIZE) == 2) { // if x length of tunnel is 2, then it is a horizontal tunnel
       xTunnel = true;
     }
     double dist1 = calculateDistanceTo(hole1.x, hole1.y);
     double dist2 = calculateDistanceTo(hole2.x, hole2.y);
     if (dist1 >= dist2) { // if hole 2 is closer, set it as entrance
-      entrance = hole2;
+      entrance = new Point(hole2);
     }
     else {                // if hole 1 is closer, set it as entrance
-      entrance = hole1;
+      entrance = new Point(hole1);
     }
     if (xTunnel) { // if horizontal tunnel
       if (currentPos.x >= entrance.x) { // if current x position bigger or equal to entrance x position
-        entrance.y -= 1;
+        entrance.y -= TILE_SIZE;
       }
       else {                         // if current x position smaller than entrance x position
-        entrance.x -= 1;
+        entrance.x -= TILE_SIZE;
       }
     }
     else {         // if vertical tunnel
       if (currentPos.y >= entrance.y) { // if current y position greater or equal to entrance y position
-        entrance.x -= 1;
+        entrance.x -= TILE_SIZE;
       }
       else {                         // if current y position smaller than entrance y position
-        entrance.y -= 1;
+        entrance.y -= TILE_SIZE;
       }
     }
+    entrance.x += TILE_SIZE/2;
+    entrance.y += TILE_SIZE/2;
     return entrance;
   }
   
