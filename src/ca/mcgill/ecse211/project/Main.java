@@ -148,11 +148,16 @@ public class Main {
   private static void tunnelTest() {
     TNG_LL = new Point(2, 3);
     TNG_UR = new Point(4, 4);
-    navigateThroughTunnel(new PlainNavigation());
+    navigateThroughTunnel(new LineNavigation());
   }
 
   private static void launchTest() {
     int maxSpeed = 1300;
+    maxSpeed = 500;
     launch(3, maxSpeed);
+  }
+  private static void resetTest() {
+    int lowSpeed = 100;
+    launch(2, lowSpeed);
   }
 }
