@@ -39,7 +39,8 @@ public class Main {
     // lineNavigationTest();
     // plainNavigationTest();
     // tunnelTest();
-    launchTest();
+    // launchTest();
+    betaDemo();
 
   }
 
@@ -86,13 +87,13 @@ public class Main {
   private static void mainFlow() {
     // set to silent verification
     Resources.SILENT_VERIFICATION = true;
-
   }
 
   private static void betaDemo() {
     // set to silent verification
     Resources.SILENT_VERIFICATION = true;
     // import wifi data is done by default
+    importData();
     // odometry start
     startOdometer();
 
@@ -115,7 +116,26 @@ public class Main {
     Sound.beep();
 
     System.exit(0);
+  }
+  
+  private static void importData() {
+    System.out.println("Running...");
 
+    // Example 1: Print out all received data
+    System.out.println("Map:\n" + wifiParameters);
+
+    // Example 2: Print out specific values
+    System.out.println("Red Team: " + redTeam);
+    System.out.println("Green Zone: " + green);
+    System.out.println("Island Zone, upper right: " + island.ur);
+    System.out.println("Target Angle: " + targetAngle);
+
+    // Example 3: Compare value;
+    if (bin.x < 5) {
+      System.out.println("Bin location X < 5");
+    } else {
+      System.out.println("Bin location X >= 5");
+    }
   }
 
   private static void lineNavigationTest() {
