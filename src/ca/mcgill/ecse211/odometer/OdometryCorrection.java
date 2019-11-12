@@ -27,6 +27,9 @@ public class OdometryCorrection implements Runnable{
       // side
       updateStart = System.currentTimeMillis();
       if (sideDetector.lineDetected()) {
+        if (!SILENT_VERIFICATION) {
+          Sound.beep();
+        }
         boolean north = false, south = false, east = false, west = false;
         double angle = odometer.getXYT()[2];
         if (angle >= 350 || angle <= 10) {

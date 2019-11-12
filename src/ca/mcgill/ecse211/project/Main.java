@@ -77,10 +77,6 @@ public class Main {
     Navigation.turnToHeading(TNR_UR_x);
   }
   
-  private static void importData() {
-    
-  }
-  
   private static void launch(int numLaunches, int speed) {
     for(int i=0;i<numLaunches;++i) {
       LauncherControl.launch(speed);
@@ -88,12 +84,15 @@ public class Main {
   }
   
   private static void mainFlow() {
+  //set to silent verification
+    Resources.SILENT_VERIFICATION = true;
 
   }
 
   private static void betaDemo() {
-    //import wifi data
-    importData();
+  //set to silent verification
+    Resources.SILENT_VERIFICATION = true;
+    //import wifi data is done by default
     //odometry start
     startOdometer();
     
