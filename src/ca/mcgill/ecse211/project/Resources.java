@@ -11,11 +11,11 @@ public class Resources {
   /**
    * The launcher motor.
    */
-  public static final EV3LargeRegulatedMotor launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
+  public static final EV3LargeRegulatedMotor launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
   /**
    * The launcher motor.
    */
-  public static final EV3LargeRegulatedMotor launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+  public static final EV3LargeRegulatedMotor launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 
   /**
    * The LCD.
@@ -63,9 +63,9 @@ public class Resources {
 
   };
 
-  public static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+  public static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
 
-  public static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+  public static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 
 
   public static final int numTilesX = 8;
@@ -73,9 +73,9 @@ public class Resources {
 
   public static final int searchDistance = 5; // 5cm
 
-  public static final EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4"));
+  public static final EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
 
-  public static final EV3ColorSensor centreLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S3"));
+  public static final EV3ColorSensor centreLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
 
   public static final EV3ColorSensor sideLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
 
@@ -127,7 +127,10 @@ public class Resources {
       this.x = x;
       this.y = y;
     }
-    
+    public Point(int x, int y) {
+      this.x = x*TILE_SIZE;
+      this.y = y*TILE_SIZE;
+    }
     public String toString() {
       return "(" + x + ", " + y + ")";
     }
@@ -136,5 +139,7 @@ public class Resources {
 
   public static final int ROTATE_SPEED = 50;
   public static final int MOTOR_SPEED = 100;
+  
+  public static final boolean SILENT_VERIFICATION = true;
 
 }
