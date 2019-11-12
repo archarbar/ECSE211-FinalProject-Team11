@@ -12,8 +12,8 @@ public class LauncherControl {
   public static void launch(int speed) {
     reset();
     try {
-//      Thread.sleep(1500);
-      Thread.sleep(5000);
+      Thread.sleep(1500);
+//      Thread.sleep(5000);
     } catch (Exception e) {
       // do nothing
     }

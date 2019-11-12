@@ -146,7 +146,8 @@ public class Resources {
   /**
    * The speed at which the launcher rotates in degrees per second.
    */
-  public static final int RESET_SPEED = 70;
+//  public static final int RESET_SPEED = 70;
+  public static final int RESET_SPEED = 100;
 
   /**
    * Represents a coordinate point on the competition map grid.
