@@ -246,10 +246,12 @@ public class Resources {
   /**
    * The red tunnel footprint.
    */
-  public static Region tnr = new Region("TNR_LL_x", "TNR_LL_y", "TNR_UR_x", "TNR_UR_y");
-  public static GridRectangle tnrRectangle =
-      new GridRectangle(get("TNR_LL_x"), get("TNR_LL_y"), get("TNR_UR_x"), get("TNR_UR_y"));
-
+//  THIS CHANGE IS ONLY FOR BETA DEMO, CHANGE BACK AFTERWARDS
+//  public static Region tnr = new Region("TNR_LL_x", "TNR_LL_y", "TNR_UR_x", "TNR_UR_y");
+//  public static GridRectangle tnrRectangle =
+//      new GridRectangle(get("TNR_LL_x"), get("TNR_LL_y"), get("TNR_UR_x"), get("TNR_UR_y"));
+  public static double targetAngle = Math.max(get("TNR_LL_x"), get("TNR_UR_x"));
+  
   /**
    * The green tunnel footprint.
    */
