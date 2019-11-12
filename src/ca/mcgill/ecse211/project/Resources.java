@@ -174,6 +174,10 @@ public class Resources {
       this.x = x*TILE_SIZE;
       this.y = y*TILE_SIZE;
     }
+    public Point(Point p) {
+      this.x = p.x;
+      this.y = p.y;
+    }
     public String toString() {
       return "(" + x + ", " + y + ")";
     }
@@ -183,7 +187,7 @@ public class Resources {
   public static final int ROTATE_SPEED = 50;
   public static final int MOTOR_SPEED = 100;
   
-  public static final boolean SILENT_VERIFICATION = true;
+  public static boolean SILENT_VERIFICATION = false;
 
   /**
    * Container for the Wi-Fi parameters.
