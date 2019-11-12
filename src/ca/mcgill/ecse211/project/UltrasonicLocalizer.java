@@ -257,14 +257,6 @@ public class UltrasonicLocalizer extends PlainNavigation {
   }
 
   /**
-   * makes the robot stop
-   */
-  public void stop() {
-    leftMotor.stop();
-    rightMotor.stop();
-  }
-
-  /**
    * Fills the filter with the current distance, so not skew the initial values.
    */
   private void fillFilter() {

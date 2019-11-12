@@ -87,14 +87,8 @@ public class Main {
     System.out.println("Green Team: " + greenTeam);
     System.out.println("Green Zone: " + green);
     System.out.println("Island Zone, upper right: " + island.ur);
+    System.out.println("Bin location: x=" + bin.x + ", y=" + bin.y);
     System.out.println("Target Angle: " + targetAngle);
-
-    // Example 3: Compare value;
-    if (bin.x < 5) {
-      System.out.println("Bin location X < 5");
-    } else {
-      System.out.println("Bin location X >= 5");
-    }
   }
 
   private static void startOdometer() {
