@@ -21,8 +21,8 @@ import ca.mcgill.ecse211.odometer.Odometer;
 
 public class Main {
   private static Odometer odometer;
-  private static Point TNG_LL, TNG_UR, BIN;
-  private static int TNR_UR_x;
+  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = bin;
+  private static double TNR_UR_x = targetAngle;
 
 
   /**
@@ -41,47 +41,6 @@ public class Main {
     // tunnelTest();
     // launchTest();
     betaDemo();
-
-  }
-
-  private static void localize(int x, int y) {
-    SampleProvider usDistance = US_SENSOR.getMode("Distance");
-    LightLocalizer lsLocalizer = new LightLocalizer();
-    UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
-    usLocalizer.mainMethod();
-    lsLocalizer.mainMethod(x, y);
-
-  }
-
-  private static void startOdometer() {
-    odometer = Odometer.getOdometer();
-    new Thread(odometer).start();
-  }
-
-  private static void navigateThroughTunnel(Navigation navigator) {
-    Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
-    navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
-
-    // find angle of tunnel
-    double aveX, aveY, theta;
-    aveX = (TNG_LL.x + TNG_UR.x) / 2;
-    aveY = (TNG_LL.y + TNG_UR.y) / 2;
-    theta = Navigation.angleToTarget(aveX, aveY);
-    Navigation.turnTo(theta);
-    LauncherControl.lowerArm();
-    Navigation.moveTo(3 * TILE_SIZE);
-    LauncherControl.raiseArm();
-  }
-
-  private static void navigateToLaunch(Navigation navigator) {
-    navigator.travelTo(BIN.x, BIN.y);
-    Navigation.turnToHeading(TNR_UR_x);
-  }
-
-  private static void launch(int numLaunches, int speed) {
-    for (int i = 0; i < numLaunches; ++i) {
-      LauncherControl.launch(speed);
-    }
   }
 
   private static void mainFlow() {
@@ -125,7 +84,7 @@ public class Main {
     System.out.println("Map:\n" + wifiParameters);
 
     // Example 2: Print out specific values
-    System.out.println("Red Team: " + redTeam);
+    System.out.println("Green Team: " + greenTeam);
     System.out.println("Green Zone: " + green);
     System.out.println("Island Zone, upper right: " + island.ur);
     System.out.println("Target Angle: " + targetAngle);
@@ -135,6 +94,45 @@ public class Main {
       System.out.println("Bin location X < 5");
     } else {
       System.out.println("Bin location X >= 5");
+    }
+  }
+
+  private static void startOdometer() {
+    odometer = Odometer.getOdometer();
+    new Thread(odometer).start();
+  }
+  
+  private static void localize(int x, int y) {
+    SampleProvider usDistance = US_SENSOR.getMode("Distance");
+    LightLocalizer lsLocalizer = new LightLocalizer();
+    UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
+    usLocalizer.mainMethod();
+    lsLocalizer.mainMethod(x, y);
+  }
+  
+  private static void navigateThroughTunnel(Navigation navigator) {
+    Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
+    navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
+
+    // find angle of tunnel
+    double aveX, aveY, theta;
+    aveX = (TNG_LL.x + TNG_UR.x) / 2;
+    aveY = (TNG_LL.y + TNG_UR.y) / 2;
+    theta = Navigation.angleToTarget(aveX, aveY);
+    Navigation.turnTo(theta);
+    LauncherControl.lowerArm();
+    Navigation.moveTo(3 * TILE_SIZE);
+    LauncherControl.raiseArm();
+  }
+
+  private static void navigateToLaunch(Navigation navigator) {
+    navigator.travelTo(BIN.x, BIN.y);
+    Navigation.turnToHeading(TNR_UR_x);
+  }
+
+  private static void launch(int numLaunches, int speed) {
+    for (int i = 0; i < numLaunches; ++i) {
+      LauncherControl.launch(speed);
     }
   }
 
