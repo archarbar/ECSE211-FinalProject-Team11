@@ -134,7 +134,9 @@ public class Resources {
   /**
    * The angle which the launcher rotates by in degrees.
    */
-  public static final int LAUNCHER_ANGLE = 120;
+  public static final int LAUNCHER_ANGLE = 105;
+
+  public static final int extra_angle = 15;
 
   public static final int LOWER_ANGLE = 70;
 
@@ -146,8 +148,8 @@ public class Resources {
   /**
    * The speed at which the launcher rotates in degrees per second.
    */
-  // public static final int RESET_SPEED = 70;
-  public static final int RESET_SPEED = 100;
+//   public static final int RESET_SPEED = 70;
+  public static final int RESET_SPEED = 125;
 
   /**
    * Represents a coordinate point on the competition map grid.
@@ -188,8 +190,8 @@ public class Resources {
 
   }
 
-  public static final int ROTATE_SPEED = 50;
-  public static final int MOTOR_SPEED = 100;
+  public static final int ROTATE_SPEED = 175;
+  public static final int MOTOR_SPEED = 250;
 
   public static boolean SILENT_VERIFICATION = false;
 

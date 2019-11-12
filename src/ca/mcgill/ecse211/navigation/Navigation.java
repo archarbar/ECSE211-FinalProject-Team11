@@ -279,6 +279,10 @@ public abstract class Navigation {
     }
   }
 
+  public static void forwards() {
+    leftMotor.forward();
+    rightMotor.forward();
+  }
   // Point location = new Point(0, 0);
   // Point currentPoint = new Point(launchZone.getxLow(), launchZone.getyLow());
   // double offset = 0.5;
@@ -296,7 +300,7 @@ public abstract class Navigation {
   // }
   // return location;
 
-  public void stop() {
+  public static void stop() {
     leftMotor.stop();
     rightMotor.stop();
   }
