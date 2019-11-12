@@ -177,8 +177,8 @@ public abstract class Navigation {
     Point entrance;
     Point currentPos = new Point(Odometer.getOdometer().getXYT()[0], Odometer.getOdometer().getXYT()[1]);
     boolean xTunnel = false; // set default as false
-    if ((int) Math.abs((hole1.x - hole2.x) / TILE_SIZE) == 2) { // if x length of tunnel is 2, then it is a horizontal
-                                                                // tunnel
+    if ((int) Math.abs((hole1.x - hole2.x) / TILE_SIZE) == 2) { // if x length of tunnel is 2, then it is a
+                                                                // horizontal tunnel
       xTunnel = true;
     }
     double dist1 = calculateDistanceTo(hole1.x, hole1.y);
@@ -240,7 +240,7 @@ public abstract class Navigation {
    */
   public static Point findLaunchPoint(Point bin, GridRectangle launchZone, double distance) {
     double[] t = {0, 0, 0, 0, 0, 0, 0, 0};
-    double minDist = 500;
+    double minDist = -1;
     double newDist;
     double minAngle = 0;
     Point closestPoint = new Point(0, 0); // closest point on circle to current location
@@ -249,9 +249,11 @@ public abstract class Navigation {
     double[] position = Odometer.getOdometer().getXYT();
     currentLocation.x = position[0];
     currentLocation.y = position[1];
-    closestPoint.x = bin.x + distance * ((currentLocation.x - bin.x)
+    closestPoint.x = bin.x + distance * ((currentLocation.x - bin.x) // formula to find the point on a circle
+                                                                     // that is closest to another point
         / Math.sqrt(Math.pow(currentLocation.x - bin.x, 2) + Math.pow(currentLocation.y - bin.y, 2)));
-    closestPoint.y = bin.y + distance * ((currentLocation.y - bin.y)
+    closestPoint.y = bin.y + distance * ((currentLocation.y - bin.y) // formula to find the point on a circle
+                                                                     // that is closest to another point
         / Math.sqrt(Math.pow(currentLocation.x - bin.x, 2) + Math.pow(currentLocation.y - bin.y, 2)));
     if (launchZone.contains(closestPoint)) {
       return closestPoint;
@@ -267,8 +269,13 @@ public abstract class Navigation {
       for (double angle : t) {
         Point edgePoint = new Point(distance * Math.cos(angle), distance * Math.sin(angle));
         if (launchZone.contains(edgePoint)) {
-          newDist = hyp(Math.abs(currentLocation.x - edgePoint.x), Math.abs(currentLocation.y - edgePoint.y));
-          if (newDist < minDist) {
+          newDist = calculateDistanceTo(edgePoint.x, edgePoint.y);
+          if (minDist == -1) {
+            minDist = newDist;
+            minAngle = angle;
+          }
+          else if (newDist < minDist) {
+            minDist = newDist;
             minAngle = angle;
           }
         }
@@ -278,23 +285,6 @@ public abstract class Navigation {
       return location;
     }
   }
-
-  // Point location = new Point(0, 0);
-  // Point currentPoint = new Point(launchZone.getxLow(), launchZone.getyLow());
-  // double offset = 0.5;
-  // int launchZoneX = launchZone.getxHigh() - launchZone.getxLow();
-  // int launchZoneY = launchZone.getyHigh() - launchZone.getyLow();
-  // for (int i=0; i < launchZoneX; i++) {
-  // currentPoint.x = launchZone.getxLow() + i;
-  // for (int y=0; y < launchZoneY; y++) {
-  // currentPoint.y = launchZone.getyLow() + y;
-  // if (hyp(Math.abs(currentPoint.x - binLocation.x), Math.abs(currentPoint.y - binLocation.y)) >= distance - offset
-  // && hyp(Math.abs(currentPoint.x - binLocation.x), Math.abs(currentPoint.y - binLocation.y)) <= distance + offset) {
-  // location = currentPoint;
-  // }
-  // }
-  // }
-  // return location;
 
   public void stop() {
     leftMotor.stop();

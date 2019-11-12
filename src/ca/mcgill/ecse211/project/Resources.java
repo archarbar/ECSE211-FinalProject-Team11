@@ -1,7 +1,6 @@
 package ca.mcgill.ecse211.project;
 
 import ca.mcgill.ecse211.navigation.GridRectangle;
-import ca.mcgill.ecse211.project.Resources.Region;
 import ca.mcgill.ecse211.wificlient.WifiConnection;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
