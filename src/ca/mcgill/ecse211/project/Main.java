@@ -108,6 +108,7 @@ public class Main {
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.mainMethod();
+    Navigation.moveTo(-2);
     lsLocalizer.localize(x, y);
   }
   
