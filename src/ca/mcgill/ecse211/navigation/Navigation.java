@@ -287,6 +287,10 @@ public abstract class Navigation {
   }
 
   public static void forwards() {
+    leftMotor.setAcceleration(ACCELERATION);
+    rightMotor.setAcceleration(ACCELERATION);
+    leftMotor.setSpeed(ROTATE_SPEED);
+    rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.forward();
     rightMotor.forward();
   }

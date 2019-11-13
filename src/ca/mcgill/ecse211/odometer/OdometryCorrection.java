@@ -8,6 +8,7 @@ import ca.mcgill.ecse211.navigation.LineNavigation;
 import ca.mcgill.ecse211.project.Display;
 import lejos.hardware.Sound;
 
+@Deprecated
 public class OdometryCorrection implements Runnable {
 
   private static Odometer odometer = Odometer.getOdometer();
@@ -16,6 +17,7 @@ public class OdometryCorrection implements Runnable {
    * Diplacement from sensor to wheelbase parallel to the direction of travel in cm.
    */
   private static double sensorOffset = -3;
+  private Thread mainThread;
 
   public void run() {
     long updateStart, updateEnd;
@@ -94,7 +96,15 @@ public class OdometryCorrection implements Runnable {
             odometer.setX(roundToLine(xPos));
           }
         } else { // if isLineNavigating && !isTurning &&
-          // LineNavigation.findLine();
+//           try {
+//            mainThread.wait();
+//          } catch (InterruptedException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//          }
+//           LineNavigation.findLine();
+////           new LineNavigation().travelTo(LineNavigation.currentTargetX, LineNavigation.currentTargetY);
+//           mainThread.notify();
           // Sound.beep();
           int a = 1;
         }
@@ -126,5 +136,10 @@ public class OdometryCorrection implements Runnable {
   private static double roundToLine(double pos) {
     double round = Math.round(pos / TILE_SIZE) * TILE_SIZE;
     return round + sensorOffset;
+  }
+  
+  public OdometryCorrection setLineThread(Thread mainThread) {
+    this.mainThread = mainThread;
+    return this;
   }
 }
