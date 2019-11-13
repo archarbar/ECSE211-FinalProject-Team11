@@ -231,6 +231,7 @@ public class LightLocalizer extends PlainNavigation {
 
     odometer.setX(x*TILE_SIZE);
     odometer.setY(y*TILE_SIZE);
+    odometer.setTheta(0);
   }
 
 

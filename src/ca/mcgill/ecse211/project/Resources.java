@@ -83,8 +83,8 @@ public class Resources {
    * the robot's track size
    */
 
-//  public static final double TRACK = 16.24; // temporary value 15.1232
-  public static final double TRACK = 16.74; // temporary value 15.1232
+  public static final double TRACK = 16.24; // temporary value 15.1232
+//  public static final double TRACK = 16.74; // temporary value 15.1232
 //  public static final double TRACK = 16.54; // temporary value 15.1232
 
   /**
