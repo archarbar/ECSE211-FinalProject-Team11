@@ -22,8 +22,8 @@ public class LauncherControl {
     launcher2.setAcceleration(LAUNCHER_ACCELERATION);
     launcher2.setSpeed(speed);
 
-    launcher1.rotate(LAUNCHER_ANGLE, true);
-    launcher2.rotate(LAUNCHER_ANGLE, false);
+    launcher1.rotate(LAUNCHER_ANGLE+extra_angle, true);
+    launcher2.rotate(LAUNCHER_ANGLE+extra_angle, false);
     try {
       Thread.sleep(1500);
     } catch (Exception e) {
@@ -40,7 +40,15 @@ public class LauncherControl {
 
     launcher1.rotate(-LAUNCHER_ANGLE, true);
     launcher2.rotate(-LAUNCHER_ANGLE, false);
-
+    try {
+      Thread.sleep(500);
+      // Thread.sleep(5000);
+    } catch (Exception e) {
+      // do nothing
+    }
+    launcher1.rotate(-extra_angle, true);
+    launcher2.rotate(-extra_angle, false);
+    
     launcher1.stop();
     launcher2.stop();
   }
