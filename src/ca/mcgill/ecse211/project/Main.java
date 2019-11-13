@@ -34,10 +34,10 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
-    TNG_LL = new Point(4,3);
-    TNG_UR = new Point(5,5);
-    BIN = new Point(2,6);
-    TNR_UR_x = 315;
+//    TNG_LL = new Point(4,3);
+//    TNG_UR = new Point(5,5);
+//    BIN = new Point(2,6);
+//    TNR_UR_x = 315;
 //    turnTest();
      betaDemo();
 //     startOdometer();
@@ -104,6 +104,8 @@ public class Main {
   }
 
   private static void startOdometer() {
+    leftMotor.resetTachoCount();
+    rightMotor.resetTachoCount();
     odometer = Odometer.getOdometer();
     new Thread(odometer).start();
   }
@@ -113,6 +115,7 @@ public class Main {
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.mainMethod();
+    US_SENSOR.close();
     US_SENSOR = null;
     Navigation.moveTo(-2);
 //    Navigation.turnTo(-2);
@@ -124,7 +127,7 @@ public class Main {
     System.out.println("X val:"+tunnelEntr.x);
     System.out.println("Y val:"+tunnelEntr.y);
     navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
-    Navigation.moveTo(0.5);
+    Navigation.moveTo(0.1);
 
     // find angle of tunnel
     double aveX, aveY, theta;
@@ -137,6 +140,8 @@ public class Main {
     LauncherControl.lowerArm();
     Navigation.moveTo(4 * TILE_SIZE);
     LauncherControl.raiseArm();
+    launcher1.close();
+    launcher2.close();
     launcher1 = null;
     launcher2 = null;
 
