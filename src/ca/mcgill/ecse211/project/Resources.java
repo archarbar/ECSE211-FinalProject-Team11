@@ -117,9 +117,12 @@ public class Resources {
 
   public static final EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
 
-  public static final EV3ColorSensor centreLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
+//  public static final EV3ColorSensor centreLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
+//
+//  public static final EV3ColorSensor sideLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+  public static final EV3ColorSensor colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
 
-  public static final EV3ColorSensor sideLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+  public static final EV3ColorSensor colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
 
   public static final int CORRECTION_PERIOD = 50;
 
@@ -188,10 +191,19 @@ public class Resources {
     }
 
   }
+  /**
+   * The motor acceleration in degrees per second squared.
+   */
+  public static final int ACCELERATION = 3000;
 
-  public static final int ROTATE_SPEED = 175;
-  public static final int MOTOR_SPEED = 250;
+  public static final double LSwidth=6.8;
 
+//  public static final int ROTATE_SPEED = 175;
+//  public static final int MOTOR_SPEED = 250;
+  public static final int ROTATE_SPEED = 100;
+  public static final int MOTOR_SPEED = 200;
+
+  public static final double sensorOffset = 3.5;
   public static boolean SILENT_VERIFICATION = false;
 
   /**
@@ -253,7 +265,7 @@ public class Resources {
 //  public static GridRectangle tnrRectangle =
 //      new GridRectangle(get("TNR_LL_x"), get("TNR_LL_y"), get("TNR_UR_x"), get("TNR_UR_y"));
   public static double targetAngle = Math.max(get("TNR_LL_x"), get("TNR_UR_x"));
-  
+
   /**
    * The green tunnel footprint.
    */

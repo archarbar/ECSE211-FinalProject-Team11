@@ -107,7 +107,7 @@ public class Main {
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.mainMethod();
-    lsLocalizer.mainMethod(x, y);
+    lsLocalizer.localize(x, y);
   }
   
   private static void navigateThroughTunnel(Navigation navigator) {
