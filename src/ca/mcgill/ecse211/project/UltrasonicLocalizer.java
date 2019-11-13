@@ -18,8 +18,6 @@ public class UltrasonicLocalizer extends PlainNavigation {
   private float[] usData;
   private SampleProvider usSamples;
 
-
-  private static final int ROTATE_SPEED = 50;
   private double deltaT = 0;
 
   private static final int WALL_DISTANCE = 22;
@@ -254,14 +252,6 @@ public class UltrasonicLocalizer extends PlainNavigation {
   public void turnCounterclockwise() {
     leftMotor.backward();
     rightMotor.forward();
-  }
-
-  /**
-   * makes the robot stop
-   */
-  public void stop() {
-    leftMotor.stop();
-    rightMotor.stop();
   }
 
   /**
