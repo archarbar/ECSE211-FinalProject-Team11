@@ -1,8 +1,8 @@
 package ca.mcgill.ecse211.lightSensor;
 
-import static ca.mcgill.ecse211.lab4.Resources.*;
-import ca.mcgill.ecse211.lab4.Odometer;
-import ca.mcgill.ecse211.lab4.Main;
+import static ca.mcgill.ecse211.project.Resources.*;
+import ca.mcgill.ecse211.project.odometer.Odometer;
+import ca.mcgill.ecse211.project.Main;
 import lejos.robotics.SampleProvider;
 import lejos.hardware.Sound;
 
