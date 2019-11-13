@@ -82,7 +82,7 @@ public abstract class Navigation {
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.rotate(convertAngle(minimumAngle(theta)), true);
-    rightMotor.rotate(-convertAngle(minimumAngle(theta)), false);
+    rightMotor.rotate(-convertAngle(minimumAngle(theta)), false);//1.0005
   }
 
   /**
@@ -119,7 +119,7 @@ public abstract class Navigation {
     return calculateDistanceTo(aX, aY);
   }
 
-  private static double hyp(double dX, double dY) {
+  protected static double hyp(double dX, double dY) {
     return Math.sqrt(dX * dX + dY * dY);
   }
 
@@ -296,6 +296,8 @@ public abstract class Navigation {
   }
 
   public static void stop() {
+    leftMotor.setSpeed(0);
+    rightMotor.setSpeed(0);
     leftMotor.stop();
     rightMotor.stop();
   }

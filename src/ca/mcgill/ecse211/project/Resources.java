@@ -53,11 +53,11 @@ public class Resources {
   /**
    * The launcher motor.
    */
-  public static final EV3LargeRegulatedMotor launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+  public static EV3LargeRegulatedMotor launcher1 = null;
   /**
    * The launcher motor.
    */
-  public static final EV3LargeRegulatedMotor launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+  public static EV3LargeRegulatedMotor launcher2 = null;
 
   /**
    * The LCD.
@@ -83,7 +83,9 @@ public class Resources {
    * the robot's track size
    */
 
-  public static final double TRACK = 16.24; // temporary value 15.1232
+//  public static final double TRACK = 16.24; // temporary value 15.1232
+  public static final double TRACK = 16.74; // temporary value 15.1232
+//  public static final double TRACK = 16.54; // temporary value 15.1232
 
   /**
    * the distance at which we want to perform the launch
@@ -105,9 +107,9 @@ public class Resources {
 
   };
 
-  public static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
+  public static EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
 
-  public static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+  public static EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 
 
   public static final int numTilesX = 8;
@@ -115,14 +117,14 @@ public class Resources {
 
   public static final int searchDistance = 5; // 5cm
 
-  public static final EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
+  public static EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
 
 //  public static final EV3ColorSensor centreLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
 //
 //  public static final EV3ColorSensor sideLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
-  public static final EV3ColorSensor colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
+  public static EV3ColorSensor colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
 
-  public static final EV3ColorSensor colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+  public static EV3ColorSensor colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
 
   public static final int CORRECTION_PERIOD = 50;
 
@@ -202,7 +204,7 @@ public class Resources {
 //  public static final int ROTATE_SPEED = 175;
 //  public static final int MOTOR_SPEED = 250;
   public static final int ROTATE_SPEED = 150;
-  public static final int MOTOR_SPEED = 200;
+  public static final int MOTOR_SPEED = 150;
 
   public static final double sensorOffset = 3.5;
   public static boolean SILENT_VERIFICATION = false;

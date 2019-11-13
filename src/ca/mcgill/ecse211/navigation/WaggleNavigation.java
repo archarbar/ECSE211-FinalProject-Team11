@@ -161,6 +161,10 @@ public class WaggleNavigation extends Navigation {
     if (isLeft) {
       while (true) {
         correctionStart = System.currentTimeMillis();
+        if (tooFar(startPos)) {
+          waggle(direction, side);
+          return;
+        }
         colorSampleProviderR.fetchSample(csDataR, 0);
         if (csDataR[0] < LINE_RED_INTENSITY) {
           leftMotor.stop(true);
@@ -170,8 +174,7 @@ public class WaggleNavigation extends Navigation {
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
           LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
           LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
-          leftMotor.rotate(-convertAngle(offTheta), true);
-          rightMotor.rotate(convertAngle(offTheta), false);
+          turnTo(-offTheta);
           break;
         }
         correctionEnd = System.currentTimeMillis();
@@ -186,6 +189,10 @@ public class WaggleNavigation extends Navigation {
     } else {
       while (true) {
         correctionStart = System.currentTimeMillis();
+        if (tooFar(startPos)) {
+          waggle(direction, side);
+          return;
+        }
         colorSampleProviderL.fetchSample(csDataL, 0);
         if (csDataL[0] < LINE_RED_INTENSITY) {
           leftMotor.stop(true);
@@ -195,8 +202,7 @@ public class WaggleNavigation extends Navigation {
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
           LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
           LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
-          leftMotor.rotate(convertAngle(offTheta), true);
-          rightMotor.rotate(-convertAngle(offTheta), false);
+          turnTo(offTheta);
           break;
         }
         correctionEnd = System.currentTimeMillis();
@@ -227,5 +233,13 @@ public class WaggleNavigation extends Navigation {
   private static double roundToLine(double pos) {
     double round = Math.round(pos / TILE_SIZE) * TILE_SIZE;
     return round;
+  }
+  
+  private static boolean tooFar(double[] startPos) {
+    double position[] = Odometer.getOdometer().getXYT();
+    double dX = startPos[0]-position[0];
+    double dY = startPos[1]-position[1];
+    double dis = hyp(dX, dY);
+    return dis>5;
   }
 }

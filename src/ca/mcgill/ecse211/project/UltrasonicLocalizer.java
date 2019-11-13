@@ -155,8 +155,7 @@ public class UltrasonicLocalizer extends PlainNavigation {
     double turnAngle = deltaT + odometer.getXYT()[2];
 
     // rotate to 0 degree axis
-    leftMotor.rotate(-convertAngle(turnAngle - TURNING_ERROR), true);
-    rightMotor.rotate(convertAngle(turnAngle - TURNING_ERROR), false);
+    turnTo(-(turnAngle - TURNING_ERROR));
 
     odometer.setXYT(0.0, 0.0, 0.0);
 
@@ -217,8 +216,7 @@ public class UltrasonicLocalizer extends PlainNavigation {
     double turnAngle = deltaT + odometer.getXYT()[2];
 
     // rotate to 0 degree axis
-    leftMotor.rotate(-convertAngle(turnAngle - TURNING_ERROR), true);
-    rightMotor.rotate(convertAngle(turnAngle - TURNING_ERROR), false);
+    turnTo(-(turnAngle - TURNING_ERROR));
 
 
     odometer.setXYT(0.0, 0.0, 0.0);
@@ -240,6 +238,8 @@ public class UltrasonicLocalizer extends PlainNavigation {
    * makes the robot turn clockwise
    */
   public void turnClockwise() {
+    leftMotor.setSpeed(ROTATE_SPEED);
+    rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.forward();
     rightMotor.backward();
   }
@@ -248,6 +248,8 @@ public class UltrasonicLocalizer extends PlainNavigation {
    * makes the robot turn counterclockwise
    */
   public void turnCounterclockwise() {
+    leftMotor.setSpeed(ROTATE_SPEED);
+    rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.backward();
     rightMotor.forward();
   }

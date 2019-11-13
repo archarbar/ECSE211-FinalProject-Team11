@@ -4,6 +4,7 @@ import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
@@ -33,6 +34,11 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
+    TNG_LL = new Point(4,3);
+    TNG_UR = new Point(5,5);
+    BIN = new Point(2,6);
+    TNR_UR_x = 315;
+//    turnTest();
      betaDemo();
 //     startOdometer();
 //     Resources.SILENT_VERIFICATION = true;
@@ -104,10 +110,12 @@ public class Main {
   
   private static void localize(int x, int y) {
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
-    Navigation.moveTo(-2);
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.mainMethod();
+    US_SENSOR = null;
+    Navigation.moveTo(-2);
+//    Navigation.turnTo(-2);
     lsLocalizer.localize(x, y);
   }
   
@@ -116,6 +124,7 @@ public class Main {
     System.out.println("X val:"+tunnelEntr.x);
     System.out.println("Y val:"+tunnelEntr.y);
     navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
+    Navigation.moveTo(0.5);
 
     // find angle of tunnel
     double aveX, aveY, theta;
@@ -123,9 +132,14 @@ public class Main {
     aveY = (TNG_LL.y + TNG_UR.y) / 2;
     theta = Navigation.angleToTarget(aveX, aveY);
     Navigation.turnTo(theta);
+    launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+    launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
     LauncherControl.lowerArm();
-    Navigation.moveTo(3 * TILE_SIZE);
+    Navigation.moveTo(4 * TILE_SIZE);
     LauncherControl.raiseArm();
+    launcher1 = null;
+    launcher2 = null;
+    
   }
 
   private static void navigateToLaunch(Navigation navigator) {
@@ -136,6 +150,8 @@ public class Main {
   }
 
   private static void launch(int numLaunches, int speed) {
+    launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+    launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
     for (int i = 0; i < numLaunches; ++i) {
       LauncherControl.launch(speed);
     }
@@ -188,5 +204,10 @@ public class Main {
   private static void resetTest() {
     int lowSpeed = 100;
     launch(2, lowSpeed);
+  }
+  private static void turnTest() {
+    for(int i =0;i<20;++i) {
+      Navigation.turnTo(180);
+    }
   }
 }
