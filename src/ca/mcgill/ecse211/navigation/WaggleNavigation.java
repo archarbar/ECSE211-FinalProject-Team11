@@ -124,10 +124,10 @@ public class WaggleNavigation extends Navigation {
     else if (d==Direction.NEG) {
       direction = -1;
     }
-    waggle(axis, direction);
+    waggle(axis);
   }
   
-  private void waggle(int direction, int side) {
+  public void waggle(int direction) {
     long correctionStart, correctionEnd;
     stop();
     forwards();
@@ -162,7 +162,7 @@ public class WaggleNavigation extends Navigation {
       while (true) {
         correctionStart = System.currentTimeMillis();
         if (tooFar(startPos)) {
-          waggle(direction, side);
+          waggle(direction);
           return;
         }
         colorSampleProviderR.fetchSample(csDataR, 0);
@@ -190,7 +190,7 @@ public class WaggleNavigation extends Navigation {
       while (true) {
         correctionStart = System.currentTimeMillis();
         if (tooFar(startPos)) {
-          waggle(direction, side);
+          waggle(direction);
           return;
         }
         colorSampleProviderL.fetchSample(csDataL, 0);
