@@ -296,6 +296,8 @@ public abstract class Navigation {
   }
 
   public static void stop() {
+    leftMotor.setSpeed(0);
+    rightMotor.setSpeed(0);
     leftMotor.stop();
     rightMotor.stop();
   }

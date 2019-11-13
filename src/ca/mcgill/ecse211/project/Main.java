@@ -104,11 +104,11 @@ public class Main {
   
   private static void localize(int x, int y) {
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
-    Navigation.moveTo(-2);
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.mainMethod();
     Navigation.moveTo(-2);
+//    Navigation.turnTo(-2);
     lsLocalizer.localize(x, y);
   }
   

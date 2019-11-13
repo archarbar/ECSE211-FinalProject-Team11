@@ -130,8 +130,7 @@ public class LightLocalizer extends PlainNavigation {
       }
     }
 
-    leftMotor.stop(true);
-    rightMotor.stop(false);
+    stop();
     forwards();
 
     while (true) {
@@ -144,7 +143,7 @@ public class LightLocalizer extends PlainNavigation {
         moveTo(sensorOffset);
         leftMotor.rotate(-convertAngle(90.0), true);
         rightMotor.rotate(convertAngle(90.0), false);
-        moveTo(5+sensorOffset);
+        moveTo(5+sensorOffset+1);
         break;
         // motor.stop();
       }
@@ -160,6 +159,7 @@ public class LightLocalizer extends PlainNavigation {
 
     odometer.setX(x*TILE_SIZE);
     odometer.setY(y*TILE_SIZE);
+    odometer.setTheta(0);
   }
 
 

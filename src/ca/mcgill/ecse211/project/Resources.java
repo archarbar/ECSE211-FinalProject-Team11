@@ -202,7 +202,7 @@ public class Resources {
 //  public static final int ROTATE_SPEED = 175;
 //  public static final int MOTOR_SPEED = 250;
   public static final int ROTATE_SPEED = 150;
-  public static final int MOTOR_SPEED = 200;
+  public static final int MOTOR_SPEED = 150;
 
   public static final double sensorOffset = 3.5;
   public static boolean SILENT_VERIFICATION = false;
