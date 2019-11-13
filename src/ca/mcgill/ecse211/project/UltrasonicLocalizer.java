@@ -1,12 +1,10 @@
 package ca.mcgill.ecse211.project;
 
-import ca.mcgill.ecse211.navigation.Navigation;
 import ca.mcgill.ecse211.navigation.PlainNavigation;
 import ca.mcgill.ecse211.odometer.Odometer;
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.Arrays;
 import lejos.hardware.Sound;
-import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.SampleProvider;
 
 

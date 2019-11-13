@@ -54,8 +54,8 @@ public class LauncherControl {
   }
 
   public static void lowerArm() {
-    launcher1.setSpeed(RESET_SPEED / 2);
-    launcher2.setSpeed(RESET_SPEED / 2);
+    launcher1.setSpeed(LOWER_SPEED);
+    launcher2.setSpeed(LOWER_SPEED);
 
     launcher1.rotate(-LOWER_ANGLE, true);
     launcher2.rotate(-LOWER_ANGLE, false);
@@ -65,8 +65,8 @@ public class LauncherControl {
   }
 
   public static void raiseArm() {
-    launcher1.setSpeed(RESET_SPEED / 2);
-    launcher2.setSpeed(RESET_SPEED / 2);
+    launcher1.setSpeed(LOWER_SPEED);
+    launcher2.setSpeed(LOWER_SPEED);
 
     launcher1.rotate(LOWER_ANGLE, true);
     launcher2.rotate(LOWER_ANGLE, false);

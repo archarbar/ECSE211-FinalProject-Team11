@@ -177,7 +177,7 @@ public abstract class Navigation {
     Point entrance;
     Point currentPos = new Point(Odometer.getOdometer().getXYT()[0], Odometer.getOdometer().getXYT()[1]);
     boolean xTunnel = false; // set default as false
-    if ((int) Math.abs((hole1.x - hole2.x) / TILE_SIZE) == 2) { // if x length of tunnel is 2, then it is a
+    if ((int) Math.abs(Math.round((hole1.x - hole2.x) / TILE_SIZE)) == 2) { // if x length of tunnel is 2, then it is a
                                                                 // horizontal tunnel
       xTunnel = true;
     }

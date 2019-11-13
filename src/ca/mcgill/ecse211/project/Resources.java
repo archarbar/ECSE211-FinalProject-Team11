@@ -141,6 +141,7 @@ public class Resources {
   public static final int extra_angle = 15;
 
   public static final int LOWER_ANGLE = 70;
+  public static final int LOWER_SPEED = 50;
 
   /**
    * The speed at which the launcher rotates in degrees per second.
@@ -200,7 +201,7 @@ public class Resources {
 
 //  public static final int ROTATE_SPEED = 175;
 //  public static final int MOTOR_SPEED = 250;
-  public static final int ROTATE_SPEED = 100;
+  public static final int ROTATE_SPEED = 150;
   public static final int MOTOR_SPEED = 200;
 
   public static final double sensorOffset = 3.5;

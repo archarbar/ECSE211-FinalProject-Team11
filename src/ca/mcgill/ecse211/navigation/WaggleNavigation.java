@@ -21,50 +21,92 @@ public class WaggleNavigation extends Navigation {
   private static final float LINE_RED_INTENSITY = (float) 0.3; // cast to float since default is double
   double[] position;
 
+  public WaggleNavigation() {
+    csDataL = new float[colorSensorL.sampleSize()];
+    csDataR = new float[colorSensorL.sampleSize()];
+  }
   @Override
   public void travelTo(double x, double y) {
-    double heading = angleToTarget(x, y);
-    heading = Math.round(heading / 90) * 90;
+    double heading, heading2;
+    Direction dir1, dir2;
+    Axis axis1, axis2;
+    int tileDis1, tileDis2;
     position = Odometer.getOdometer().getXYT();
-    int xTileDis = (int) Math.floor(Math.abs((x - position[0]) / TILE_SIZE));
-    int yTileDis = (int) Math.floor(Math.abs((y - position[1]) / TILE_SIZE));
+    double dX = (x - position[0]);
+    double dY = (y - position[1]);
+    int xTileDis = (int) Math.floor(Math.abs(dX / TILE_SIZE));
+    int yTileDis = (int) Math.floor(Math.abs(dY / TILE_SIZE));
+    if (xTileDis>yTileDis) {
+      axis1 = Axis.X;
+      axis2 = Axis.Y;
+      tileDis1 = xTileDis;
+      tileDis2 = yTileDis;
+      if (dX < 0) {
+        dir1 = Direction.NEG;
+        heading = 270;
+      }
+      else {
+        dir1 = Direction.POS;
+        heading = 90;
+      }
+      if (dY<0) {
+        dir2 = Direction.NEG;
+        heading2 = 180;
+      } else {
+        dir2 = Direction.POS;
+        heading2 = 0;
+      }
+    }
+    else {
+      axis1 = Axis.Y;
+      axis2 = Axis.X;
+      tileDis1 = yTileDis;
+      tileDis2 = xTileDis;
+      if (dY<0) {
+        dir1 = Direction.NEG;
+        heading = 180;
+      } else {
+        dir1 = Direction.POS;
+        heading = 0;
+      }
+      if (dX < 0) {
+        dir2 = Direction.NEG;
+        heading2 = 270;
+      }
+      else {
+        dir2 = Direction.POS;
+        heading2 = 90;
+      }
+    }
+    LCD.clear();
+    System.out.println("X:"+xTileDis);
+    System.out.println("Y:"+yTileDis);
+    System.out.println("T:"+angleToTarget(x,y));
+    System.out.println("T2:"+heading);
+    
+    
 
     
     // turn to heading
-    turnTo(heading);
+    turnToHeading(heading);
     
-    toWaggle(xTileDis, yTileDis);
+    toWaggle(dir1, axis1, tileDis1);
+    turnToHeading(heading2);
+    toWaggle(dir2, axis2, tileDis2);
+    position = odometer.getXYT();
+    System.out.println("("+position[0]+","+position[1]+")");
+    System.out.println("("+x+","+y+")");
     heading = angleToTarget(x, y);
-    heading = Math.round(heading / 90) * 90;
+    System.out.println(heading+"*");
     turnTo(heading);
-    toWaggle(xTileDis, yTileDis);
-    heading = angleToTarget(x, y);
-    turnTo(heading);
-    double distance = calculateDistanceTo(x,y);
+    double distance = calculateDistanceTo(x, y);
+    System.out.println(distance+" cm");
     moveTo(distance);
   }
-  private void toWaggle(int xTileDis, int yTileDis) {
-    int dis=0;
-    Axis axis = null;
-    Direction direction = null;
-    if (position[2] >= 315 || position[2] <= 45) {
-      axis = Axis.Y;
-      dis = yTileDis;
-      direction = Direction.POS;
-    } else if (position[2] >= 135 && position[2] <= 225) {
-      axis = Axis.Y;
-      dis = yTileDis;
-      direction = Direction.NEG;
-    } else if (position[2] >= 45 && position[2] <= 135) {
-      axis = Axis.X;
-      dis = xTileDis;
-      direction = Direction.POS;
-    } else if (position[2] >= 225 && position[2] <= 315) {
-      axis = Axis.X;
-      dis = xTileDis;
-      direction = Direction.NEG;
-    }
-    for(int i = 0;i<dis;++i) {
+  
+  private void toWaggle(Direction direction, Axis axis, int tileDis) {
+    for(int i = 0;i<tileDis;++i) {
+      System.out.println("D:"+(tileDis-i));
       waggle(axis, direction);
     }
   }
@@ -87,8 +129,7 @@ public class WaggleNavigation extends Navigation {
   
   private void waggle(int direction, int side) {
     long correctionStart, correctionEnd;
-    leftMotor.stop(true);
-    rightMotor.stop(false);
+    stop();
     forwards();
     while (true) {
       correctionStart = System.currentTimeMillis();
@@ -168,12 +209,13 @@ public class WaggleNavigation extends Navigation {
         }
       }
     }
-    double ave = (endPos[direction] + startPos[direction]) / 2;
+    position = odometer.getXYT();
+    moveTo(sensorOffset);
     if (direction == 0) {
-      odometer.setX(roundToLine(ave)+sensorOffset*side);
+      odometer.setX(roundToLine(position[0]));
     }
     else if (direction == 1) {
-      odometer.setY(roundToLine(ave)+sensorOffset*side);
+      odometer.setY(roundToLine(position[1]));
     }
   }
   /**

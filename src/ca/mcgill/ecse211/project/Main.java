@@ -17,6 +17,7 @@ import ca.mcgill.ecse211.navigation.GridRectangle;
 import ca.mcgill.ecse211.navigation.LineNavigation;
 import ca.mcgill.ecse211.navigation.Navigation;
 import ca.mcgill.ecse211.navigation.PlainNavigation;
+import ca.mcgill.ecse211.navigation.WaggleNavigation;
 import ca.mcgill.ecse211.odometer.Odometer;
 
 public class Main {
@@ -32,16 +33,21 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
-    // betaDemo();
-    // startOdometer();
-    // localize();
-    // localizationTimeTest();
-    // lineNavigationTest();
-    // plainNavigationTest();
-    // tunnelTest();
-    // launchTest();
-    betaDemo();
+     betaDemo();
+//     startOdometer();
+//     Resources.SILENT_VERIFICATION = true;
+////     importData();
+//     localize(1,1);
+////     localizationTimeTest();
+//    // lineNavigationTest();
+//    // plainNavigationTest();
+//
+//     tunnelTest();
+//     waggleNavigationTest();
+//     launchTest();
   }
+
+  
 
   private static void mainFlow() {
     // set to silent verification
@@ -61,11 +67,11 @@ public class Main {
     Sound.beep();
 
     // navigate to tunnel
-    navigateThroughTunnel(new LineNavigation());
+    navigateThroughTunnel(new WaggleNavigation());
 
     // navigate to specified coords
     // turn to specified angle
-    navigateToLaunch(new LineNavigation());
+    navigateToLaunch(new WaggleNavigation());
     Sound.beep();
     Sound.beep();
     Sound.beep();
@@ -98,6 +104,7 @@ public class Main {
   
   private static void localize(int x, int y) {
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
+    Navigation.moveTo(-2);
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.mainMethod();
@@ -106,6 +113,8 @@ public class Main {
   
   private static void navigateThroughTunnel(Navigation navigator) {
     Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
+    System.out.println("X val:"+tunnelEntr.x);
+    System.out.println("Y val:"+tunnelEntr.y);
     navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
 
     // find angle of tunnel
@@ -120,6 +129,8 @@ public class Main {
   }
 
   private static void navigateToLaunch(Navigation navigator) {
+    System.out.println("("+BIN.x+","+BIN.y+")");
+    System.out.println("("+odometer.getXYT()[0]+","+odometer.getXYT()[1]+")");
     navigator.travelTo(BIN.x, BIN.y);
     Navigation.turnToHeading(TNR_UR_x);
   }
@@ -145,6 +156,12 @@ public class Main {
     navigator.travelTo(x, y);
     System.exit(0);
   }
+  private static void waggleNavigationTest() {
+    int x = 8, y = 4;
+    Navigation navigator = new WaggleNavigation();
+    navigator.travelTo(x, y);
+    Navigation.turnToHeading(135);
+  }
 
   private static void localizationTimeTest() {
     long startTime = System.currentTimeMillis();
@@ -158,9 +175,9 @@ public class Main {
   }
 
   private static void tunnelTest() {
-    TNG_LL = new Point(2, 3);
-    TNG_UR = new Point(4, 4);
-    navigateThroughTunnel(new LineNavigation());
+    TNG_LL = new Point(4, 4);
+    TNG_UR = new Point(6, 5);
+    navigateThroughTunnel(new WaggleNavigation());
   }
 
   private static void launchTest() {
