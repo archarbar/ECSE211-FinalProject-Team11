@@ -30,7 +30,7 @@ public class Main {
   /**
    * The main method initializes all the threads and depending on user input, it runs either Falling edge or Rising edge
    * method.
-   * 
+   *
    * @param args
    */
   public static void main(String[] args) {
@@ -53,7 +53,7 @@ public class Main {
 //     launchTest();
   }
 
-  
+
 
   private static void mainFlow() {
     // set to silent verification
@@ -88,7 +88,7 @@ public class Main {
 
     System.exit(0);
   }
-  
+
   private static void importData() {
     System.out.println("Running...");
 
@@ -107,7 +107,7 @@ public class Main {
     odometer = Odometer.getOdometer();
     new Thread(odometer).start();
   }
-  
+
   private static void localize(int x, int y) {
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
     LightLocalizer lsLocalizer = new LightLocalizer();
@@ -118,7 +118,7 @@ public class Main {
 //    Navigation.turnTo(-2);
     lsLocalizer.localize(x, y);
   }
-  
+
   private static void navigateThroughTunnel(Navigation navigator) {
     Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
     System.out.println("X val:"+tunnelEntr.x);
@@ -139,7 +139,7 @@ public class Main {
     LauncherControl.raiseArm();
     launcher1 = null;
     launcher2 = null;
-    
+
   }
 
   private static void navigateToLaunch(Navigation navigator) {
