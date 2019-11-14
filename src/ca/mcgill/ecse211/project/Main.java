@@ -111,6 +111,7 @@ public class Main {
   }
 
   private static void localize(int x, int y) {
+    initUSSensor();
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
@@ -119,6 +120,7 @@ public class Main {
     US_SENSOR = null;
     Navigation.moveTo(-2);
 //    Navigation.turnTo(-2);
+    initLightSensors();
     lsLocalizer.localize(x, y);
   }
 
@@ -135,16 +137,13 @@ public class Main {
     aveY = (TNG_LL.y + TNG_UR.y) / 2;
     theta = Navigation.angleToTarget(aveX, aveY);
     Navigation.turnTo(theta);
-    launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
-    launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+    initLaunchers();
     LauncherControl.lowerArm();
+    closeLightSensors();
     Navigation.moveTo(4 * TILE_SIZE);
+    initLightSensors();
     LauncherControl.raiseArm();
-    launcher1.close();
-    launcher2.close();
-    launcher1 = null;
-    launcher2 = null;
-
+    closeLaunchers();
   }
 
   private static void navigateToLaunch(Navigation navigator) {
@@ -155,11 +154,45 @@ public class Main {
   }
 
   private static void launch(int numLaunches, int speed) {
-    launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
-    launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+    closeMotors();
+    initLaunchers();
     for (int i = 0; i < numLaunches; ++i) {
       LauncherControl.launch(speed);
     }
+    closeLaunchers();
+  }
+
+
+  private static void initLaunchers() {
+    launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+    launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+  }
+  private static void initMotors() {
+    leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
+    rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+  }
+  private static void initLightSensors() {
+    colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
+    colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+  }
+  private static void initUSSensor() {
+    US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
+  }
+
+  private static void closeLaunchers() {
+    launcher1.close();
+    launcher2.close();
+  }
+  private static void closeMotors() {
+    leftMotor.close();
+    rightMotor.close();
+  }
+  private static void closeLightSensors() {
+    colorSensorR.close();
+    colorSensorL.close();
+  }
+  private static void closeUSSensor() {
+    US_SENSOR.close();
   }
 
   private static void lineNavigationTest() {
