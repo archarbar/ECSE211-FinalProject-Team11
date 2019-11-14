@@ -139,13 +139,6 @@ importData();
     launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
     launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
     LauncherControl.lowerArm();
-    theta = odometer.getXYT()[2];
-    if (theta > 360-45 || theta <45 || (theta >180-45&& theta < 180+45)) {
-      new WaggleNavigation().waggle(1);
-    }
-    else {
-      new WaggleNavigation().waggle(0);
-    }
     Navigation.moveTo(4 * TILE_SIZE);
     LauncherControl.raiseArm();
     launcher1.close();
