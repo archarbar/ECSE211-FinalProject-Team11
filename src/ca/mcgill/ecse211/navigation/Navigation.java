@@ -81,10 +81,8 @@ public abstract class Navigation {
   public static void turnTo(double theta) {
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);
-//    leftMotor.startSynchronization();
     leftMotor.rotate(convertAngle(minimumAngle(theta)), true);
     rightMotor.rotate(-convertAngle(minimumAngle(theta)), false);//1.0005
-//    leftMotor.endSynchronization();
   }
 
   /**
@@ -103,10 +101,8 @@ public abstract class Navigation {
     leftMotor.setSpeed(MOTOR_SPEED);
     rightMotor.setSpeed(MOTOR_SPEED);
     int angle = convertDistance(distance);
-//    leftMotor.startSynchronization();
     leftMotor.rotate(angle, true);
     rightMotor.rotate(angle, false);
-//    leftMotor.endSynchronization();
   }
 
   public static double calculateDistanceTo(double x, double y) {

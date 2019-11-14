@@ -35,25 +35,25 @@ public class Main {
    */
   public static void main(String[] args) {
     TNG_LL = new Point(4,3);
-    TNG_UR = new Point(5,4);
+    TNG_UR = new Point(5,5);
     BIN = new Point(2,6);
     TNR_UR_x = 315;
-    
-//     betaDemo();
-importData();
-     startOdometer();
-//     turnTest();
+//    turnTest();
+     betaDemo();
+//     startOdometer();
 //     Resources.SILENT_VERIFICATION = true;
-
+////     importData();
 //     localize(1,1);
 ////     localizationTimeTest();
 //    // lineNavigationTest();
 //    // plainNavigationTest();
 //
 //     tunnelTest();
-     waggleNavigationTest();
+//     waggleNavigationTest();
 //     launchTest();
   }
+
+
 
   private static void mainFlow() {
     // set to silent verification
@@ -73,11 +73,11 @@ importData();
     Sound.beep();
 
     // navigate to tunnel
-    navigateThroughTunnel(new WaggleNavigation()); //use a waggle navigator to navigate
+    navigateThroughTunnel(new WaggleNavigation());
 
     // navigate to specified coords
     // turn to specified angle
-    navigateToLaunch(new WaggleNavigation()); //use a waggle navigator to navigate
+    navigateToLaunch(new WaggleNavigation());
     Sound.beep();
     Sound.beep();
     Sound.beep();
@@ -104,10 +104,6 @@ importData();
   }
 
   private static void startOdometer() {
-    leftMotor.resetTachoCount();
-    rightMotor.resetTachoCount();
-    EV3LargeRegulatedMotor[] otherMotor = {rightMotor};
-    leftMotor.synchronizeWith(otherMotor);
     odometer = Odometer.getOdometer();
     new Thread(odometer).start();
   }
@@ -117,7 +113,7 @@ importData();
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.mainMethod();
-    US_SENSOR.close();
+    US_SENSOR = null;
     Navigation.moveTo(-2);
 //    Navigation.turnTo(-2);
     lsLocalizer.localize(x, y);
@@ -128,7 +124,7 @@ importData();
     System.out.println("X val:"+tunnelEntr.x);
     System.out.println("Y val:"+tunnelEntr.y);
     navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
-    Navigation.moveTo(0.1); //align to tunnel
+    Navigation.moveTo(0.5);
 
     // find angle of tunnel
     double aveX, aveY, theta;
@@ -141,8 +137,6 @@ importData();
     LauncherControl.lowerArm();
     Navigation.moveTo(4 * TILE_SIZE);
     LauncherControl.raiseArm();
-    launcher1.close();
-    launcher2.close();
     launcher1 = null;
     launcher2 = null;
 
@@ -156,8 +150,6 @@ importData();
   }
 
   private static void launch(int numLaunches, int speed) {
-    rightMotor.close();
-    leftMotor.close();
     launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
     launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
     for (int i = 0; i < numLaunches; ++i) {
@@ -181,10 +173,10 @@ importData();
     System.exit(0);
   }
   private static void waggleNavigationTest() {
-    int x = 0, y = 2;
+    int x = 8, y = 4;
     Navigation navigator = new WaggleNavigation();
     navigator.travelTo(x, y);
-//    Navigation.turnToHeading(135);
+    Navigation.turnToHeading(135);
   }
 
   private static void localizationTimeTest() {
@@ -217,9 +209,5 @@ importData();
     for(int i =0;i<20;++i) {
       Navigation.turnTo(180);
     }
-//    Navigation.turnTo(90);
-//    Navigation.turnTo(-90);
-//    Navigation.turnToHeading(-90);
-//    Navigation.turnToHeading(0);
   }
 }
