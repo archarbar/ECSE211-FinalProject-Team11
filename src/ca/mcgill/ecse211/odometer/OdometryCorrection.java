@@ -7,6 +7,7 @@ import ca.mcgill.ecse211.lightSensor.LineDetectorController.Edge;
 import ca.mcgill.ecse211.navigation.LineNavigation;
 import ca.mcgill.ecse211.project.Display;
 import lejos.hardware.Sound;
+import lejos.hardware.sensor.EV3ColorSensor;
 
 @Deprecated
 public class OdometryCorrection implements Runnable {
@@ -18,6 +19,10 @@ public class OdometryCorrection implements Runnable {
    */
   private static double sensorOffset = -3;
   private Thread mainThread;
+
+  private EV3ColorSensor centreLightSensor;
+
+  private EV3ColorSensor sideLightSensor;
 
   public void run() {
     long updateStart, updateEnd;

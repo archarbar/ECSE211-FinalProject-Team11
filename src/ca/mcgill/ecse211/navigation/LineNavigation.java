@@ -13,6 +13,7 @@ public class LineNavigation extends Navigation {
   public static boolean turning = false;
   private static final double sideSensorOffset = 3;
   public static double currentTargetX, currentTargetY;
+  private static EV3ColorSensor sideLightSensor;
 
 
 

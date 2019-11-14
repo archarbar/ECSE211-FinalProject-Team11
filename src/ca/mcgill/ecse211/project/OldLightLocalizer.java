@@ -37,6 +37,10 @@ public class OldLightLocalizer extends PlainNavigation {
   SampleProvider lsValue;
   private float[] lsData;
 
+
+
+  private EV3ColorSensor centreLightSensor;
+
   /**
    * 
    * @param leftMotor
