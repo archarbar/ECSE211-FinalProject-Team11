@@ -11,16 +11,10 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 /**
- * Integrate this carefully with your existing Resources class (See below for where to add your code from your current
- * Resources file). The order in which things are declared matters!
- *
- * When you're done, replace this javadoc comment with the one you have from your Resources class.
- *
- * @author Younes Boubekeur
+ * Contains all of the constants and many of the variables shared by multiple classes, as well as containing all the
+ * resources imported over wifi.
  */
 public class Resources {
-
-  // Set these as appropriate for your team and current situation
   /**
    * The default server IP used by the profs and TA's.
    */
@@ -51,11 +45,11 @@ public class Resources {
   // eg, motors, sensors, constants, etc
 
   /**
-   * The launcher motor.
+   * The launcher motor 1.
    */
   public static EV3LargeRegulatedMotor launcher1 = null;
   /**
-   * The launcher motor.
+   * The launcher motor 2.
    */
   public static EV3LargeRegulatedMotor launcher2 = null;
 
@@ -64,13 +58,25 @@ public class Resources {
    */
   public static final TextLCD LCD = LocalEV3.get().getTextLCD();
 
-  public static final int LAUNCH_ANGLE = 55; // angle at which launching motor is placed before launch
+  /**
+   * Theangle at which launching motor is placed before launch.
+   */
+  public static final int LAUNCH_ANGLE = 55;
 
-  public static final int LAUNCH_HEIGHT = 35; // height of the launcher motor when extended
+  /**
+   * The height of the launcher motor when extended.
+   */
+  public static final int LAUNCH_HEIGHT = 35;
 
-  public static final double LAUNCH_ARM_LENGTH = 18; // length of launcher arm
+  /**
+   * The length of the launcher arm.
+   */
+  public static final double LAUNCH_ARM_LENGTH = 18;
 
-  public static final double G = 9.81; // gravity constant
+  /**
+   * Gravitational constant.
+   */
+  public static final double G = 9.81;
 
 
   /**
@@ -82,53 +88,52 @@ public class Resources {
   /**
    * the robot's track size
    */
-
-//  public static final double TRACK = 16.24; // temporary value 15.1232
   public static final double TRACK = 16.74; // temporary value 15.1232
-//  public static final double TRACK = 16.54; // temporary value 15.1232
 
   /**
    * the distance at which we want to perform the launch
    *
    */
-
   public static final double LAUNCH_DISTANCE = 125; // temporary value
 
-
+  /**
+   * The size of each tile in cm.
+   */
   public static final double TILE_SIZE = 30.48;
+  /**
+   * Minimum distance to launch from.
+   */
   public static final double TARGET_DISTANCE = 4 * TILE_SIZE;
 
   /**
-   * The tile which the ping pong ball has to hit
+   * The left motor of the robot used for moving.
    */
-
-
-  public static double[][] targetTile = new double[][] {{3 * TILE_SIZE, 1 * TILE_SIZE},
-
-  };
-
   public static EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
 
+  /**
+   * The right motor of the robot used for moving.
+   */
   public static EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 
-
-  public static final int numTilesX = 8;
-  public static final int numTilesY = 8;
-
-  public static final int searchDistance = 5; // 5cm
-
+  /**
+   * The Ultrasonic Sensor.
+   */
   public static EV3UltrasonicSensor US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
 
-//  public static final EV3ColorSensor centreLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
-//
-//  public static final EV3ColorSensor sideLightSensor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+  /**
+   * The right light sensor.
+   */
   public static EV3ColorSensor colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
 
+  /**
+   * The left light sensor.
+   */
   public static EV3ColorSensor colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
 
+  /**
+   * The Correction period for the light sensor.
+   */
   public static final int CORRECTION_PERIOD = 50;
-
-  public static final int searchTime = 5;
 
   /**
    * The motor acceleration in degrees per second squared.
@@ -140,9 +145,19 @@ public class Resources {
    */
   public static final int LAUNCHER_ANGLE = 105;
 
+  /**
+   * Extra angle to lower the launcher by.
+   */
   public static final int extra_angle = 15;
 
+  /**
+   * Angle to lower launcher arm by in order to pass through the tunnel.
+   */
   public static final int LOWER_ANGLE = 70;
+
+  /**
+   * Speed to lower arm in degrees/s.
+   */
   public static final int LOWER_SPEED = 50;
 
   /**
@@ -153,7 +168,7 @@ public class Resources {
   /**
    * The speed at which the launcher rotates in degrees per second.
    */
-//   public static final int RESET_SPEED = 70;
+  // public static final int RESET_SPEED = 70;
   public static final int RESET_SPEED = 125;
 
   /**
@@ -194,19 +209,36 @@ public class Resources {
     }
 
   }
+
   /**
    * The motor acceleration in degrees per second squared.
    */
   public static final int ACCELERATION = 3000;
 
-  public static final double LSwidth=6.8;
+  /**
+   * Distance between light sensors in cm.
+   */
+  public static final double LSwidth = 6.8;
 
-//  public static final int ROTATE_SPEED = 175;
-//  public static final int MOTOR_SPEED = 250;
+  // public static final int ROTATE_SPEED = 175;
+  // public static final int MOTOR_SPEED = 250;
+  /**
+   * Speed of motors when turning in degrees/s.
+   */
   public static final int ROTATE_SPEED = 150;
+  /**
+   * Speed of motors when moving straight in degrees/s.
+   */
   public static final int MOTOR_SPEED = 150;
 
+  /**
+   * Offset of the light sensors perpendicular to the wheelbase.
+   */
   public static final double sensorOffset = 3.5;
+
+  /**
+   * Boolean for whether to play debug noises.
+   */
   public static boolean SILENT_VERIFICATION = false;
 
   /**
@@ -263,10 +295,10 @@ public class Resources {
   /**
    * The red tunnel footprint.
    */
-//  THIS CHANGE IS ONLY FOR BETA DEMO, CHANGE BACK AFTERWARDS
-//  public static Region tnr = new Region("TNR_LL_x", "TNR_LL_y", "TNR_UR_x", "TNR_UR_y");
-//  public static GridRectangle tnrRectangle =
-//      new GridRectangle(get("TNR_LL_x"), get("TNR_LL_y"), get("TNR_UR_x"), get("TNR_UR_y"));
+  // THIS CHANGE IS ONLY FOR BETA DEMO, CHANGE BACK AFTERWARDS
+  // public static Region tnr = new Region("TNR_LL_x", "TNR_LL_y", "TNR_UR_x", "TNR_UR_y");
+  // public static GridRectangle tnrRectangle =
+  // new GridRectangle(get("TNR_LL_x"), get("TNR_LL_y"), get("TNR_UR_x"), get("TNR_UR_y"));
   public static double targetAngle = Math.max(get("TNR_LL_x"), get("TNR_UR_x"));
 
   /**
@@ -292,18 +324,15 @@ public class Resources {
     System.out.println("Waiting to receive Wi-Fi parameters.");
 
     // Connect to server and get the data, catching any errors that might occur
-    try (WifiConnection conn =
-        new WifiConnection(SERVER_IP, TEAM_NUMBER, ENABLE_DEBUG_WIFI_PRINT)) {
+    try (WifiConnection conn = new WifiConnection(SERVER_IP, TEAM_NUMBER, ENABLE_DEBUG_WIFI_PRINT)) {
       /*
-       * getData() will connect to the server and wait until the user/TA presses the "Start" button
-       * in the GUI on their laptop with the data filled in. Once it's waiting, you can kill it by
-       * pressing the upper left hand corner button (back/escape) on the EV3. getData() will throw
-       * exceptions if it can't connect to the server (e.g. wrong IP address, server not running on
-       * laptop, not connected to WiFi router, etc.). It will also throw an exception if it connects
-       * but receives corrupted data or a message from the server saying something went wrong. For
-       * example, if TEAM_NUMBER is set to 1 above but the server expects teams 17 and 5, this robot
-       * will receive a message saying an invalid team number was specified and getData() will throw
-       * an exception letting you know.
+       * getData() will connect to the server and wait until the user/TA presses the "Start" button in the GUI on their
+       * laptop with the data filled in. Once it's waiting, you can kill it by pressing the upper left hand corner
+       * button (back/escape) on the EV3. getData() will throw exceptions if it can't connect to the server (e.g. wrong
+       * IP address, server not running on laptop, not connected to WiFi router, etc.). It will also throw an exception
+       * if it connects but receives corrupted data or a message from the server saying something went wrong. For
+       * example, if TEAM_NUMBER is set to 1 above but the server expects teams 17 and 5, this robot will receive a
+       * message saying an invalid team number was specified and getData() will throw an exception letting you know.
        */
       wifiParameters = conn.getData();
     } catch (Exception e) {

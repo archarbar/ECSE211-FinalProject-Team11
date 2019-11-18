@@ -3,6 +3,13 @@ package ca.mcgill.ecse211.navigation;
 import static ca.mcgill.ecse211.project.Resources.*;
 import ca.mcgill.ecse211.odometer.Odometer;
 
+/**
+ * Contains all the general navigation related methods. Objects of this type also must implement a travelTo method that
+ * takes the robot to a specific location.
+ * 
+ * @author Matthew
+ *
+ */
 public abstract class Navigation {
 
   public static GridRectangle safeArea;
@@ -27,7 +34,6 @@ public abstract class Navigation {
    * @param distance
    * @return
    */
-
   public static int convertDistance(double distance) {
     return (int) ((180.0 * distance) / (Math.PI * WHEEL_RAD));
   }
@@ -82,7 +88,7 @@ public abstract class Navigation {
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.rotate(convertAngle(minimumAngle(theta)), true);
-    rightMotor.rotate(-convertAngle(minimumAngle(theta)), false);//1.0005
+    rightMotor.rotate(-convertAngle(minimumAngle(theta)), false);// 1.0005
   }
 
   /**
@@ -97,6 +103,11 @@ public abstract class Navigation {
     turnTo(angle);
   }
 
+  /**
+   * Moves the robot in a straight line by a distance in cm.
+   * 
+   * @param distance to travel in cm.
+   */
   public static void moveTo(double distance) {
     leftMotor.setSpeed(MOTOR_SPEED);
     rightMotor.setSpeed(MOTOR_SPEED);
@@ -105,6 +116,13 @@ public abstract class Navigation {
     rightMotor.rotate(angle, false);
   }
 
+  /**
+   * Calculates the distance from the robot's current position and the given location in cm.
+   * 
+   * @param x is the x location in cm.
+   * @param y is the y location in cm.
+   * @return the distance to this location in cm.
+   */
   public static double calculateDistanceTo(double x, double y) {
     double oX = Odometer.getOdometer().getXYT()[0];
     double oY = Odometer.getOdometer().getXYT()[1];
@@ -113,20 +131,46 @@ public abstract class Navigation {
     return hyp(dX, dY);
   }
 
+  /**
+   * Calculates the distance from the robot's current position and the given location in cm.
+   * 
+   * @param x is the x grid location.
+   * @param y is the y grid location.
+   * @return the distance to this location in cm.
+   */
   public static double calculateDistanceTo(int x, int y) {
     double aX = convertGridToLocation(x);
     double aY = convertGridToLocation(y);
     return calculateDistanceTo(aX, aY);
   }
 
+  /**
+   * Calculates the length of the hypotenuse of a triangle with sides x, and y.
+   * 
+   * @param dX length of side x.
+   * @param dY length of side y.
+   * @return the length of the hypotenuse.
+   */
   protected static double hyp(double dX, double dY) {
     return Math.sqrt(dX * dX + dY * dY);
   }
 
+  /**
+   * Converts a gridlocation integer into a location double in cm.
+   * 
+   * @param a
+   * @return
+   */
   public static double convertGridToLocation(int a) {
     return a * TILE_SIZE;
   }
 
+  /**
+   * Converts a location double in cm into a gridlocation integer.
+   * 
+   * @param a
+   * @return
+   */
   public static int convertLocationToGrid(double a) {
     return (int) Math.round(a / TILE_SIZE);
   }
@@ -178,7 +222,7 @@ public abstract class Navigation {
     Point currentPos = new Point(Odometer.getOdometer().getXYT()[0], Odometer.getOdometer().getXYT()[1]);
     boolean xTunnel = false; // set default as false
     if ((int) Math.abs(Math.round((hole1.x - hole2.x) / TILE_SIZE)) == 2) { // if x length of tunnel is 2, then it is a
-                                                                // horizontal tunnel
+      // horizontal tunnel
       xTunnel = true;
     }
     double dist1 = calculateDistanceTo(hole1.x, hole1.y);
@@ -273,8 +317,7 @@ public abstract class Navigation {
           if (minDist == -1) {
             minDist = newDist;
             minAngle = angle;
-          }
-          else if (newDist < minDist) {
+          } else if (newDist < minDist) {
             minDist = newDist;
             minAngle = angle;
           }
@@ -286,6 +329,9 @@ public abstract class Navigation {
     }
   }
 
+  /**
+   * Tells the robot to move forwards until otherwise directed.
+   */
   public static void forwards() {
     leftMotor.setAcceleration(ACCELERATION);
     rightMotor.setAcceleration(ACCELERATION);
@@ -295,6 +341,9 @@ public abstract class Navigation {
     rightMotor.forward();
   }
 
+  /**
+   * Tells the robot to stop moving.
+   */
   public static void stop() {
     leftMotor.setSpeed(0);
     rightMotor.setSpeed(0);
@@ -302,6 +351,12 @@ public abstract class Navigation {
     rightMotor.stop();
   }
 
+  /**
+   * Tells the robot to travel from its current location to the centre of the given tile.
+   * 
+   * @param tile's x value.
+   * @param tile's y value.
+   */
   public void travelTo(int x, int y, boolean centre) {
     double aX = x;
     double aY = y;
@@ -312,6 +367,12 @@ public abstract class Navigation {
     travelTo(aX * TILE_SIZE, aY * TILE_SIZE);
   }
 
+  /**
+   * Tells the robot to travel from its current location to a given point in cm.
+   * 
+   * @param x in cm
+   * @param y in cm
+   */
   public abstract void travelTo(double x, double y);
 
 }

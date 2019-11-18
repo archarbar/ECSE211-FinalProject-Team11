@@ -8,7 +8,9 @@ import lejos.hardware.Sound;
 import lejos.robotics.SampleProvider;
 
 
-
+/**
+ * Uses an ultrasonic sensor to localise the robot.
+ */
 public class UltrasonicLocalizer extends PlainNavigation {
 
 
@@ -55,14 +57,8 @@ public class UltrasonicLocalizer extends PlainNavigation {
    * This is the constructor of the class. It sets up both motors, the odometer, the track between the wheels, the
    * radius of the wheels, the edgetype and the ultrasonic sensor
    * 
-   * @param leftMotor
-   * @param rightMotor
-   * @param odometer
-   * @param TRACK
-   * @param WHEEL_RAD
    * @param type
    * @param usSamples
-   * @throws OdometerExceptions
    */
   public UltrasonicLocalizer(edgeType type, SampleProvider usSamples) {
 
@@ -81,7 +77,7 @@ public class UltrasonicLocalizer extends PlainNavigation {
   /**
    * This is the main method. It calls the fallingEdge() and risingEdge() methods when needed
    */
-  public void mainMethod() {
+  public void localize() {
     // The main threaded method.
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);

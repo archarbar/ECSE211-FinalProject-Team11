@@ -5,7 +5,7 @@ import static ca.mcgill.ecse211.project.Resources.*;
 public class LauncherControl {
 
   /**
-   * Launch the ping pong ball.
+   * Launch the ping pong ball at the given speed in degrees/s.
    *
    * @param speed
    */
@@ -22,8 +22,8 @@ public class LauncherControl {
     launcher2.setAcceleration(LAUNCHER_ACCELERATION);
     launcher2.setSpeed(speed);
 
-    launcher1.rotate(LAUNCHER_ANGLE+extra_angle, true);
-    launcher2.rotate(LAUNCHER_ANGLE+extra_angle, false);
+    launcher1.rotate(LAUNCHER_ANGLE + extra_angle, true);
+    launcher2.rotate(LAUNCHER_ANGLE + extra_angle, false);
     try {
       Thread.sleep(1500);
     } catch (Exception e) {
@@ -48,11 +48,14 @@ public class LauncherControl {
     }
     launcher1.rotate(-extra_angle, true);
     launcher2.rotate(-extra_angle, false);
-    
+
     launcher1.stop();
     launcher2.stop();
   }
 
+  /**
+   * lower the launcher arm without reloading.
+   */
   public static void lowerArm() {
     launcher1.setSpeed(LOWER_SPEED);
     launcher2.setSpeed(LOWER_SPEED);
@@ -64,6 +67,9 @@ public class LauncherControl {
     launcher2.stop();
   }
 
+  /**
+   * raise the launcher arm without firing.
+   */
   public static void raiseArm() {
     launcher1.setSpeed(LOWER_SPEED);
     launcher2.setSpeed(LOWER_SPEED);

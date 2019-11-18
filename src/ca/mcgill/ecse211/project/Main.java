@@ -28,38 +28,42 @@ public class Main {
 
 
   /**
-   * The main method initializes all the threads and depending on user input, it runs either Falling edge or Rising edge
-   * method.
+   * The main method initializes all the threads and runs the main flow.
    *
    * @param args
    */
   public static void main(String[] args) {
-//    TNG_LL = new Point(4,3);
-//    TNG_UR = new Point(5,5);
-//    BIN = new Point(2,6);
-//    TNR_UR_x = 315;
-//    turnTest();
-     betaDemo();
-//     startOdometer();
-//     Resources.SILENT_VERIFICATION = true;
-////     importData();
-//     localize(1,1);
-////     localizationTimeTest();
-//    // lineNavigationTest();
-//    // plainNavigationTest();
-//
-//     tunnelTest();
-//     waggleNavigationTest();
-//     launchTest();
+    // TNG_LL = new Point(4,3);
+    // TNG_UR = new Point(5,5);
+    // BIN = new Point(2,6);
+    // TNR_UR_x = 315;
+    // turnTest();
+    betaDemo();
+    // startOdometer();
+    // Resources.SILENT_VERIFICATION = true;
+    //// importData();
+    // localize(1,1);
+    //// localizationTimeTest();
+    // // lineNavigationTest();
+    // // plainNavigationTest();
+    //
+    // tunnelTest();
+    // waggleNavigationTest();
+    // launchTest();
   }
 
 
-
+  /**
+   * The main flow of the project.
+   */
   private static void mainFlow() {
     // set to silent verification
     Resources.SILENT_VERIFICATION = true;
   }
 
+  /**
+   * The flow used for the beta demo.
+   */
   private static void betaDemo() {
     // set to silent verification
     Resources.SILENT_VERIFICATION = true;
@@ -89,6 +93,9 @@ public class Main {
     System.exit(0);
   }
 
+  /**
+   * Imports data over wifi.
+   */
   private static void importData() {
     System.out.println("Running...");
 
@@ -103,6 +110,9 @@ public class Main {
     System.out.println("Target Angle: " + targetAngle);
   }
 
+  /**
+   * Creates an odometer and starts it in a thread.
+   */
   private static void startOdometer() {
     leftMotor.resetTachoCount();
     rightMotor.resetTachoCount();
@@ -110,24 +120,36 @@ public class Main {
     new Thread(odometer).start();
   }
 
+  /**
+   * Localises the robot once using the ultrasonic localizer, and once with the light localizer, and sets its location
+   * to the given grid coords.
+   * 
+   * @param x
+   * @param y
+   */
   private static void localize(int x, int y) {
     initUSSensor();
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
-    usLocalizer.mainMethod();
+    usLocalizer.localize();
     US_SENSOR.close();
     US_SENSOR = null;
     Navigation.moveTo(-2);
-//    Navigation.turnTo(-2);
+    // Navigation.turnTo(-2);
     initLightSensors();
     lsLocalizer.localize(x, y);
   }
 
+  /**
+   * Navigates to, and through the tunnel to the launching side.
+   * 
+   * @param navigator to determine navigation type.
+   */
   private static void navigateThroughTunnel(Navigation navigator) {
     Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
-    System.out.println("X val:"+tunnelEntr.x);
-    System.out.println("Y val:"+tunnelEntr.y);
+    System.out.println("X val:" + tunnelEntr.x);
+    System.out.println("Y val:" + tunnelEntr.y);
     navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
     Navigation.moveTo(0.1);
 
@@ -146,13 +168,24 @@ public class Main {
     closeLaunchers();
   }
 
+  /**
+   * navigates from the tunnel exit to the launch location.
+   * 
+   * @param navigator to determine navigation type.
+   */
   private static void navigateToLaunch(Navigation navigator) {
-    System.out.println("("+BIN.x+","+BIN.y+")");
-    System.out.println("("+odometer.getXYT()[0]+","+odometer.getXYT()[1]+")");
+    System.out.println("(" + BIN.x + "," + BIN.y + ")");
+    System.out.println("(" + odometer.getXYT()[0] + "," + odometer.getXYT()[1] + ")");
     navigator.travelTo(BIN.x, BIN.y);
     Navigation.turnToHeading(TNR_UR_x);
   }
 
+  /**
+   * Launches the ping-pong balls a given number of times at a given speed.
+   * 
+   * @param numLaunches
+   * @param speed
+   */
   private static void launch(int numLaunches, int speed) {
     closeMotors();
     initLaunchers();
@@ -162,47 +195,71 @@ public class Main {
     closeLaunchers();
   }
 
-
+  /**
+   * initialises the launcher motors.
+   */
   private static void initLaunchers() {
     launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
     launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
   }
+
+  /**
+   * initialises the movement motors.
+   */
   private static void initMotors() {
     leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
     rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
   }
+
+  /**
+   * initialises the light sensors.
+   */
   private static void initLightSensors() {
     colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
     colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
   }
+
+  /**
+   * initialises the ultrasonic sensor.
+   */
   private static void initUSSensor() {
     US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
   }
 
+  /**
+   * closes the launcher motors.
+   */
   private static void closeLaunchers() {
     launcher1.close();
     launcher2.close();
   }
+
+  /**
+   * closes the movement motors.
+   */
   private static void closeMotors() {
     leftMotor.close();
     rightMotor.close();
   }
+
+  /**
+   * closes the light sensors.
+   */
   private static void closeLightSensors() {
     colorSensorR.close();
     colorSensorL.close();
   }
+
+  /**
+   * closes the ultrasonic sensor.
+   */
   private static void closeUSSensor() {
     US_SENSOR.close();
   }
 
-  private static void lineNavigationTest() {
-    double x = 3 * TILE_SIZE, y = 4 * TILE_SIZE;
-    Navigation navigator = new LineNavigation();
-    navigator.safeArea = new GridRectangle(0, 0, 15, 15);
-    navigator.travelTo(x, y);
-    System.exit(0);
-  }
-
+  /**
+   * flow to test the plain navigation technique.
+   */
   private static void plainNavigationTest() {
     double x = 3 * TILE_SIZE, y = 4 * TILE_SIZE;
     Navigation navigator = new PlainNavigation();
@@ -210,6 +267,10 @@ public class Main {
     navigator.travelTo(x, y);
     System.exit(0);
   }
+
+  /**
+   * flow to test the waggle navigation technique.
+   */
   private static void waggleNavigationTest() {
     int x = 8, y = 4;
     Navigation navigator = new WaggleNavigation();
@@ -217,6 +278,9 @@ public class Main {
     Navigation.turnToHeading(135);
   }
 
+  /**
+   * flow to test the localization method and time.
+   */
   private static void localizationTimeTest() {
     long startTime = System.currentTimeMillis();
     localize(1, 1);
@@ -228,23 +292,37 @@ public class Main {
       Sound.beepSequenceUp();
   }
 
+  /**
+   * flow to test the tunnel navigation method.
+   */
   private static void tunnelTest() {
     TNG_LL = new Point(4, 4);
     TNG_UR = new Point(6, 5);
     navigateThroughTunnel(new WaggleNavigation());
   }
 
+  /**
+   * flow to test launching at max speed.
+   */
   private static void launchTest() {
     int maxSpeed = 1300;
     maxSpeed = 500;
     launch(3, maxSpeed);
   }
+
+  /**
+   * flow to test reloading the launcher without firing.
+   */
   private static void resetTest() {
     int lowSpeed = 100;
     launch(2, lowSpeed);
   }
+
+  /**
+   * flow to test accurate turning.
+   */
   private static void turnTest() {
-    for(int i =0;i<20;++i) {
+    for (int i = 0; i < 20; ++i) {
       Navigation.turnTo(180);
     }
   }

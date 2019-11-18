@@ -3,10 +3,15 @@ package ca.mcgill.ecse211.lightSensor;
 import ca.mcgill.ecse211.odometer.Odometer;
 import lejos.robotics.SampleProvider;
 
+/**
+ * A simple line detector that detects lines based on a threshold proportional to its initial value.
+ * 
+ * @author Matthew
+ */
 public class ProportionalLineDetector implements LineDetectorController {
 
   // proportional
-  public final double THRESHOLD = 0.1;
+  public final double THRESHOLD = 0.85;
   private double oldVal;
 
   private static final double MAX_DISTANCE = 3;
@@ -16,6 +21,11 @@ public class ProportionalLineDetector implements LineDetectorController {
   Double edgeX;
   Double edgeY;
 
+  /**
+   * Create a ProportionalLineDetector with a lightSensor's sample provider.
+   * 
+   * @param cs
+   */
   public ProportionalLineDetector(SampleProvider cs) {
     lastEdge = Edge.NoEdge;
     sample = new float[cs.sampleSize()];
@@ -31,7 +41,7 @@ public class ProportionalLineDetector implements LineDetectorController {
   @Override
   public Edge edgeDetected() {
     cs.fetchSample(sample, 0);
-    if (sample[0] < 0.85 * oldVal) {
+    if (processCSData(sample[0]) < THRESHOLD) {
       double[] position = Odometer.getOdometer().getXYT();
       edgeX = position[0];
       edgeY = position[1];
@@ -40,10 +50,12 @@ public class ProportionalLineDetector implements LineDetectorController {
     return Edge.RisingEdge;
   }
 
+  /**
+   * @return the proportion of the new light value to the original value.
+   */
   @Override
   public double processCSData(double lightVal) {
-    // TODO Auto-generated method stub
-    return 0;
+    return lightVal / oldVal;
   }
 
   @Override

@@ -25,6 +25,11 @@ public class DifferentialLineDetector implements LineDetectorController {
   Double edgeX;
   Double edgeY;
 
+  /**
+   * Create a DifferentialLineDetector with a lightSensor's sample provider.
+   * 
+   * @param cs
+   */
   public DifferentialLineDetector(SampleProvider cs) {
     this.cs = cs;
     lastEdge = Edge.NoEdge;
@@ -62,6 +67,11 @@ public class DifferentialLineDetector implements LineDetectorController {
     return false;
   }
 
+  /**
+   * Processes the data to the difference in values.
+   * 
+   * @param lightVal the most recent light value detected.
+   */
   @Override
   public double processCSData(double lightVal) {
     // optional meanFilter
@@ -69,6 +79,12 @@ public class DifferentialLineDetector implements LineDetectorController {
     return lightVal - oldVal;
   }
 
+  /**
+   * Place the most recent value in a buffer, and replace with the mean.
+   * 
+   * @param lightVal the most recent detected value.
+   * @return the mean value of buffer.
+   */
   protected double meanFilter(double lightVal) {
     buffer[filterIndex++] = lightVal;
     filterIndex %= buffer.length;
@@ -101,21 +117,21 @@ public class DifferentialLineDetector implements LineDetectorController {
   }
 
   /**
-   * @return the oldVal
+   * @return the previous light value.
    */
   public double getOldVal() {
     return oldVal;
   }
 
   /**
-   * @return the edgeX
+   * @return the previous edge's X value
    */
   public double getEdgeX() {
     return edgeX;
   }
 
   /**
-   * @return the edgeY
+   * @return the previous edge's Y value
    */
   public double getEdgeY() {
     return edgeY;

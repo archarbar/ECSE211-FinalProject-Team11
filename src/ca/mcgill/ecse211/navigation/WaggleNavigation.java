@@ -4,10 +4,20 @@ import ca.mcgill.ecse211.odometer.Odometer;
 import lejos.robotics.SampleProvider;
 import static ca.mcgill.ecse211.project.Resources.*;
 
-
+/**
+ * A navigator that actively corrects its heading and position
+ * 
+ * @author Matthew
+ *
+ */
 public class WaggleNavigation extends Navigation {
-  enum Axis{X,Y};
-  enum Direction{POS,NEG};
+  enum Axis {
+    X, Y
+  };
+  enum Direction {
+    POS, NEG
+  };
+
   Odometer odometer = Odometer.getOdometer();
   private static final long CORRECTION_PERIOD = 5;
   private float[] csDataL;
@@ -21,10 +31,21 @@ public class WaggleNavigation extends Navigation {
   private static final float LINE_RED_INTENSITY = (float) 0.3; // cast to float since default is double
   double[] position;
 
+  /**
+   * Initializes the navigator with 2 colour sensors.
+   */
   public WaggleNavigation() {
     csDataL = new float[colorSensorL.sampleSize()];
     csDataR = new float[colorSensorL.sampleSize()];
   }
+
+  /**
+   * Tells the robot to travel from its current location to a given point in cm travelling parrallel to the gridlines
+   * and while actively correcting.
+   * 
+   * @param x in cm
+   * @param y in cm
+   */
   @Override
   public void travelTo(double x, double y) {
     double heading, heading2;
@@ -36,7 +57,7 @@ public class WaggleNavigation extends Navigation {
     double dY = (y - position[1]);
     int xTileDis = (int) Math.floor(Math.abs(dX / TILE_SIZE));
     int yTileDis = (int) Math.floor(Math.abs(dY / TILE_SIZE));
-    if (xTileDis>yTileDis) {
+    if (xTileDis > yTileDis) {
       axis1 = Axis.X;
       axis2 = Axis.Y;
       tileDis1 = xTileDis;
@@ -44,25 +65,23 @@ public class WaggleNavigation extends Navigation {
       if (dX < 0) {
         dir1 = Direction.NEG;
         heading = 270;
-      }
-      else {
+      } else {
         dir1 = Direction.POS;
         heading = 90;
       }
-      if (dY<0) {
+      if (dY < 0) {
         dir2 = Direction.NEG;
         heading2 = 180;
       } else {
         dir2 = Direction.POS;
         heading2 = 0;
       }
-    }
-    else {
+    } else {
       axis1 = Axis.Y;
       axis2 = Axis.X;
       tileDis1 = yTileDis;
       tileDis2 = xTileDis;
-      if (dY<0) {
+      if (dY < 0) {
         dir1 = Direction.NEG;
         heading = 180;
       } else {
@@ -72,61 +91,78 @@ public class WaggleNavigation extends Navigation {
       if (dX < 0) {
         dir2 = Direction.NEG;
         heading2 = 270;
-      }
-      else {
+      } else {
         dir2 = Direction.POS;
         heading2 = 90;
       }
     }
     LCD.clear();
-    System.out.println("X:"+xTileDis);
-    System.out.println("Y:"+yTileDis);
-    System.out.println("T:"+angleToTarget(x,y));
-    System.out.println("T2:"+heading);
-    
-    
+    System.out.println("X:" + xTileDis);
+    System.out.println("Y:" + yTileDis);
+    System.out.println("T:" + angleToTarget(x, y));
+    System.out.println("T2:" + heading);
 
-    
+
+
     // turn to heading
     turnToHeading(heading);
-    
+
     toWaggle(dir1, axis1, tileDis1);
     turnToHeading(heading2);
     toWaggle(dir2, axis2, tileDis2);
     position = odometer.getXYT();
-    System.out.println("("+position[0]+","+position[1]+")");
-    System.out.println("("+x+","+y+")");
+    System.out.println("(" + position[0] + "," + position[1] + ")");
+    System.out.println("(" + x + "," + y + ")");
     heading = angleToTarget(x, y);
-    System.out.println(heading+"*");
+    System.out.println(heading + "*");
     turnTo(heading);
     double distance = calculateDistanceTo(x, y);
-    System.out.println(distance+" cm");
+    System.out.println(distance + " cm");
     moveTo(distance);
   }
-  
+
+  /**
+   * sets up the waggle method to happen a given amount of times.
+   * 
+   * @param direction
+   * @param axis
+   * @param tileDis
+   */
   private void toWaggle(Direction direction, Axis axis, int tileDis) {
-    for(int i = 0;i<tileDis;++i) {
-      System.out.println("D:"+(tileDis-i));
+    for (int i = 0; i < tileDis; ++i) {
+      System.out.println("D:" + (tileDis - i));
       waggle(axis, direction);
     }
   }
+
+  /**
+   * sets up the main waggle method.
+   * 
+   * @param a
+   * @param d
+   */
   private void waggle(Axis a, Direction d) {
     int axis = 0, direction = 0;
-    if (a==Axis.X) {
+    if (a == Axis.X) {
       axis = 0;
-    }
-    else if (a==Axis.Y) {
+    } else if (a == Axis.Y) {
       axis = 1;
     }
-    if (d==Direction.POS) {
+    if (d == Direction.POS) {
       direction = 1;
-    }
-    else if (d==Direction.NEG) {
+    } else if (d == Direction.NEG) {
       direction = -1;
     }
     waggle(axis, direction);
   }
-  
+
+  /**
+   * moves forwards until a line is detected, then uses the difference in location to detecting the the same line with
+   * the other sensor to correct the angle, it also corrects its position.
+   * 
+   * @param direction
+   * @param side
+   */
   private void waggle(int direction, int side) {
     long correctionStart, correctionEnd;
     stop();
@@ -219,11 +255,11 @@ public class WaggleNavigation extends Navigation {
     moveTo(sensorOffset);
     if (direction == 0) {
       odometer.setX(roundToLine(position[0]));
-    }
-    else if (direction == 1) {
+    } else if (direction == 1) {
       odometer.setY(roundToLine(position[1]));
     }
   }
+
   /**
    * given a position on an axis, return the nearest value that's on a gridline.
    * 
@@ -234,12 +270,18 @@ public class WaggleNavigation extends Navigation {
     double round = Math.round(pos / TILE_SIZE) * TILE_SIZE;
     return round;
   }
-  
+
+  /**
+   * returns true if its been too far since the last line detected for it to be the same line.
+   * 
+   * @param startPos
+   * @return
+   */
   private static boolean tooFar(double[] startPos) {
     double position[] = Odometer.getOdometer().getXYT();
-    double dX = startPos[0]-position[0];
-    double dY = startPos[1]-position[1];
+    double dX = startPos[0] - position[0];
+    double dY = startPos[1] - position[1];
     double dis = hyp(dX, dY);
-    return dis>5;
+    return dis > 5;
   }
 }
