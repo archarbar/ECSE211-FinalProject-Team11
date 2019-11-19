@@ -1,24 +1,27 @@
 package ca.mcgill.ecse211.project;
 
-import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
-import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
-import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 import static ca.mcgill.ecse211.project.Resources.*;
-import java.text.DecimalFormat;
 import ca.mcgill.ecse211.project.LightLocalizer;
 import ca.mcgill.ecse211.project.UltrasonicLocalizer;
 
+/**
+ * The running point of the entire project.
+ * @author Team11
+ *
+ */
 public class Main {
   private static Odometer odometer;
   private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = bin;
   private static double TNR_UR_x = targetAngle;
+  private static IntPoint home = new IntPoint(1,1); //TODO: depends on team
+  
+  private static Navigation navigator = new WaggleNavigation();
 
 
   /**
@@ -27,10 +30,6 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
-    // TNG_LL = new Point(4,3);
-    // TNG_UR = new Point(5,5);
-    // BIN = new Point(2,6);
-    // TNR_UR_x = 315;
     // turnTest();
 //    betaDemo();
     // startOdometer();
@@ -45,6 +44,7 @@ public class Main {
     // waggleNavigationTest();
     // launchTest();
     launch(1, 570);
+//    mainFlow();
   }
 
 
@@ -52,13 +52,20 @@ public class Main {
    * The main flow of the project.
    */
   private static void mainFlow() {
-    // set to silent verification
-    Resources.SILENT_VERIFICATION = true;
+    //section 1
+    initialization();
+    //section 2
+    int launchSpeed = travelToLaunch();
+    //section3
+    launch(4, launchSpeed);
+    //section4
+    returnToBase();
   }
 
   /**
    * The flow used for the beta demo.
    */
+  @Deprecated
   private static void betaDemo() {
     // set to silent verification
     Resources.SILENT_VERIFICATION = true;
@@ -69,24 +76,77 @@ public class Main {
 
     // localize
     localize(1, 1);
-    Sound.beep();
+    beep(1);
 
     // navigate to tunnel
     navigateThroughTunnel(new WaggleNavigation());
 
     // navigate to specified coords
     // turn to specified angle
-    navigateToLaunch(new WaggleNavigation());
-    Sound.beep();
-    Sound.beep();
-    Sound.beep();
+    navigateToLaunch(new WaggleNavigation(), BIN.x, BIN.y);
+    beep(3);
     // launch
     int maxSpeed = 1300;
     launch(1, maxSpeed);
-    Sound.beep();
+    beep(1);
 
     System.exit(0);
   }
+  /**
+   * Handles the initialization step of the main flow.
+   */
+  private static void initialization() {
+ // set to silent verification
+    Resources.SILENT_VERIFICATION = true;
+    // import wifi data is done by default
+    importData();
+    // odometry start
+    startOdometer();
+
+    // localize
+    localize(1, 1); //TODO: get the value based on team
+    beep(3);
+  }
+  
+  /**
+   * Handles the travel to launch step of the main flow.
+   * @return launchSpeed depending on distance from target.
+   */
+  private static int travelToLaunch() {
+    navigateThroughTunnel(navigator);
+    //TODO: get launch location
+    Point launchLocation = new Point(0.0,0.0);  //TODO
+    int launchSpeed = 0;                        //TODO based on launch distance
+    //enable obstacle avoidance
+    navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
+    //disable obstacle avoidance
+    Navigation.stop();
+    beep(3);
+    
+    return launchSpeed;
+  }
+  
+  /**
+   * Handles the return to base step of the main flow.
+   */
+  private static void returnToBase() {
+    //enable obstacle avoidance
+    navigateThroughTunnel(navigator);
+    //disable obstacle avoidance
+    navigator.travelTo(home.x, home.y);
+    Navigation.stop();
+    beep(5);
+  }
+  /**
+   * makes the robot beep a specified number of times
+   * @param n
+   */
+  private static void beep(int n) {
+    for(;n>0;n--) {
+      Sound.beep();
+    }
+  }
+
 
   /**
    * Imports data over wifi.
@@ -148,6 +208,8 @@ public class Main {
     navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
     Navigation.moveTo(0.1);
 
+    //TODO: if obstacle avoidance exists, stop it.
+    
     // find angle of tunnel
     double aveX, aveY, theta;
     aveX = (TNG_LL.x + TNG_UR.x) / 2;
@@ -168,11 +230,11 @@ public class Main {
    * 
    * @param navigator to determine navigation type.
    */
-  private static void navigateToLaunch(Navigation navigator) {
+  private static void navigateToLaunch(Navigation navigator, double x, double y) {
     System.out.println("(" + BIN.x + "," + BIN.y + ")");
     System.out.println("(" + odometer.getXYT()[0] + "," + odometer.getXYT()[1] + ")");
-    navigator.travelTo(BIN.x, BIN.y);
-    Navigation.turnToHeading(TNR_UR_x);
+    navigator.travelTo(x,y);
+    Navigation.turnTo(Navigation.angleToTarget(BIN.x, BIN.y));
   }
 
   /**
@@ -257,7 +319,7 @@ public class Main {
    */
   private static void plainNavigationTest() {
     double x = 3 * TILE_SIZE, y = 4 * TILE_SIZE;
-    Navigation navigator = new PlainNavigation();
+    navigator = new PlainNavigation();
     navigator.safeArea = new GridRectangle(0, 0, 15, 15);
     navigator.travelTo(x, y);
     System.exit(0);
@@ -268,7 +330,7 @@ public class Main {
    */
   private static void waggleNavigationTest() {
     int x = 8, y = 4;
-    Navigation navigator = new WaggleNavigation();
+    navigator = new WaggleNavigation();
     navigator.travelTo(x, y);
     Navigation.turnToHeading(135);
   }
@@ -293,7 +355,7 @@ public class Main {
   private static void tunnelTest() {
     TNG_LL = new Point(4, 4);
     TNG_UR = new Point(6, 5);
-    navigateThroughTunnel(new WaggleNavigation());
+    navigateThroughTunnel(navigator);
   }
 
   /**
