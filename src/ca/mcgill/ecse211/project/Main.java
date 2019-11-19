@@ -19,7 +19,7 @@ public class Main {
   private static Odometer odometer;
   private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = bin;
   private static double TNR_UR_x = targetAngle;
-  private static IntPoint home = new IntPoint(1,1); //TODO: depends on team
+  private static IntPoint home = new IntPoint(1,1); //TODO: depends on team Red:1,9. Green:14,1
   
   private static Navigation navigator = new WaggleNavigation();
 

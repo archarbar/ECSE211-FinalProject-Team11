@@ -187,15 +187,28 @@ public class Resources {
       this.y = y;
     }
 
+    /**
+     * Constructs a Point.
+     * @param x the x grid coordinate
+     * @param y the y grid coordinate
+     */
     public Point(int x, int y) {
       this.x = x * TILE_SIZE;
       this.y = y * TILE_SIZE;
     }
 
+    /**
+     * Constructs a Point from another point.
+     * @param p another point
+     */
     public Point(Point p) {
       this(p.x, p.y);
     }
     
+    /**
+     * Constructs a Point from an IntPoint.
+     * @param p the integer point
+     */
     public Point(IntPoint p) {
       this(p.x, p.y);
     }
@@ -219,7 +232,7 @@ public class Resources {
     public int y;
 
     /**
-     * Constructs a Point.
+     * Constructs an IntPoint.
      *
      * @param x the x coordinate
      * @param y the y coordinate
@@ -229,14 +242,27 @@ public class Resources {
       this.y = y;
     }
 
+    /**
+     * Constructs an IntPoint.
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
     public IntPoint(double x, double y) {
       this.x = (int) (x / TILE_SIZE);
       this.y = (int) (y / TILE_SIZE);
     }
 
+    /**
+     * Constructs an IntPoint from another IntPoint.
+     * @param p another point
+     */
     public IntPoint(IntPoint p) {
       this(p.x, p.y);
     }
+    /**
+     * Constructs an IntPoint from a Point.
+     * @param p the integer point
+     */
     public IntPoint(Point p) {
       this(p.x, p.y);
     }
