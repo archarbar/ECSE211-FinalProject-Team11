@@ -1,36 +1,31 @@
 package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
+import ca.mcgill.ecse211.lightSensor.*;
 import ca.mcgill.ecse211.navigation.PlainNavigation;
 import ca.mcgill.ecse211.odometer.Odometer;
-import lejos.robotics.SampleProvider;
-import lejos.hardware.Sound;
 
 /**
  * localises the robot using colour sensors to detect lines arranged in a grid in order to localise angle and position.
  */
-public class LightLocalizer extends PlainNavigation {
+public class ModifiedLightLocalizer extends PlainNavigation {
   private static final long CORRECTION_PERIOD = 5;
   private static final int REVERSE_DIST = 3;
-  private float[] csDataL;
-  private float[] csDataR;
   private double distance;
   private double[] startPos;
   private Odometer odometer;
   private double offTheta;
   private boolean isLeft = false;
-  private SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
-  private SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
-  private static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
-  private int x, y;
+  private LineDetectorController detectorL; // use a red light to compare luminence level
+  private LineDetectorController detectorR;
 
   /**
    * initialises 2 light sensors and gets the odometer.
    */
-  public LightLocalizer() {
+  public ModifiedLightLocalizer(LineDetectorController detectorL, LineDetectorController detectorR) {
     this.odometer = Odometer.getOdometer();
-    csDataL = new float[colorSensorL.sampleSize()];
-    csDataR = new float[colorSensorL.sampleSize()];
+    this.detectorL = detectorL;
+    this.detectorR = detectorR;
   }
 
   /**
@@ -57,22 +52,19 @@ public class LightLocalizer extends PlainNavigation {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    double[] ini_pos = odometer.getXYT();
     stop();
     forwards();
 
     while (true) {
       correctionStart = System.currentTimeMillis();
-      colorSampleProviderL.fetchSample(csDataL, 0); // get data from sensor
-      colorSampleProviderR.fetchSample(csDataR, 0);
-      if ((csDataL[0] < LINE_RED_INTENSITY) || (csDataR[0] < LINE_RED_INTENSITY)) { // if light read by sensor is
+      boolean detectedLeft = detectorL.lineDetected(), detectedRight = detectorR.lineDetected();
+      if ((detectedLeft) || (detectedRight)) { // if light read by sensor is
                                                                                     // smaller (darker) than red light,
                                                                                     // eg., black lines
-        // sound alert to know when the sensor hits a line
         stop();
-        if (csDataR[0] < LINE_RED_INTENSITY) {
+        if (detectedRight) {
           isLeft = false;
-        } else if (csDataL[0] < LINE_RED_INTENSITY) {
+        } else if (detectedLeft) {
           isLeft = true;
         }
         startPos = odometer.getXYT();
@@ -92,8 +84,7 @@ public class LightLocalizer extends PlainNavigation {
     if (isLeft) {
       while (true) {
         correctionStart = System.currentTimeMillis();
-        colorSampleProviderR.fetchSample(csDataR, 0);
-        if (csDataR[0] < LINE_RED_INTENSITY) {
+        if (detectorR.lineDetected()) {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
@@ -116,8 +107,7 @@ public class LightLocalizer extends PlainNavigation {
     } else {
       while (true) {
         correctionStart = System.currentTimeMillis();
-        colorSampleProviderL.fetchSample(csDataL, 0);
-        if (csDataL[0] < LINE_RED_INTENSITY) {
+        if (detectorL.lineDetected()) {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
@@ -144,16 +134,14 @@ public class LightLocalizer extends PlainNavigation {
 
     while (true) {
       correctionStart = System.currentTimeMillis();
-      colorSampleProviderL.fetchSample(csDataL, 0); // get data from sensor
-      colorSampleProviderR.fetchSample(csDataR, 0);
-      if ((csDataL[0] < LINE_RED_INTENSITY) || (csDataR[0] < LINE_RED_INTENSITY)) { // if light read by sensor is
+      boolean detectedLeft = detectorL.lineDetected(), detectedRight = detectorR.lineDetected();
+      if ((detectedLeft) || (detectedRight)) { // if light read by sensor is
                                                                                     // smaller (darker) than red light,
                                                                                     // eg., black lines
-        // sound alert to know when the sensor hits a line
         stop();
-        if (csDataR[0] < LINE_RED_INTENSITY) {
+        if (detectedRight) {
           isLeft = false;
-        } else if (csDataL[0] < LINE_RED_INTENSITY) {
+        } else if (detectedLeft) {
           isLeft = true;
         }
         startPos = odometer.getXYT();
@@ -173,8 +161,7 @@ public class LightLocalizer extends PlainNavigation {
     if (isLeft) {
       while (true) {
         correctionStart = System.currentTimeMillis();
-        colorSampleProviderR.fetchSample(csDataR, 0);
-        if (csDataR[0] < LINE_RED_INTENSITY) {
+        if (detectorR.lineDetected()) {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
@@ -198,8 +185,7 @@ public class LightLocalizer extends PlainNavigation {
     } else {
       while (true) {
         correctionStart = System.currentTimeMillis();
-        colorSampleProviderL.fetchSample(csDataL, 0);
-        if (csDataL[0] < LINE_RED_INTENSITY) {
+        if (detectorL.lineDetected()) {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));

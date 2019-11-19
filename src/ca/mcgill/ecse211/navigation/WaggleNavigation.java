@@ -3,6 +3,7 @@ package ca.mcgill.ecse211.navigation;
 import ca.mcgill.ecse211.odometer.Odometer;
 import lejos.robotics.SampleProvider;
 import static ca.mcgill.ecse211.project.Resources.*;
+import ca.mcgill.ecse211.lightSensor.LineDetectorController;
 
 /**
  * A navigator that actively corrects its heading and position
@@ -30,6 +31,8 @@ public class WaggleNavigation extends Navigation {
   private SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
   private static final float LINE_RED_INTENSITY = (float) 0.3; // cast to float since default is double
   double[] position;
+  private LineDetectorController detectorL;
+  private LineDetectorController detectorR;
 
   /**
    * Initializes the navigator with 2 colour sensors.
@@ -37,6 +40,14 @@ public class WaggleNavigation extends Navigation {
   public WaggleNavigation() {
     csDataL = new float[colorSensorL.sampleSize()];
     csDataR = new float[colorSensorL.sampleSize()];
+  }
+  
+  /**
+   * Initializes the navigator with 2 LineDetectors.
+   */
+  public WaggleNavigation(LineDetectorController l, LineDetectorController r) {
+    detectorL = l;
+    detectorR = r;
   }
 
   /**
@@ -153,15 +164,20 @@ public class WaggleNavigation extends Navigation {
     } else if (d == Direction.NEG) {
       direction = -1;
     }
-    waggle(axis, direction);
+    if(detectorL==null || detectorR==null) {
+      waggle(axis, direction);
+    } else {
+      waggle(axis, direction, detectorL, detectorR);
+    }
+    
   }
 
   /**
    * moves forwards until a line is detected, then uses the difference in location to detecting the the same line with
    * the other sensor to correct the angle, it also corrects its position.
    * 
-   * @param direction
-   * @param side
+   * @param direction 0 for x, 1 for y 
+   * @param side 1 for positive, -1 for negative
    */
   private void waggle(int direction, int side) {
     long correctionStart, correctionEnd;
@@ -260,6 +276,105 @@ public class WaggleNavigation extends Navigation {
     }
   }
 
+  /**
+   * moves forwards until a line is detected, then uses the difference in location to detecting the the same line with
+   * the other sensor to correct the angle, it also corrects its position.
+   * 
+   * @param direction 0 for x, 1 for y 
+   * @param side 1 for positive, -1 for negative
+   * @param detectorL left line detector
+   * @param detectorR reight line detector
+   */
+  private void waggle(int direction, int side, LineDetectorController detectorL, LineDetectorController detectorR) {
+    long correctionStart, correctionEnd;
+    stop();
+    forwards();
+    while (true) {
+      correctionStart = System.currentTimeMillis();
+      boolean detectedLeft = detectorL.lineDetected(), detectedRight = detectorR.lineDetected();
+      if ((detectedLeft) || (detectedRight)) {
+        stop();
+        if (detectedRight) {
+          isLeft = false;
+        } else if (detectedLeft) {
+          isLeft = true;
+        }
+        startPos = odometer.getXYT();
+        break;
+      }
+      correctionEnd = System.currentTimeMillis();
+      if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+        try {
+          Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    forwards();
+    if (isLeft) {
+      while (true) {
+        correctionStart = System.currentTimeMillis();
+        if (tooFar(startPos)) {
+          waggle(direction, side);
+          return;
+        }
+        if (detectorR.lineDetected()) {
+          leftMotor.stop(true);
+          rightMotor.stop(false);
+          endPos = odometer.getXYT();
+          distance = endPos[direction] - startPos[direction];
+          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
+          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
+          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
+          turnTo(-offTheta);
+          break;
+        }
+        correctionEnd = System.currentTimeMillis();
+        if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+          try {
+            Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    } else {
+      while (true) {
+        correctionStart = System.currentTimeMillis();
+        if (tooFar(startPos)) {
+          waggle(direction, side);
+          return;
+        }
+        if (detectorL.lineDetected()) {
+          leftMotor.stop(true);
+          rightMotor.stop(false);
+          endPos = odometer.getXYT();
+          distance = endPos[direction] - startPos[direction];
+          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
+          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
+          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
+          turnTo(offTheta);
+          break;
+        }
+        correctionEnd = System.currentTimeMillis();
+        if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+          try {
+            Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    }
+    position = odometer.getXYT();
+    moveTo(sensorOffset);
+    if (direction == 0) {
+      odometer.setX(roundToLine(position[0]));
+    } else if (direction == 1) {
+      odometer.setY(roundToLine(position[1]));
+    }
+  }
   /**
    * given a position on an axis, return the nearest value that's on a gridline.
    * 
