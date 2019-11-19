@@ -2,8 +2,6 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import ca.mcgill.ecse211.lightSensor.*;
-import ca.mcgill.ecse211.navigation.PlainNavigation;
-import ca.mcgill.ecse211.odometer.Odometer;
 
 /**
  * localises the robot using colour sensors to detect lines arranged in a grid in order to localise angle and position.

@@ -1,7 +1,6 @@
-package ca.mcgill.ecse211.navigation;
+package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
-import ca.mcgill.ecse211.odometer.Odometer;
 
 /**
  * Contains all the general navigation related methods. Objects of this type also must implement a travelTo method that

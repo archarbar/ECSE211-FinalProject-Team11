@@ -1,14 +1,14 @@
-package ca.mcgill.ecse211.project;
+package deprecated;
 
 
 import lejos.hardware.sensor.BaseSensor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.SampleProvider;
-import ca.mcgill.ecse211.odometer.Odometer;
 import lejos.hardware.Sound;
 import static ca.mcgill.ecse211.project.Resources.*;
-import ca.mcgill.ecse211.navigation.Navigation;
-import ca.mcgill.ecse211.navigation.PlainNavigation;
+import ca.mcgill.ecse211.project.Navigation;
+import ca.mcgill.ecse211.project.Odometer;
+import ca.mcgill.ecse211.project.PlainNavigation;
 
 @Deprecated
 public class OldLightLocalizer extends PlainNavigation {
@@ -83,7 +83,6 @@ public class OldLightLocalizer extends PlainNavigation {
       rightMotor.setSpeed(MOTOR_SPEED);
       leftMotor.forward();
       rightMotor.forward();
-      LCD.drawString("value: " + getIntensity(), 0, 5);
 
       if (getIntensity() < lineThreshold) {
         break;
@@ -133,8 +132,8 @@ public class OldLightLocalizer extends PlainNavigation {
 
     travelTo(0.0, 0.0);
     do {
-      LCD.drawString("X: " + dX, 0, 5);
-      LCD.drawString("Y: " + dY, 0, 6);
+      System.out.println("X: " + dX);
+      System.out.println("Y: " + dY);
     } while (isNavigating());
 
     if (!SILENT_VERIFICATION) {

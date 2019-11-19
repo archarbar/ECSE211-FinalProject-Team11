@@ -1,11 +1,11 @@
-package ca.mcgill.ecse211.navigation;
+package deprecated;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.LinkedList;
-import ca.mcgill.ecse211.lightSensor.DifferentialLineDetector;
-import ca.mcgill.ecse211.lightSensor.LineDetectorController;
-import ca.mcgill.ecse211.odometer.Odometer;
-import ca.mcgill.ecse211.odometer.OdometryCorrection;
+import ca.mcgill.ecse211.project.DifferentialLineDetector;
+import ca.mcgill.ecse211.project.LineDetectorController;
+import ca.mcgill.ecse211.project.Navigation;
+import ca.mcgill.ecse211.project.Odometer;
 import lejos.robotics.SampleProvider;
 @Deprecated
 public class LineNavigation extends Navigation {
@@ -66,19 +66,20 @@ public class LineNavigation extends Navigation {
   }
 
   /**
-   * @return the lineNavigating
+   * @return if the object is currently navigating.
    */
   public static boolean isLineNavigating() {
     return lineNavigating;
   }
 
   /**
-   * @return the turning
+   * @return if the object is currently turning.
    */
   public static boolean isTurning() {
     return turning;
   }
 
+  @Override
   public void travelTo(double x, double y) {
     currentTargetX = x;
     currentTargetY = y;
@@ -143,11 +144,21 @@ public class LineNavigation extends Navigation {
 
   }
 
+  /**
+   * finds the nearest intersection point to the robots current position
+   * @return
+   */
   private static double[] nearestIntersect() {
     double position[] = Odometer.getOdometer().getXYT();
     return nearestIntersect(position[0], position[1]);
   }
 
+  /**
+   * finds the nearest intersection to the robot that borders the tile that contains the given point.
+   * @param x location in cm of a point.
+   * @param y location in cm of a point.
+   * @return x and y value of the intersection in cm.
+   */
   private static double[] nearestIntersect(double x, double y) {
     double intersect[] = new double[2];
     double position[] = Odometer.getOdometer().getXYT();

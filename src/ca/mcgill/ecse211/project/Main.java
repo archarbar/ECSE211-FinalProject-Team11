@@ -15,11 +15,6 @@ import java.text.DecimalFormat;
 import ca.mcgill.ecse211.project.Display;
 import ca.mcgill.ecse211.project.LightLocalizer;
 import ca.mcgill.ecse211.project.UltrasonicLocalizer;
-import ca.mcgill.ecse211.navigation.GridRectangle;
-import ca.mcgill.ecse211.navigation.Navigation;
-import ca.mcgill.ecse211.navigation.PlainNavigation;
-import ca.mcgill.ecse211.navigation.WaggleNavigation;
-import ca.mcgill.ecse211.odometer.Odometer;
 
 public class Main {
   private static Odometer odometer;

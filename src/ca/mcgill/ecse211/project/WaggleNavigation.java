@@ -1,9 +1,7 @@
-package ca.mcgill.ecse211.navigation;
+package ca.mcgill.ecse211.project;
 
-import ca.mcgill.ecse211.odometer.Odometer;
 import lejos.robotics.SampleProvider;
 import static ca.mcgill.ecse211.project.Resources.*;
-import ca.mcgill.ecse211.lightSensor.LineDetectorController;
 
 /**
  * A navigator that actively corrects its heading and position

@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.lightSensor;
+package ca.mcgill.ecse211.project;
 
 /**
  * A class that implements LineDetectorController should use a single color sensor in order to detect lines. The

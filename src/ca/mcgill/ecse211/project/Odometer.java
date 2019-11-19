@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.odometer;
+package ca.mcgill.ecse211.project;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import java.util.concurrent.locks.Condition;

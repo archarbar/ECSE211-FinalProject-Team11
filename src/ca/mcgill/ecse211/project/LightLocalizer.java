@@ -1,8 +1,6 @@
 package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
-import ca.mcgill.ecse211.navigation.PlainNavigation;
-import ca.mcgill.ecse211.odometer.Odometer;
 import lejos.robotics.SampleProvider;
 import lejos.hardware.Sound;
 

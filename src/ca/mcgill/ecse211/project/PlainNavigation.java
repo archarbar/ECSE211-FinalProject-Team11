@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.navigation;
+package ca.mcgill.ecse211.project;
 
 /**
  * A simple navigation implementation.

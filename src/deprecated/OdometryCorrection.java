@@ -1,11 +1,10 @@
-package ca.mcgill.ecse211.odometer;
+package deprecated;
 
 import static ca.mcgill.ecse211.project.Resources.*;
-import ca.mcgill.ecse211.lightSensor.DifferentialLineDetector;
-import ca.mcgill.ecse211.lightSensor.LineDetectorController;
-import ca.mcgill.ecse211.lightSensor.LineDetectorController.Edge;
-import ca.mcgill.ecse211.navigation.LineNavigation;
-import ca.mcgill.ecse211.project.Display;
+import ca.mcgill.ecse211.project.DifferentialLineDetector;
+import ca.mcgill.ecse211.project.LineDetectorController;
+import ca.mcgill.ecse211.project.Odometer;
+import ca.mcgill.ecse211.project.LineDetectorController.Edge;
 import lejos.hardware.Sound;
 import lejos.hardware.sensor.EV3ColorSensor;
 
@@ -24,6 +23,9 @@ public class OdometryCorrection implements Runnable {
 
   private EV3ColorSensor sideLightSensor;
 
+  /**
+   * the detection of line thread.
+   */
   public void run() {
     long updateStart, updateEnd;
     LineDetectorController centreDetector = new DifferentialLineDetector(centreLightSensor.getRedMode());
@@ -116,10 +118,6 @@ public class OdometryCorrection implements Runnable {
       }
 
       double[] xyt = odometer.getXYT();
-      String x = "X:" + xyt[0];
-      String y = "Y:" + xyt[1];
-      Display.showText(x, y);
-
       updateEnd = System.currentTimeMillis();
       if (updateEnd - updateStart < CORRECTION_PERIOD / 2) {
         try {
@@ -143,6 +141,11 @@ public class OdometryCorrection implements Runnable {
     return round + sensorOffset;
   }
   
+  /**
+   * sets the thread to pause while executing.
+   * @param mainThread
+   * @return
+   */
   public OdometryCorrection setLineThread(Thread mainThread) {
     this.mainThread = mainThread;
     return this;

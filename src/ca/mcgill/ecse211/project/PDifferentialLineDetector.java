@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.lightSensor;
+package ca.mcgill.ecse211.project;
 
 import lejos.hardware.sensor.EV3ColorSensor;
 

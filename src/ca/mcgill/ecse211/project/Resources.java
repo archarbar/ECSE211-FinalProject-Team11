@@ -1,9 +1,7 @@
 package ca.mcgill.ecse211.project;
 
-import ca.mcgill.ecse211.navigation.GridRectangle;
 import ca.mcgill.ecse211.wificlient.WifiConnection;
 import lejos.hardware.ev3.LocalEV3;
-import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
@@ -52,11 +50,6 @@ public class Resources {
    * The launcher motor 2.
    */
   public static EV3LargeRegulatedMotor launcher2 = null;
-
-  /**
-   * The LCD.
-   */
-  public static final TextLCD LCD = LocalEV3.get().getTextLCD();
 
   /**
    * Theangle at which launching motor is placed before launch.
