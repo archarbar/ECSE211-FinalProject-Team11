@@ -193,8 +193,52 @@ public class Resources {
     }
 
     public Point(Point p) {
-      this.x = p.x;
-      this.y = p.y;
+      this(p.x, p.y);
+    }
+    
+    public Point(IntPoint p) {
+      this(p.x, p.y);
+    }
+
+    public String toString() {
+      return "(" + x + ", " + y + ")";
+    }
+
+  }
+  
+  /**
+   * Represents an integer value coordinate point on the competition map grid.
+   *
+   * @author Matthew Williams
+   */
+  public static class IntPoint {
+    /** The x coordinate. */
+    public int x;
+
+    /** The y coordinate. */
+    public int y;
+
+    /**
+     * Constructs a Point.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
+    public IntPoint(int x, int y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    public IntPoint(double x, double y) {
+      this.x = (int) (x / TILE_SIZE);
+      this.y = (int) (y / TILE_SIZE);
+    }
+
+    public IntPoint(IntPoint p) {
+      this(p.x, p.y);
+    }
+    public IntPoint(Point p) {
+      this(p.x, p.y);
     }
 
     public String toString() {
