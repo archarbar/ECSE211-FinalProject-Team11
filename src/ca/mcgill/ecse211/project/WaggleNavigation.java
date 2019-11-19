@@ -105,7 +105,6 @@ public class WaggleNavigation extends Navigation {
         heading2 = 90;
       }
     }
-    LCD.clear();
     System.out.println("X:" + xTileDis);
     System.out.println("Y:" + yTileDis);
     System.out.println("T:" + angleToTarget(x, y));
@@ -222,8 +221,6 @@ public class WaggleNavigation extends Navigation {
           endPos = odometer.getXYT();
           distance = endPos[direction] - startPos[direction];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(-offTheta);
           break;
         }
@@ -250,8 +247,6 @@ public class WaggleNavigation extends Navigation {
           endPos = odometer.getXYT();
           distance = endPos[direction] - startPos[direction];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(offTheta);
           break;
         }
@@ -323,8 +318,6 @@ public class WaggleNavigation extends Navigation {
           endPos = odometer.getXYT();
           distance = endPos[direction] - startPos[direction];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(-offTheta);
           break;
         }
@@ -350,8 +343,6 @@ public class WaggleNavigation extends Navigation {
           endPos = odometer.getXYT();
           distance = endPos[direction] - startPos[direction];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(offTheta);
           break;
         }

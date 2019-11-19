@@ -12,7 +12,6 @@ import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.text.DecimalFormat;
-import ca.mcgill.ecse211.project.Display;
 import ca.mcgill.ecse211.project.LightLocalizer;
 import ca.mcgill.ecse211.project.UltrasonicLocalizer;
 

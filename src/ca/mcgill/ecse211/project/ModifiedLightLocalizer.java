@@ -86,8 +86,6 @@ public class ModifiedLightLocalizer extends PlainNavigation {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(-offTheta);
           moveTo(-REVERSE_DIST);
           turnTo(90);
@@ -109,8 +107,6 @@ public class ModifiedLightLocalizer extends PlainNavigation {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(offTheta);
           moveTo(-REVERSE_DIST);
           turnTo(90);
@@ -163,8 +159,6 @@ public class ModifiedLightLocalizer extends PlainNavigation {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(-offTheta);
           moveTo(sensorOffset);
           turnTo(-90);
@@ -187,8 +181,6 @@ public class ModifiedLightLocalizer extends PlainNavigation {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(offTheta);
           moveTo(sensorOffset);
           turnTo(-90);

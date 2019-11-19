@@ -2,7 +2,6 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import lejos.robotics.SampleProvider;
-import lejos.hardware.Sound;
 
 /**
  * localises the robot using colour sensors to detect lines arranged in a grid in order to localise angle and position.
@@ -20,7 +19,6 @@ public class LightLocalizer extends PlainNavigation {
   private SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
   private SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
   private static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
-  private int x, y;
 
   /**
    * initialises 2 light sensors and gets the odometer.
@@ -55,7 +53,6 @@ public class LightLocalizer extends PlainNavigation {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    double[] ini_pos = odometer.getXYT();
     stop();
     forwards();
 
@@ -95,8 +92,6 @@ public class LightLocalizer extends PlainNavigation {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(-offTheta);
           moveTo(-REVERSE_DIST);
           turnTo(90);
@@ -119,8 +114,6 @@ public class LightLocalizer extends PlainNavigation {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(offTheta);
           moveTo(-REVERSE_DIST);
           turnTo(90);
@@ -176,8 +169,6 @@ public class LightLocalizer extends PlainNavigation {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(-offTheta);
           moveTo(sensorOffset);
           turnTo(-90);
@@ -201,8 +192,6 @@ public class LightLocalizer extends PlainNavigation {
           stop();
           distance = (odometer.getXYT())[1] - startPos[1];
           offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          LCD.drawString("theta:  " + String.valueOf(offTheta), 0, 4);
-          LCD.drawString("distance:  " + String.valueOf(distance), 0, 5);
           turnTo(offTheta);
           moveTo(sensorOffset);
           turnTo(-90);

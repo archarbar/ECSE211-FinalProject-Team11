@@ -1,12 +1,10 @@
 package deprecated;
 
 
-import lejos.hardware.sensor.BaseSensor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.SampleProvider;
 import lejos.hardware.Sound;
 import static ca.mcgill.ecse211.project.Resources.*;
-import ca.mcgill.ecse211.project.Navigation;
 import ca.mcgill.ecse211.project.Odometer;
 import ca.mcgill.ecse211.project.PlainNavigation;
 
@@ -17,7 +15,7 @@ public class OldLightLocalizer extends PlainNavigation {
   // the SENSOR_OFFSET represents the distance between the center of the wheelbase and the light sensor
   // private final double x = 3.25, y = 3;
   // private final double SENSOR_OFFSET = -Math.sqrt(x*x+y*y), OFFSET_ANGLE = Math.atan(x/y);
-  private final double SENSOR_OFFSET = 17; //TODO get a better value
+  private final double SENSOR_OFFSET = 17; 
 
 
 

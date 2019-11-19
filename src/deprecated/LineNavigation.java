@@ -6,6 +6,7 @@ import ca.mcgill.ecse211.project.DifferentialLineDetector;
 import ca.mcgill.ecse211.project.LineDetectorController;
 import ca.mcgill.ecse211.project.Navigation;
 import ca.mcgill.ecse211.project.Odometer;
+import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.SampleProvider;
 @Deprecated
 public class LineNavigation extends Navigation {
