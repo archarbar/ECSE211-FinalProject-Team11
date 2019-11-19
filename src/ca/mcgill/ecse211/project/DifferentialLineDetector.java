@@ -2,26 +2,71 @@ package ca.mcgill.ecse211.project;
 
 import lejos.robotics.SampleProvider;
 
+/**
+ *  Differential line detector that uses difference between old value and current value
+ *  implements the line detector controller class
+ *  
+ *  @author Victor
+ *  @author Matthew
+ */
 public class DifferentialLineDetector implements LineDetectorController {
 
 
-
   // mean filter
+  
+  /*
+   * filter size
+   */
   private static final int BUFFER_SIZE = 5;
+  
+  /*
+   * the buffer
+   */
   private double buffer[] = new double[BUFFER_SIZE];
+  
   private int filterIndex = 0;
+  
   private int filterCount = 0;
 
   // differential
+  
+  /**
+   * threshold comparison value to decide which edge type to use
+   */
   public final double THRESHOLD = 0.1;
+  
+  /**
+   * old light value
+   */
   private double oldVal;
 
   // LineDetector
+  
+  /**
+   * threshold distance for line detection
+   */
   private static final double MAX_DISTANCE = 3;
+  
+  /**
+   * sample containing values read by light sensor
+   */
   private float[] sample;
+  
+  /**
+   * sample provider for the light sensor
+   */
   SampleProvider cs;
+ 
   Edge lastEdge = Edge.NoEdge;
+  
+  /**
+   * x value of edge
+   */
   Double edgeX;
+  
+  /**
+   * y value of edge
+   */
   Double edgeY;
 
   /**
@@ -37,6 +82,11 @@ public class DifferentialLineDetector implements LineDetectorController {
     oldVal = sample[0];
   }
 
+  /**
+   * Method to check when a line is detected
+   * 
+   * @return true if line is detected, false if not
+   */
   @Override
   public boolean lineDetected() { // fallingEdge -> risingEdge
     Edge edge = edgeDetected();

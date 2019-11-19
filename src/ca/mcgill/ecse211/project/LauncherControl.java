@@ -2,6 +2,11 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 
+/**
+ * Main class for methods that control the launcher
+ * @author Victor
+ *
+ */
 public class LauncherControl {
 
   /**

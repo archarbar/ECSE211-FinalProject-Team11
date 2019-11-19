@@ -6,7 +6,6 @@ import static ca.mcgill.ecse211.project.Resources.*;
  * A grid rectangle defined by 2 points in the grid coordinate system.
  * 
  * @author Matthew
- *
  */
 public class GridRectangle {
   private int xLow, xHigh, yLow, yHigh;
