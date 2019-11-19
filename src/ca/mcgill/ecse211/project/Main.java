@@ -38,7 +38,7 @@ public class Main {
     // BIN = new Point(2,6);
     // TNR_UR_x = 315;
     // turnTest();
-    betaDemo();
+//    betaDemo();
     // startOdometer();
     // Resources.SILENT_VERIFICATION = true;
     //// importData();
@@ -50,6 +50,7 @@ public class Main {
     // tunnelTest();
     // waggleNavigationTest();
     // launchTest();
+    launch(1, 570);
   }
 
 
