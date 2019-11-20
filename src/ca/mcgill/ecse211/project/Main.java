@@ -22,10 +22,10 @@ public class Main {
    */
   private static Odometer odometer;
   
-  /**
-   * tunnel corners and bin location imported from resources
-   */
-  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = bin;
+//  /**
+//   * tunnel corners and bin location imported from resources
+//   */
+//  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = bin;
   
   /**
    * 
@@ -97,7 +97,7 @@ public class Main {
 
     // navigate to specified coords
     // turn to specified angle
-    navigateToLaunch(new WaggleNavigation(), BIN.x, BIN.y);
+//    navigateToLaunch(new WaggleNavigation(), BIN.x, BIN.y);
     beep(3);
     // launch
     int maxSpeed = 1300;
@@ -175,8 +175,8 @@ public class Main {
     System.out.println("Green Team: " + greenTeam);
     System.out.println("Green Zone: " + green);
     System.out.println("Island Zone, upper right: " + island.ur);
-    System.out.println("Bin location: x=" + bin.x + ", y=" + bin.y);
-    System.out.println("Target Angle: " + targetAngle);
+    System.out.println("Red Bin location: x=" + redBin.x + ", y=" + redBin.y);
+    System.out.println("Green Bin location: x=" + greenBin.x + ", y=" + greenBin.y);
   }
 
   /**
@@ -216,20 +216,20 @@ public class Main {
    * @param navigator to determine navigation type.
    */
   private static void navigateThroughTunnel(Navigation navigator) {
-    Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
-    System.out.println("X val:" + tunnelEntr.x);
-    System.out.println("Y val:" + tunnelEntr.y);
-    navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
+//    Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
+//    System.out.println("X val:" + tunnelEntr.x);
+//    System.out.println("Y val:" + tunnelEntr.y);
+//    navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
     Navigation.moveTo(0.1);
 
     //TODO: if obstacle avoidance exists, stop it.
     
     // find angle of tunnel
     double aveX, aveY, theta;
-    aveX = (TNG_LL.x + TNG_UR.x) / 2;
-    aveY = (TNG_LL.y + TNG_UR.y) / 2;
-    theta = Navigation.angleToTarget(aveX, aveY);
-    Navigation.turnTo(theta);
+//    aveX = (TNG_LL.x + TNG_UR.x) / 2;
+//    aveY = (TNG_LL.y + TNG_UR.y) / 2;
+//    theta = Navigation.angleToTarget(aveX, aveY);
+//    Navigation.turnTo(theta);
     initLaunchers();
     LauncherControl.lowerArm();
     closeLightSensors();
@@ -245,10 +245,10 @@ public class Main {
    * @param navigator to determine navigation type.
    */
   private static void navigateToLaunch(Navigation navigator, double x, double y) {
-    System.out.println("(" + BIN.x + "," + BIN.y + ")");
+//    System.out.println("(" + BIN.x + "," + BIN.y + ")");
     System.out.println("(" + odometer.getXYT()[0] + "," + odometer.getXYT()[1] + ")");
     navigator.travelTo(x,y);
-    Navigation.turnTo(Navigation.angleToTarget(BIN.x, BIN.y));
+//    Navigation.turnTo(Navigation.angleToTarget(BIN.x, BIN.y));
   }
 
   /**
@@ -367,8 +367,8 @@ public class Main {
    * flow to test the tunnel navigation method.
    */
   private static void tunnelTest() {
-    TNG_LL = new Point(4, 4);
-    TNG_UR = new Point(6, 5);
+//    TNG_LL = new Point(4, 4);
+//    TNG_UR = new Point(6, 5);
     navigateThroughTunnel(navigator);
   }
 
