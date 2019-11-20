@@ -60,12 +60,12 @@ public class DifferentialLineDetector implements LineDetectorController {
   Edge lastEdge = Edge.NoEdge;
   
   /**
-   * x value of edge
+   * x position of edge in cm
    */
   Double edgeX;
   
   /**
-   * y value of edge
+   * y position of edge in cm
    */
   Double edgeY;
 

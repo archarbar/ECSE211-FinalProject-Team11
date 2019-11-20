@@ -267,6 +267,10 @@ public class Resources {
       this(p.x, p.y);
     }
 
+    /**
+     * converts coordinates to string
+     * @return string of coordinates
+     */
     public String toString() {
       return "(" + x + ", " + y + ")";
     }
