@@ -45,11 +45,11 @@ public class Resources {
   /**
    * The launcher motor 1.
    */
-  public static EV3LargeRegulatedMotor launcher1 = null;
+  public static EV3LargeRegulatedMotor launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
   /**
    * The launcher motor 2.
    */
-  public static EV3LargeRegulatedMotor launcher2 = null;
+  public static EV3LargeRegulatedMotor launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 
   /**
    * Theangle at which launching motor is placed before launch.

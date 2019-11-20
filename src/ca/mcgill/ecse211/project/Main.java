@@ -1,14 +1,14 @@
 package ca.mcgill.ecse211.project;
 
 import lejos.hardware.Sound;
+import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
+import ca.mcgill.ecse211.project.*;
 import static ca.mcgill.ecse211.project.Resources.*;
-import ca.mcgill.ecse211.project.LightLocalizer;
-import ca.mcgill.ecse211.project.UltrasonicLocalizer;
 
 /**
  * The running point of the entire project.
@@ -57,7 +57,10 @@ public class Main {
     // tunnelTest();
     // waggleNavigationTest();
     // launchTest();
-    launch(1, 570);
+    for (int i=0; i < 5; i++) {
+      LauncherControl.launch(1000);
+      Button.waitForAnyPress();
+    }
 //    mainFlow();
   }
 
