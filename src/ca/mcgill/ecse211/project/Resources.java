@@ -16,13 +16,13 @@ public class Resources {
   /**
    * The default server IP used by the profs and TA's.
    */
-  public static final String DEFAULT_SERVER_IP = "192.168.2.3";
+  public static final String DEFAULT_SERVER_IP = "192.168.2.53";
 
   /**
    * The IP address of the server that transmits data to the robot. Set this to the default for the beta demo and
    * competition.
    */
-  public static final String SERVER_IP = "192.168.2.53";
+  public static final String SERVER_IP = "192.168.2.22";
 
   /**
    * Your team number.
@@ -32,12 +32,12 @@ public class Resources {
   /**
    * Enables printing of debug info from the WiFi class.
    */
-  public static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
+  public static final boolean ENABLE_DEBUG_WIFI_PRINT = false;
 
   /**
    * Enable this to attempt to receive Wi-Fi parameters at the start of the program.
    */
-  public static final boolean RECEIVE_WIFI_PARAMS = true;
+  public static final boolean RECEIVE_WIFI_PARAMS = false;
 
   // DECLARE YOUR CURRENT RESOURCES HERE
   // eg, motors, sensors, constants, etc
@@ -81,7 +81,7 @@ public class Resources {
   /**
    * the robot's track size
    */
-  public static final double TRACK = 16.74; // temporary value 15.1232
+  public static final double TRACK = 15.72; // temporary value 15.1232
 
   /**
    * the distance at which we want to perform the launch
@@ -285,7 +285,7 @@ public class Resources {
   /**
    * Distance between light sensors in cm.
    */
-  public static final double LSwidth = 6.8;
+  public static final double LSwidth = 11.6;
 
   // public static final int ROTATE_SPEED = 175;
   // public static final int MOTOR_SPEED = 250;
@@ -362,9 +362,10 @@ public class Resources {
   /**
    * The red tunnel footprint.
    */
-   public static Region tnr = new Region("TNR_LL_x", "TNR_LL_y", "TNR_UR_x", "TNR_UR_y");
-   public static GridRectangle tnrRectangle =
-   new GridRectangle(get("TNR_LL_x"), get("TNR_LL_y"), get("TNR_UR_x"), get("TNR_UR_y"));
+//   public static Region tnr = new Region("TNR_LL_x", "TNR_LL_y", "TNR_UR_x", "TNR_UR_y");
+//   public static GridRectangle tnrRectangle =
+//   new GridRectangle(get("TNR_LL_x"), get("TNR_LL_y"), get("TNR_UR_x"), get("TNR_UR_y"));
+  public static double targetAngle = Math.max(get("TNR_LL_x"), get("TNR_UR_x"));
 
   /**
    * The green tunnel footprint.
@@ -373,15 +374,16 @@ public class Resources {
   public static GridRectangle tngRectangle =
       new GridRectangle(get("TNG_LL_x"), get("TNG_LL_y"), get("TNG_UR_x"), get("TNG_UR_y"));
 
-  /**
-   * The location of the red target bin.
-   */
-  public static Point redBin = new Point(get("Red_BIN_x"), get("Red_BIN_y"));
-
-  /**
-   * The location of the green target bin.
-   */
-  public static Point greenBin = new Point(get("Green_BIN_x"), get("Green_BIN_y"));
+//  /**
+//   * The location of the red target bin.
+//   */
+//  public static Point redBin = new Point(get("Red_BIN_x"), get("Red_BIN_y"));
+//
+//  /**
+//   * The location of the green target bin.
+//   */
+//  public static Point greenBin = new Point(get("Green_BIN_x"), get("Green_BIN_y"));
+  public static Point bin = new Point(get("BIN_x"), get("BIN_y"));
 
   /**
    * Receives Wi-Fi parameters from the server program.

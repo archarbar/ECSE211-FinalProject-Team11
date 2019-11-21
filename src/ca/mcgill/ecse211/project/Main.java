@@ -25,7 +25,7 @@ public class Main {
 //  /**
 //   * tunnel corners and bin location imported from resources
 //   */
-//  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = bin;
+  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = bin;
   
   /**
    * 
@@ -46,7 +46,10 @@ public class Main {
   public static void main(String[] args) {
     // turnTest();
 //    betaDemo();
-    // startOdometer();
+    startOdometer();
+    for (int a=0; a<20; a++) {
+      Navigation.turnTo(180);
+    }
     // Resources.SILENT_VERIFICATION = true;
     //// importData();
     // localize(1,1);
@@ -55,12 +58,12 @@ public class Main {
     // // plainNavigationTest();
     //
     // tunnelTest();
-    // waggleNavigationTest();
+//     waggleNavigationTest();
     // launchTest();
-    for (int i=0; i < 5; i++) {
-      LauncherControl.launch(1000);
-      Button.waitForAnyPress();
-    }
+//    for (int i=0; i < 5; i++) {
+//      LauncherControl.launch(1000);
+//      Button.waitForAnyPress();
+//    }
 //    mainFlow();
   }
 
@@ -100,7 +103,7 @@ public class Main {
 
     // navigate to specified coords
     // turn to specified angle
-//    navigateToLaunch(new WaggleNavigation(), BIN.x, BIN.y);
+    navigateToLaunch(new WaggleNavigation(), BIN.x, BIN.y);
     beep(3);
     // launch
     int maxSpeed = 1300;
@@ -178,8 +181,8 @@ public class Main {
     System.out.println("Green Team: " + greenTeam);
     System.out.println("Green Zone: " + green);
     System.out.println("Island Zone, upper right: " + island.ur);
-    System.out.println("Red Bin location: x=" + redBin.x + ", y=" + redBin.y);
-    System.out.println("Green Bin location: x=" + greenBin.x + ", y=" + greenBin.y);
+//    System.out.println("Red Bin location: x=" + redBin.x + ", y=" + redBin.y);
+//    System.out.println("Green Bin location: x=" + greenBin.x + ", y=" + greenBin.y);
   }
 
   /**
@@ -200,7 +203,7 @@ public class Main {
    * @param y
    */
   private static void localize(int x, int y) {
-    initUSSensor();
+//    initUSSensor();
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
@@ -209,7 +212,7 @@ public class Main {
     US_SENSOR = null;
     Navigation.moveTo(-2);
     // Navigation.turnTo(-2);
-    initLightSensors();
+//    initLightSensors();
     lsLocalizer.localize(x, y);
   }
 
@@ -229,15 +232,15 @@ public class Main {
     
     // find angle of tunnel
     double aveX, aveY, theta;
-//    aveX = (TNG_LL.x + TNG_UR.x) / 2;
-//    aveY = (TNG_LL.y + TNG_UR.y) / 2;
-//    theta = Navigation.angleToTarget(aveX, aveY);
-//    Navigation.turnTo(theta);
-    initLaunchers();
+    aveX = (TNG_LL.x + TNG_UR.x) / 2;
+    aveY = (TNG_LL.y + TNG_UR.y) / 2;
+    theta = Navigation.angleToTarget(aveX, aveY);
+    Navigation.turnTo(theta);
+//    initLaunchers();
     LauncherControl.lowerArm();
     closeLightSensors();
     Navigation.moveTo(4 * TILE_SIZE);
-    initLightSensors();
+//    initLightSensors();
     LauncherControl.raiseArm();
     closeLaunchers();
   }
@@ -262,43 +265,43 @@ public class Main {
    */
   private static void launch(int numLaunches, int speed) {
     closeMotors();
-    initLaunchers();
+//    initLaunchers();
     for (int i = 0; i < numLaunches; ++i) {
       LauncherControl.launch(speed);
     }
     closeLaunchers();
   }
 
-  /**
-   * initialises the launcher motors.
-   */
-  private static void initLaunchers() {
-    launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
-    launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
-  }
-
-  /**
-   * initialises the movement motors.
-   */
-  private static void initMotors() {
-    leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
-    rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
-  }
-
-  /**
-   * initialises the light sensors.
-   */
-  private static void initLightSensors() {
-    colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
-    colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
-  }
-
-  /**
-   * initialises the ultrasonic sensor.
-   */
-  private static void initUSSensor() {
-    US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
-  }
+//  /**
+//   * initialises the launcher motors.
+//   */
+//  private static void initLaunchers() {
+//    launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+//    launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+//  }
+//
+//  /**
+//   * initialises the movement motors.
+//   */
+//  private static void initMotors() {
+//    leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
+//    rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+//  }
+//
+//  /**
+//   * initialises the light sensors.
+//   */
+//  private static void initLightSensors() {
+//    colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
+//    colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+//  }
+//
+//  /**
+//   * initialises the ultrasonic sensor.
+//   */
+//  private static void initUSSensor() {
+//    US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
+//  }
 
   /**
    * closes the launcher motors.
@@ -348,7 +351,7 @@ public class Main {
   private static void waggleNavigationTest() {
     int x = 8, y = 4;
     navigator = new WaggleNavigation();
-    navigator.travelTo(x, y);
+    navigator.travelTo(x, y, true);
     Navigation.turnToHeading(135);
   }
 
