@@ -57,9 +57,10 @@ public class Main {
     // tunnelTest();
     // waggleNavigationTest();
     // launchTest();
-    for (int i=0; i < 5; i++) {
-      LauncherControl.launch(1000);
+    for (int i=0; i < 3; i++) {
       Button.waitForAnyPress();
+      LauncherControl.launch(310);
+      
     }
 //    mainFlow();
   }
