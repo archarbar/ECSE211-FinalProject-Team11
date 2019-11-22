@@ -32,12 +32,12 @@ public class Resources {
   /**
    * Enables printing of debug info from the WiFi class.
    */
-  public static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
+  public static final boolean ENABLE_DEBUG_WIFI_PRINT = false;
 
   /**
    * Enable this to attempt to receive Wi-Fi parameters at the start of the program.
    */
-  public static final boolean RECEIVE_WIFI_PARAMS = true;
+  public static final boolean RECEIVE_WIFI_PARAMS = false;
 
   // DECLARE YOUR CURRENT RESOURCES HERE
   // eg, motors, sensors, constants, etc
@@ -151,7 +151,8 @@ public class Resources {
   /**
    * Speed to lower arm in degrees/s.
    */
-  public static final int LOWER_SPEED = 50;
+  //public static final int LOWER_SPEED = 50;
+  public static final int LOWER_SPEED = 160;
 
   /**
    * The speed at which the launcher rotates in degrees per second.
