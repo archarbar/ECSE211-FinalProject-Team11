@@ -25,7 +25,7 @@ public class Main {
 //  /**
 //   * tunnel corners and bin location imported from resources
 //   */
-  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = bin;
+  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = greenBin;
   
   /**
    * 
@@ -47,9 +47,9 @@ public class Main {
     // turnTest();
 //    betaDemo();
     startOdometer();
-    for (int a=0; a<20; a++) {
-      Navigation.turnTo(180);
-    }
+//    for (int a=0; a<20; a++) {
+//      Navigation.turnTo(180);
+//    }
     // Resources.SILENT_VERIFICATION = true;
     //// importData();
     // localize(1,1);
@@ -60,11 +60,7 @@ public class Main {
     // tunnelTest();
 //     waggleNavigationTest();
     // launchTest();
-//    for (int i=0; i < 5; i++) {
-//      LauncherControl.launch(1000);
-//      Button.waitForAnyPress();
-//    }
-//    mainFlow();
+    mainFlow();
   }
 
 
@@ -181,8 +177,8 @@ public class Main {
     System.out.println("Green Team: " + greenTeam);
     System.out.println("Green Zone: " + green);
     System.out.println("Island Zone, upper right: " + island.ur);
-//    System.out.println("Red Bin location: x=" + redBin.x + ", y=" + redBin.y);
-//    System.out.println("Green Bin location: x=" + greenBin.x + ", y=" + greenBin.y);
+    System.out.println("Red Bin location: x=" + redBin.x + ", y=" + redBin.y);
+    System.out.println("Green Bin location: x=" + greenBin.x + ", y=" + greenBin.y);
   }
 
   /**
@@ -222,10 +218,10 @@ public class Main {
    * @param navigator to determine navigation type.
    */
   private static void navigateThroughTunnel(Navigation navigator) {
-//    Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
-//    System.out.println("X val:" + tunnelEntr.x);
-//    System.out.println("Y val:" + tunnelEntr.y);
-//    navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
+    Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
+    System.out.println("X val:" + tunnelEntr.x);
+    System.out.println("Y val:" + tunnelEntr.y);
+    navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
     Navigation.moveTo(0.1);
 
     //TODO: if obstacle avoidance exists, stop it.
@@ -251,10 +247,10 @@ public class Main {
    * @param navigator to determine navigation type.
    */
   private static void navigateToLaunch(Navigation navigator, double x, double y) {
-//    System.out.println("(" + BIN.x + "," + BIN.y + ")");
+    System.out.println("(" + BIN.x + "," + BIN.y + ")");
     System.out.println("(" + odometer.getXYT()[0] + "," + odometer.getXYT()[1] + ")");
     navigator.travelTo(x,y);
-//    Navigation.turnTo(Navigation.angleToTarget(BIN.x, BIN.y));
+    Navigation.turnTo(Navigation.angleToTarget(BIN.x, BIN.y));
   }
 
   /**
