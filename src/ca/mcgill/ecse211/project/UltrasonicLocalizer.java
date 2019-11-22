@@ -265,8 +265,8 @@ public class UltrasonicLocalizer extends PlainNavigation {
    */
   public int getDistance() {
     usSamples.fetchSample(usData, 0);
-    int distance = (int) (usData[0] * 100);
-    return medianFilter(distance);
+    //int distance = (int) (usData[0] * 100);
+    return medianFilter((int) (usData[0] * 100));
 
   }
 
@@ -296,7 +296,7 @@ public class UltrasonicLocalizer extends PlainNavigation {
   private void fillFilter() {
     usSamples.fetchSample(usData, 0); // acquire distance data in meters
     int distance = (int) (usData[0] * 100.0); // extract from buffer, convert to cm, cast to int
-    for (int i = 0; i < sample.length; i++) {
+    for (int i = 0; i < filterSize; i++) { // we know that sample has a length of filter size so we can just use filterSize to save up calculations
       sample[i] = distance;
     }
   }
@@ -310,9 +310,9 @@ public class UltrasonicLocalizer extends PlainNavigation {
   private int medianFilter(int distance) {
     sample[filterControl] = distance;
     filterControl++;
-    filterControl %= sample.length;
+    filterControl %= filterSize;
 
-    sortedSamples = Arrays.copyOf(sample, sample.length);
+    sortedSamples = Arrays.copyOf(sample, filterSize);
     Arrays.sort(sortedSamples);
     int median = sortedSamples[sortedSamples.length / 2];
     if (distance > median) {
