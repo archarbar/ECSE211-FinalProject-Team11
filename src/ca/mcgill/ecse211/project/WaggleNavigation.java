@@ -20,15 +20,6 @@ public class WaggleNavigation extends Navigation {
   Odometer odometer = Odometer.getOdometer();
   
   /**
-   * correction period in milliseconds
-   */
-  private static final long CORRECTION_PERIOD = 5;
-  /**
-   * back off distance for robot in cm
-   */
-  private static final int REVERSE_DIST = 3;
-  
-  /**
    * left light sensor data
    */
   private float[] csDataL;

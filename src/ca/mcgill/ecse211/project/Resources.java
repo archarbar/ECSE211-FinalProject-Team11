@@ -124,9 +124,14 @@ public class Resources {
   public static EV3ColorSensor colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
 
   /**
-   * The Correction period for the light sensor.
+   * The Correction period for the light sensor in millisenconds.
    */
-  public static final int CORRECTION_PERIOD = 50;
+  public static final int CORRECTION_PERIOD = 5;
+
+  /**
+   * back off distance for robot in cm
+   */
+  public static final int REVERSE_DIST = 3;
 
   /**
    * The motor acceleration in degrees per second squared.
@@ -152,7 +157,7 @@ public class Resources {
    * Speed to lower arm in degrees/s.
    */
   //public static final int LOWER_SPEED = 50;
-  public static final int LOWER_SPEED = 160;
+  public static final int LOWER_SPEED = 300;
 
   /**
    * The speed at which the launcher rotates in degrees per second.
