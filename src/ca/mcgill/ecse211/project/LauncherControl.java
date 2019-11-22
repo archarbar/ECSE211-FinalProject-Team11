@@ -70,7 +70,7 @@ public class LauncherControl {
 //    launcher2.rotate(-LOWER_ANGLE, false);
 
     launcher1.stop();
-//    launcher2.stop();
+    launcher2.stop();
   }
 
   /**

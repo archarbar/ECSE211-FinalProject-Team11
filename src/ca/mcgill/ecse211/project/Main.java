@@ -60,9 +60,9 @@ public class Main {
     // tunnelTest();
 //     waggleNavigationTest();
     // launchTest();
-//    mainFlow();
-    LauncherControl.lowerArm();
-    LauncherControl.raiseArm();
+    mainFlow();
+//    LauncherControl.lowerArm();
+//    LauncherControl.raiseArm();
   }
 
 

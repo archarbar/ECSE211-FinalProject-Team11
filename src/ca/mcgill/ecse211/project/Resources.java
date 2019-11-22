@@ -22,7 +22,7 @@ public class Resources {
    * The IP address of the server that transmits data to the robot. Set this to the default for the beta demo and
    * competition.
    */
-  public static final String SERVER_IP = "192.168.2.22";
+  public static final String SERVER_IP = "192.168.2.10";
 
   /**
    * Your team number.
