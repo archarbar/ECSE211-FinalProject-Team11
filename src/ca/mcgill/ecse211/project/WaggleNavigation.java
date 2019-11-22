@@ -238,7 +238,7 @@ public class WaggleNavigation extends Navigation {
    * @param side 1 for positive, -1 for negative
    */
   private void waggle(int direction, int side) {
-    long correctionStart, correctionEnd;
+    long correctionStart, correctionEnd, deltaCorrection;
     stop();
     forwards();
     while (true) {
@@ -259,9 +259,11 @@ public class WaggleNavigation extends Navigation {
         break;
       }
       correctionEnd = System.currentTimeMillis();
-      if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+      
+       deltaCorrection = correctionEnd - correctionStart;
+      if (deltaCorrection < CORRECTION_PERIOD) {
         try {
-          Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+          Thread.sleep(CORRECTION_PERIOD - (deltaCorrection));
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -286,9 +288,10 @@ public class WaggleNavigation extends Navigation {
           break;
         }
         correctionEnd = System.currentTimeMillis();
+         deltaCorrection = correctionEnd - correctionStart;
         if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
           try {
-            Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+            Thread.sleep(CORRECTION_PERIOD - (deltaCorrection));
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
@@ -312,9 +315,10 @@ public class WaggleNavigation extends Navigation {
           break;
         }
         correctionEnd = System.currentTimeMillis();
+        deltaCorrection = correctionEnd - correctionStart;
         if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
           try {
-            Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+            Thread.sleep(CORRECTION_PERIOD - (deltaCorrection));
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
@@ -340,10 +344,12 @@ public class WaggleNavigation extends Navigation {
    * @param detectorR reight line detector
    */
   private void waggle(int direction, int side, LineDetectorController detectorL, LineDetectorController detectorR) {
-    long correctionStart, correctionEnd;
+    long correctionStart, correctionEnd,deltaCorrection;
+  
     stop();
     forwards();
     while (true) {
+      
       correctionStart = System.currentTimeMillis();
       boolean detectedLeft = detectorL.lineDetected(), detectedRight = detectorR.lineDetected();
       if ((detectedLeft) || (detectedRight)) {
@@ -357,15 +363,19 @@ public class WaggleNavigation extends Navigation {
         break;
       }
       correctionEnd = System.currentTimeMillis();
+      
+       deltaCorrection = correctionEnd - correctionStart; 
+      
       if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
         try {
-          Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+          Thread.sleep(CORRECTION_PERIOD - (deltaCorrection));
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
       }
     }
     forwards();
+    
     if (isLeft) {
       while (true) {
         correctionStart = System.currentTimeMillis();
@@ -383,9 +393,10 @@ public class WaggleNavigation extends Navigation {
           break;
         }
         correctionEnd = System.currentTimeMillis();
-        if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+         deltaCorrection = correctionEnd - correctionStart;
+        if (deltaCorrection < CORRECTION_PERIOD) {
           try {
-            Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+            Thread.sleep(CORRECTION_PERIOD - (deltaCorrection));
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
@@ -408,9 +419,10 @@ public class WaggleNavigation extends Navigation {
           break;
         }
         correctionEnd = System.currentTimeMillis();
+         deltaCorrection = correctionEnd - correctionStart;
         if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
           try {
-            Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+            Thread.sleep(CORRECTION_PERIOD - (deltaCorrection));
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
