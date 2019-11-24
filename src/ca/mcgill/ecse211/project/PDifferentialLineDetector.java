@@ -9,8 +9,11 @@ import lejos.hardware.sensor.EV3ColorSensor;
  *
  */
 public class PDifferentialLineDetector extends DifferentialLineDetector {
-
-  public final double THRESHOLD = 0.30; // The difference has to be greater than 30%
+  
+  /**
+   * The difference has to be greater than 30%
+   */
+  public final double THRESHOLD = 0.30;
 
   /**
    * Calls the DifferentialLineDetector constructor.
@@ -25,6 +28,7 @@ public class PDifferentialLineDetector extends DifferentialLineDetector {
    * Processes the data proportional to the difference in values.
    * 
    * @param newColourVal the most recent light value detected.
+   * @return light value
    */
   @Override
   public double processCSData(double newVal) {

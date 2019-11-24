@@ -7,17 +7,65 @@ import lejos.robotics.SampleProvider;
  * localises the robot using colour sensors to detect lines arranged in a grid in order to localise angle and position.
  */
 public class LightLocalizer extends PlainNavigation {
+
+  /**
+   * correction period in milliseconds
+   */
   private static final long CORRECTION_PERIOD = 5;
+
+  /**
+   * back off distance for robot in cm
+   */
   private static final int REVERSE_DIST = 3;
+
+  /**
+   * left light sensor data
+   */
   private float[] csDataL;
+
+  /**
+   * right light sensor data
+   */
   private float[] csDataR;
+
+  /**
+   * distance between starting and current positions
+   */
   private double distance;
+
+  /**
+   * initial position of robot from odometer
+   */
   private double[] startPos;
+
+  /**
+   * our odometer
+   */
   private Odometer odometer;
+
+  /**
+   * difference in theta between starting and current angles
+   */
   private double offTheta;
+
+  /**
+   * boolean to know which side robot is facing
+   */
   private boolean isLeft = false;
+
+  /**
+   * left light sensor sample provider
+   */
   private SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
+
+  /**
+   * right light sensor sample provider
+   */
   private SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
+
+  /**
+   * red light intensity to compare read colors
+   */
   private static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
 
   /**
@@ -26,7 +74,7 @@ public class LightLocalizer extends PlainNavigation {
   public LightLocalizer() {
     this.odometer = Odometer.getOdometer();
     csDataL = new float[colorSensorL.sampleSize()];
-    csDataR = new float[colorSensorL.sampleSize()];
+    csDataR = new float[colorSensorR.sampleSize()];
   }
 
   /**

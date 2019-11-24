@@ -1,20 +1,59 @@
 package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
-import ca.mcgill.ecse211.lightSensor.*;
+import ca.mcgill.ecse211.project.*;
 
 /**
  * localises the robot using colour sensors to detect lines arranged in a grid in order to localise angle and position.
+ * 
+ * @author Matthew
+ * @author Victor
  */
 public class ModifiedLightLocalizer extends PlainNavigation {
+  
+  /**
+   * correction period in milliseconds
+   */
   private static final long CORRECTION_PERIOD = 5;
+  
+  /**
+   * back off distance for robot in cm
+   */
   private static final int REVERSE_DIST = 3;
+  
+  /**
+   * distance between starting and current positions
+   */
   private double distance;
+  
+  /**
+   * initial position of robot from odometer
+   */
   private double[] startPos;
+  
+  /**
+   * our odometer
+   */
   private Odometer odometer;
+  
+  /**
+   * difference in theta between starting and current angles
+   */
   private double offTheta;
+  
+  /**
+   * boolean to know which side robot is facing
+   */
   private boolean isLeft = false;
+  
+  /**
+   * our line detector controller for left light sensor
+   */
   private LineDetectorController detectorL; // use a red light to compare luminence level
+  
+  /**
+   * our line detector controller for right light sensor
+   */
   private LineDetectorController detectorR;
 
   /**

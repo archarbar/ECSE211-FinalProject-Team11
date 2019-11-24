@@ -16,13 +16,13 @@ public class Resources {
   /**
    * The default server IP used by the profs and TA's.
    */
-  public static final String DEFAULT_SERVER_IP = "192.168.2.3";
+  public static final String DEFAULT_SERVER_IP = "192.168.2.53";
 
   /**
    * The IP address of the server that transmits data to the robot. Set this to the default for the beta demo and
    * competition.
    */
-  public static final String SERVER_IP = "192.168.2.53";
+  public static final String SERVER_IP = "192.168.2.22";
 
   /**
    * Your team number.
@@ -45,11 +45,11 @@ public class Resources {
   /**
    * The launcher motor 1.
    */
-  public static EV3LargeRegulatedMotor launcher1 = null;
+  public static EV3LargeRegulatedMotor launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
   /**
    * The launcher motor 2.
    */
-  public static EV3LargeRegulatedMotor launcher2 = null;
+  public static EV3LargeRegulatedMotor launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 
   /**
    * Theangle at which launching motor is placed before launch.
@@ -81,7 +81,7 @@ public class Resources {
   /**
    * the robot's track size
    */
-  public static final double TRACK = 16.74; // temporary value 15.1232
+  public static final double TRACK = 15.72; // temporary value 15.1232
 
   /**
    * the distance at which we want to perform the launch
@@ -267,6 +267,10 @@ public class Resources {
       this(p.x, p.y);
     }
 
+    /**
+     * converts coordinates to string
+     * @return string of coordinates
+     */
     public String toString() {
       return "(" + x + ", " + y + ")";
     }
@@ -281,7 +285,7 @@ public class Resources {
   /**
    * Distance between light sensors in cm.
    */
-  public static final double LSwidth = 6.8;
+  public static final double LSwidth = 11.6;
 
   // public static final int ROTATE_SPEED = 175;
   // public static final int MOTOR_SPEED = 250;
@@ -358,11 +362,9 @@ public class Resources {
   /**
    * The red tunnel footprint.
    */
-  // THIS CHANGE IS ONLY FOR BETA DEMO, CHANGE BACK AFTERWARDS
-  // public static Region tnr = new Region("TNR_LL_x", "TNR_LL_y", "TNR_UR_x", "TNR_UR_y");
-  // public static GridRectangle tnrRectangle =
-  // new GridRectangle(get("TNR_LL_x"), get("TNR_LL_y"), get("TNR_UR_x"), get("TNR_UR_y"));
-  public static double targetAngle = Math.max(get("TNR_LL_x"), get("TNR_UR_x"));
+   public static Region tnr = new Region("TNR_LL_x", "TNR_LL_y", "TNR_UR_x", "TNR_UR_y");
+   public static GridRectangle tnrRectangle =
+   new GridRectangle(get("TNR_LL_x"), get("TNR_LL_y"), get("TNR_UR_x"), get("TNR_UR_y"));
 
   /**
    * The green tunnel footprint.
@@ -372,9 +374,14 @@ public class Resources {
       new GridRectangle(get("TNG_LL_x"), get("TNG_LL_y"), get("TNG_UR_x"), get("TNG_UR_y"));
 
   /**
-   * The location of the target bin.
+   * The location of the red target bin.
    */
-  public static Point bin = new Point(get("BIN_x"), get("BIN_y"));
+  public static Point redBin = new Point(get("Red_BIN_x"), get("Red_BIN_y"));
+
+  /**
+   * The location of the green target bin.
+   */
+  public static Point greenBin = new Point(get("Green_BIN_x"), get("Green_BIN_y"));
 
   /**
    * Receives Wi-Fi parameters from the server program.

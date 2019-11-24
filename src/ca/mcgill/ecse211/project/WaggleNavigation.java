@@ -18,18 +18,79 @@ public class WaggleNavigation extends Navigation {
   };
 
   Odometer odometer = Odometer.getOdometer();
+  
+  /**
+   * correction period in milliseconds
+   */
   private static final long CORRECTION_PERIOD = 5;
+  /**
+   * back off distance for robot in cm
+   */
+  private static final int REVERSE_DIST = 3;
+  
+  /**
+   * left light sensor data
+   */
   private float[] csDataL;
+  
+  /**
+   * right light sensor data
+   */
   private float[] csDataR;
+  
+  /**
+   * distance between starting and current positions
+   */
   private double distance;
-  private double[] startPos, endPos;
+  
+  /**
+   * initial position of robot from odometer
+   */
+  private double[] startPos;
+  
+  /**
+   * final position of robot from odometer
+   */
+  private double[] endPos;
+  
+  /**
+   * difference in theta between starting and current angles
+   */
   private double offTheta;
+  
+  /**
+   * boolean to know which side robot is facing
+   */
   private boolean isLeft = false;
+  
+  /**
+   * left light sensor sample provider
+   */
   private SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
+  
+  /**
+   * right light sensor sample provider
+   */
   private SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
-  private static final float LINE_RED_INTENSITY = (float) 0.3; // cast to float since default is double
+  
+  /**
+   * red light intensity to compare read colors
+   */
+  private static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
+  
+  /**
+   * current position from odometer
+   */
   double[] position;
-  private LineDetectorController detectorL;
+  
+  /**
+   * our line detector controller for left light sensor
+   */
+  private LineDetectorController detectorL; // use a red light to compare luminence level
+  
+  /**
+   * our line detector controller for right light sensor
+   */
   private LineDetectorController detectorR;
 
   /**

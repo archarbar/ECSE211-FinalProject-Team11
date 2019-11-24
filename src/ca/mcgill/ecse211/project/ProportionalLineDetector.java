@@ -9,15 +9,35 @@ import lejos.robotics.SampleProvider;
  */
 public class ProportionalLineDetector implements LineDetectorController {
 
-  // proportional
+  /**
+   * proportional threshold for light value
+   */
   public final double THRESHOLD = 0.85;
+  
+  /**
+   * old value read by light sensor
+   */
   private double oldVal;
 
-  private static final double MAX_DISTANCE = 3;
+  /**
+   * sample containing values read by light sensor
+   */
   private float[] sample;
+  
+  /**
+   * sample provider for the light sensor
+   */
   SampleProvider cs;
   Edge lastEdge = Edge.NoEdge;
+  
+  /**
+   * x position of edge in cm
+   */
   Double edgeX;
+  
+  /**
+   * y position of edge in cm
+   */
   Double edgeY;
 
   /**
@@ -32,11 +52,21 @@ public class ProportionalLineDetector implements LineDetectorController {
     oldVal = sample[0];
   }
 
+  /**
+   * check if the edge detected is falling or not. if it is, then a line is detected
+   * 
+   * @return true if a line is detected, false if not
+   */
   @Override
   public boolean lineDetected() {
     return edgeDetected() == Edge.FallingEdge;
   }
 
+  /**
+   * method to know what kind of edge is detected
+   * 
+   * @return type of Edge, falling or rising
+   */
   @Override
   public Edge edgeDetected() {
     cs.fetchSample(sample, 0);
@@ -57,11 +87,17 @@ public class ProportionalLineDetector implements LineDetectorController {
     return lightVal / oldVal;
   }
 
+  /**
+   * @return x position of edge
+   */
   @Override
   public double getEdgeX() {
     return edgeX;
   }
 
+  /**
+   * @return y position of edge
+   */
   @Override
   public double getEdgeY() {
     return edgeY;

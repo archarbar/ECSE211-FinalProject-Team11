@@ -1,14 +1,14 @@
 package ca.mcgill.ecse211.project;
 
 import lejos.hardware.Sound;
+import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
+import ca.mcgill.ecse211.project.*;
 import static ca.mcgill.ecse211.project.Resources.*;
-import ca.mcgill.ecse211.project.LightLocalizer;
-import ca.mcgill.ecse211.project.UltrasonicLocalizer;
 
 /**
  * The running point of the entire project.
@@ -16,11 +16,25 @@ import ca.mcgill.ecse211.project.UltrasonicLocalizer;
  *
  */
 public class Main {
+
+  /**
+   * our odometer
+   */
   private static Odometer odometer;
-  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = bin;
-  private static double TNR_UR_x = targetAngle;
+
+//  /**
+//   * tunnel corners and bin location imported from resources
+//   */
+  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = greenBin;
+
+  /**
+   *
+   */
   private static IntPoint home = new IntPoint(1,1); //TODO: depends on team Red:1,9. Green:14,1
-  
+
+  /**
+   * use waggle navigation type
+   */
   private static Navigation navigator = new WaggleNavigation();
   private static ObjectAvoidance avoider = null;
 
@@ -33,7 +47,10 @@ public class Main {
   public static void main(String[] args) {
     // turnTest();
 //    betaDemo();
-    // startOdometer();
+    startOdometer();
+//    for (int a=0; a<20; a++) {
+//      Navigation.turnTo(180);
+//    }
     // Resources.SILENT_VERIFICATION = true;
     //// importData();
     // localize(1,1);
@@ -42,10 +59,9 @@ public class Main {
     // // plainNavigationTest();
     //
     // tunnelTest();
-    // waggleNavigationTest();
+//     waggleNavigationTest();
     // launchTest();
-    launch(1, 570);
-//    mainFlow();
+    mainFlow();
   }
 
 
@@ -63,7 +79,7 @@ public class Main {
     returnToBase();
   }
 
-  
+
   /**
    * Handles the initialization step of the main flow.
    */
@@ -79,7 +95,7 @@ public class Main {
     localize(1, 1); //TODO: get the value based on team
     beep(3);
   }
-  
+
   /**
    * Handles the travel to launch step of the main flow.
    * @return launchSpeed depending on distance from target.
@@ -87,17 +103,17 @@ public class Main {
   private static int travelToLaunch() {
     navigateThroughTunnel(navigator);
     //TODO: get launch location
-    Point launchLocation = new Point(0.0,0.0);  //TODO calculate 
+    Point launchLocation = new Point(0.0,0.0);  //TODO calculate
     int launchSpeed = 0;                        //TODO based on launch distance
     //enable obstacle avoidance
     navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
     //disable obstacle avoidance
     Navigation.stop();
     beep(3);
-    
+
     return launchSpeed;
   }
-  
+
   /**
    * Handles the return to base step of the main flow.
    */
@@ -133,8 +149,8 @@ public class Main {
     System.out.println("Green Team: " + greenTeam);
     System.out.println("Green Zone: " + green);
     System.out.println("Island Zone, upper right: " + island.ur);
-    System.out.println("Bin location: x=" + bin.x + ", y=" + bin.y);
-    System.out.println("Target Angle: " + targetAngle);
+    System.out.println("Red Bin location: x=" + redBin.x + ", y=" + redBin.y);
+    System.out.println("Green Bin location: x=" + greenBin.x + ", y=" + greenBin.y);
   }
 
   /**
@@ -150,12 +166,12 @@ public class Main {
   /**
    * Localises the robot once using the ultrasonic localizer, and once with the light localizer, and sets its location
    * to the given grid coords.
-   * 
+   *
    * @param x
    * @param y
    */
   private static void localize(int x, int y) {
-    initUSSensor();
+//    initUSSensor();
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
@@ -164,14 +180,14 @@ public class Main {
     closeUSSensor();
     Navigation.moveTo(-2);
     // Navigation.turnTo(-2);
-    initLightSensors();
+//    initLightSensors();
     lsLocalizer.localize(x, y);
     sleep();
   }
 
   /**
    * Navigates to, and through the tunnel to the launching side.
-   * 
+   *
    * @param navigator to determine navigation type.
    */
   private static void navigateThroughTunnel(Navigation navigator) {
@@ -186,7 +202,7 @@ public class Main {
     if (avoider!=null) {
       avoider.stop();
     }
-    
+
     // find angle of tunnel
     double aveX, aveY, theta;
     aveX = (TNG_LL.x + TNG_UR.x) / 2;
@@ -207,7 +223,7 @@ public class Main {
 
   /**
    * navigates from the tunnel exit to the launch location.
-   * 
+   *
    * @param navigator to determine navigation type.
    */
   private static void navigateToLaunch(Navigation navigator, double x, double y) {
@@ -220,7 +236,7 @@ public class Main {
 
   /**
    * Launches the ping-pong balls a given number of times at a given speed.
-   * 
+   *
    * @param numLaunches
    * @param speed
    */
@@ -331,7 +347,7 @@ public class Main {
     }
     US_SENSOR = null;
   }
-  
+
   private static void sleep() {
     try {
       Thread.sleep(500);
@@ -357,7 +373,7 @@ public class Main {
   private static void waggleNavigationTest() {
     int x = 8, y = 4;
     navigator = new WaggleNavigation();
-    navigator.travelTo(x, y);
+    navigator.travelTo(x, y, true);
     Navigation.turnToHeading(135);
   }
 
@@ -379,8 +395,8 @@ public class Main {
    * flow to test the tunnel navigation method.
    */
   private static void tunnelTest() {
-    TNG_LL = new Point(4, 4);
-    TNG_UR = new Point(6, 5);
+//    TNG_LL = new Point(4, 4);
+//    TNG_UR = new Point(6, 5);
     navigateThroughTunnel(navigator);
   }
 

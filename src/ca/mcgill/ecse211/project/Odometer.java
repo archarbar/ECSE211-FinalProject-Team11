@@ -1,6 +1,5 @@
 package ca.mcgill.ecse211.project;
 
-import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

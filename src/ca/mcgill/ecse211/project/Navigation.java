@@ -177,7 +177,9 @@ public abstract class Navigation {
   /**
    * Determines the relative angle between heading and target angle.
    *
-   * @return
+   *@param double x, x coordinate of target in cm
+   *@param double y, y coordinate of target in cm
+   * @return minimum angle to target
    */
   public static double angleToTarget(double x, double y) {
     double[] positions = Odometer.getOdometer().getXYT();
@@ -204,7 +206,9 @@ public abstract class Navigation {
   /**
    * Determines the relative angle between heading and target angle.
    *
-   * @return
+   * @param int x, x coordinate of target, in tiles
+   * @param int y, y coordinate of target, in tiles
+   * @return minimum angle to target
    */
   public static double angleToTarget(int x, int y) {
     double ax = convertGridToLocation(x);
@@ -213,8 +217,13 @@ public abstract class Navigation {
   }
 
   /**
-   * Determines the entrance of a tunnel Takes 4 integers as inputs, which are coordinates of the two tunnel corners
+   * Determines the entrance of a tunnel.
+   * Takes 2 Points as inputs, the two tunnel corners
    * Returns the entrance coordinates as an array
+   * 
+   * @param Point 1, first tunnel corner
+   * @param Point 2, second tunnel corner
+   * @return entrance of tunnel relative to current position
    */
   public static Point findTunnelEntrance(Point hole1, Point hole2) {
     Point entrance;
@@ -273,13 +282,18 @@ public abstract class Navigation {
     return location;
   }
 
-  /*
+  /**
    * Finds the point in the launching zone that is at a given distance to the bin Takes 3 inputs: the point representing
    * the coordinates of the bin, a GridRectagle for the launch zone, and the desired distance in cm First, checks if the
    * point on the circle closest to current position is in the launch zone. If it is, return it, if not, then find the
    * closest point on the circle to current position that is inside the launch zone. This second point will be part of
    * the list of edge angle values for the circle. Returns a point, which is the launch point in the zone with the given
    * distance to the bin, within a margin of error of 0.5 cm.
+   * 
+   * @param Point bin location
+   * @param GridRectangle for launch zone
+   * @param double distance, wanted launch distance
+   * @return Point launch point at wanted distance from bin
    */
   public static Point findLaunchPoint(Point bin, GridRectangle launchZone, double distance) {
     double[] t = {0, 0, 0, 0, 0, 0, 0, 0};

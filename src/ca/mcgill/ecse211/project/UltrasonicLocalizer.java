@@ -11,15 +11,34 @@ import lejos.robotics.SampleProvider;
  */
 public class UltrasonicLocalizer extends PlainNavigation {
 
-
-
+  /**
+   * ultrasonic sensor data
+   */
   private float[] usData;
+  
+  /**
+   * ultrasonic sensor sample provider
+   */
   private SampleProvider usSamples;
 
+  /**
+   * angle to turn from current angle
+   */
   private double deltaT = 0;
 
+  /**
+   * distance to wall in cm
+   */
   private static final int WALL_DISTANCE = 22;
-  private int errorMargin = 3;// error margin to counter the effect of noise
+  
+  /**
+   * error margin of 3 cm to counter the effect of noise
+   */
+  private int errorMargin = 3;
+   
+  /**
+   * fine tuned value to correct angle to turn to
+   */
   private double TURNING_ERROR = 3.5;
 
   /**
@@ -31,6 +50,7 @@ public class UltrasonicLocalizer extends PlainNavigation {
    * Size of the median filter buffer.
    */
   int filterSize = 10;
+  
   /**
    * Array of previous detected distances.
    */
@@ -40,7 +60,9 @@ public class UltrasonicLocalizer extends PlainNavigation {
    */
   int[] sortedSamples = new int[filterSize];
 
-
+  /**
+   * our odometer
+   */
   private Odometer odometer;
 
   // enum used to distinguish between the two methods.
@@ -116,6 +138,9 @@ public class UltrasonicLocalizer extends PlainNavigation {
     if (!SILENT_VERIFICATION) {
       Sound.beep();
     }
+    /**
+     * angle before turning
+     */
     double firstAngle = odometer.getXYT()[2];
 
 
@@ -130,6 +155,10 @@ public class UltrasonicLocalizer extends PlainNavigation {
     if (!SILENT_VERIFICATION) {
       Sound.beep();
     }
+    
+    /**
+     * angle after turning
+     */
     double secondAngle = odometer.getXYT()[2];
 
     stop();
@@ -145,7 +174,9 @@ public class UltrasonicLocalizer extends PlainNavigation {
       deltaT = 45 - (firstAngle + secondAngle) / 2;
     }
 
-
+    /**
+     * angle to turn to, just add delta angle and current angle
+     */
     double turnAngle = deltaT + odometer.getXYT()[2];
 
     // rotate to 0 degree axis
@@ -179,6 +210,10 @@ public class UltrasonicLocalizer extends PlainNavigation {
     if (!SILENT_VERIFICATION) {
       Sound.beep();
     }
+    
+    /**
+     * angle before turning
+     */
     double firstAngle = odometer.getXYT()[2];
 
 
@@ -193,6 +228,10 @@ public class UltrasonicLocalizer extends PlainNavigation {
     if (!SILENT_VERIFICATION) {
       Sound.beep();
     }
+    
+    /**
+     * angle after turning
+     */
     double secondAngle = odometer.getXYT()[2];
 
     stop();
@@ -207,6 +246,9 @@ public class UltrasonicLocalizer extends PlainNavigation {
       deltaT = 45 - (firstAngle + secondAngle) / 2 + 180;
     }
 
+    /** 
+     * angle to turn to, just add delta angle and current angle
+     */
     double turnAngle = deltaT + odometer.getXYT()[2];
 
     // rotate to 0 degree axis
@@ -263,6 +305,7 @@ public class UltrasonicLocalizer extends PlainNavigation {
    * A median filter for the ultrasonic sensor.
    * 
    * @param distance
+   * @return int filtered distance
    */
   private int medianFilter(int distance) {
     sample[filterControl] = distance;
