@@ -22,6 +22,7 @@ public class Main {
   private static IntPoint home = new IntPoint(1,1); //TODO: depends on team Red:1,9. Green:14,1
   
   private static Navigation navigator = new WaggleNavigation();
+  private static ObjectAvoidance avoider = null;
 
 
   /**
@@ -62,36 +63,7 @@ public class Main {
     returnToBase();
   }
 
-  /**
-   * The flow used for the beta demo.
-   */
-  @Deprecated
-  private static void betaDemo() {
-    // set to silent verification
-    Resources.SILENT_VERIFICATION = true;
-    // import wifi data is done by default
-    importData();
-    // odometry start
-    startOdometer();
-
-    // localize
-    localize(1, 1);
-    beep(1);
-
-    // navigate to tunnel
-    navigateThroughTunnel(new WaggleNavigation());
-
-    // navigate to specified coords
-    // turn to specified angle
-    navigateToLaunch(new WaggleNavigation(), BIN.x, BIN.y);
-    beep(3);
-    // launch
-    int maxSpeed = 1300;
-    launch(1, maxSpeed);
-    beep(1);
-
-    System.exit(0);
-  }
+  
   /**
    * Handles the initialization step of the main flow.
    */
@@ -115,7 +87,7 @@ public class Main {
   private static int travelToLaunch() {
     navigateThroughTunnel(navigator);
     //TODO: get launch location
-    Point launchLocation = new Point(0.0,0.0);  //TODO
+    Point launchLocation = new Point(0.0,0.0);  //TODO calculate 
     int launchSpeed = 0;                        //TODO based on launch distance
     //enable obstacle avoidance
     navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
@@ -188,12 +160,13 @@ public class Main {
     LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.localize();
-    US_SENSOR.close();
-    US_SENSOR = null;
+    sleep();
+    closeUSSensor();
     Navigation.moveTo(-2);
     // Navigation.turnTo(-2);
     initLightSensors();
     lsLocalizer.localize(x, y);
+    sleep();
   }
 
   /**
@@ -207,8 +180,12 @@ public class Main {
     System.out.println("Y val:" + tunnelEntr.y);
     navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
     Navigation.moveTo(0.1);
+    sleep();
 
-    //TODO: if obstacle avoidance exists, stop it.
+    //if obstacle avoidance exists, stop it for the sake of going through the tunnel.
+    if (avoider!=null) {
+      avoider.stop();
+    }
     
     // find angle of tunnel
     double aveX, aveY, theta;
@@ -216,13 +193,16 @@ public class Main {
     aveY = (TNG_LL.y + TNG_UR.y) / 2;
     theta = Navigation.angleToTarget(aveX, aveY);
     Navigation.turnTo(theta);
+    sleep();
     initLaunchers();
     LauncherControl.lowerArm();
     closeLightSensors();
     Navigation.moveTo(4 * TILE_SIZE);
+    sleep();
     initLightSensors();
     LauncherControl.raiseArm();
     closeLaunchers();
+    sleep();
   }
 
   /**
@@ -235,6 +215,7 @@ public class Main {
     System.out.println("(" + odometer.getXYT()[0] + "," + odometer.getXYT()[1] + ")");
     navigator.travelTo(x,y);
     Navigation.turnTo(Navigation.angleToTarget(BIN.x, BIN.y));
+    sleep();
   }
 
   /**
@@ -246,72 +227,117 @@ public class Main {
   private static void launch(int numLaunches, int speed) {
     closeMotors();
     initLaunchers();
+    sleep();
     for (int i = 0; i < numLaunches; ++i) {
       LauncherControl.launch(speed);
     }
     closeLaunchers();
+    sleep();
   }
 
   /**
    * initialises the launcher motors.
    */
   private static void initLaunchers() {
-    launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
-    launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+    if (launcher1==null) {
+      launcher1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+    }
+    if (launcher2==null) {
+      launcher2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+    }
   }
 
   /**
    * initialises the movement motors.
    */
   private static void initMotors() {
-    leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
-    rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+    if (leftMotor == null) {
+      leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
+    }
+    if (rightMotor == null) {
+      rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+    }
   }
 
   /**
    * initialises the light sensors.
    */
   private static void initLightSensors() {
-    colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
-    colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+    if (colorSensorR==null) {
+      colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
+    }
+    if (colorSensorL == null) {
+      colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+    }
   }
 
   /**
    * initialises the ultrasonic sensor.
    */
   private static void initUSSensor() {
-    US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
+    if (US_SENSOR == null) {
+      US_SENSOR = new EV3UltrasonicSensor(LocalEV3.get().getPort("S3"));
+    }
   }
 
   /**
    * closes the launcher motors.
    */
   private static void closeLaunchers() {
-    launcher1.close();
-    launcher2.close();
+    if (launcher1!=null) {
+      launcher1.close();
+    }
+    if (launcher2!=null) {
+      launcher2.close();
+    }
+    launcher1 = null;
+    launcher2 = null;
   }
 
   /**
    * closes the movement motors.
    */
   private static void closeMotors() {
-    leftMotor.close();
-    rightMotor.close();
+    if (leftMotor!=null) {
+      leftMotor.close();
+    }
+    if (rightMotor!=null) {
+      rightMotor.close();
+    }
+    leftMotor = null;
+    rightMotor = null;
   }
 
   /**
    * closes the light sensors.
    */
   private static void closeLightSensors() {
-    colorSensorR.close();
-    colorSensorL.close();
+    if (colorSensorR!=null) {
+      colorSensorR.close();
+    }
+    if (colorSensorL!=null) {
+      colorSensorL.close();
+    }
+    colorSensorR = null;
+    colorSensorL = null;
   }
 
   /**
    * closes the ultrasonic sensor.
    */
   private static void closeUSSensor() {
-    US_SENSOR.close();
+    if (US_SENSOR!=null) {
+      US_SENSOR.close();
+    }
+    US_SENSOR = null;
+  }
+  
+  private static void sleep() {
+    try {
+      Thread.sleep(500);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -382,5 +408,35 @@ public class Main {
     for (int i = 0; i < 20; ++i) {
       Navigation.turnTo(180);
     }
+  }
+  /**
+   * The flow used for the beta demo.
+   */
+  @Deprecated
+  private static void betaDemo() {
+    // set to silent verification
+    Resources.SILENT_VERIFICATION = true;
+    // import wifi data is done by default
+    importData();
+    // odometry start
+    startOdometer();
+
+    // localize
+    localize(1, 1);
+    beep(1);
+
+    // navigate to tunnel
+    navigateThroughTunnel(new WaggleNavigation());
+
+    // navigate to specified coords
+    // turn to specified angle
+    navigateToLaunch(new WaggleNavigation(), BIN.x, BIN.y);
+    beep(3);
+    // launch
+    int maxSpeed = 1300;
+    launch(1, maxSpeed);
+    beep(1);
+
+    System.exit(0);
   }
 }

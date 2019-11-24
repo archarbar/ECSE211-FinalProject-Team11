@@ -8,4 +8,10 @@ package ca.mcgill.ecse211.project;
  */
 public class ObjectAvoidance {
 
+  
+  
+  
+  public void stop() {
+    
+  }
 }
