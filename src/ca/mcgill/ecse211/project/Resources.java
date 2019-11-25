@@ -129,7 +129,7 @@ public class Resources {
   /**
    * The Correction period for the light sensor in milliseconds.
    */
-  public static final int CORRECTION_PERIOD = 80;
+  public static final int CORRECTION_PERIOD = 60;
 
   /**
    * The object detection period for the US sensor.
