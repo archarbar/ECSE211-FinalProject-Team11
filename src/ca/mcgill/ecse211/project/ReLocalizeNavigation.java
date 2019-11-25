@@ -1,6 +1,5 @@
 package ca.mcgill.ecse211.project;
 
-import lejos.robotics.SampleProvider;
 import static ca.mcgill.ecse211.project.Resources.*;
 
 /**
@@ -10,18 +9,16 @@ import static ca.mcgill.ecse211.project.Resources.*;
  * @author Matthew
  *
  */
-public class ReLocalizeNavigation extends PlainNavigation {
+public class ReLocalizeNavigation extends WaggleNavigation {
   
   @Override
   public void travelTo(double x, double y) {
     colorSensorR.close();
     colorSensorL.close();
-    super.travelTo(x, y);
-//    relocalize(); 
+    new PlainNavigation().travelTo(x, y);
   }
   
   public void reLocalize(double x, double y) {
-    WaggleNavigation waggle = new WaggleNavigation();
     turnTo(Navigation.angleToTarget(x, y)+180);
     
     double[] xyt = Odometer.getOdometer().getXYT();
@@ -36,13 +33,13 @@ public class ReLocalizeNavigation extends PlainNavigation {
       } else {
         axis = -1;
       }
-      waggle.waggle(axis, direction);
+      waggle(axis, direction);
       moveTo(-TILE_SIZE/2);
       
       direction = 1;
       axis = 1;
       turnToHeading(0);
-      waggle.waggle(axis, direction);
+      waggle(axis, direction);
       moveTo(-TILE_SIZE/2);
       turnTo(Navigation.angleToTarget(x, y));
       
@@ -53,13 +50,13 @@ public class ReLocalizeNavigation extends PlainNavigation {
       } else {
         axis = -1;
       }
-      waggle.waggle(axis, direction);
+      waggle(axis, direction);
       moveTo(-TILE_SIZE/2);
       
       direction = 0;
       axis = 1;
       turnToHeading(90);
-      waggle.waggle(axis, direction);
+      waggle(axis, direction);
       moveTo(-TILE_SIZE/2);
       turnTo(Navigation.angleToTarget(x, y));
     }
