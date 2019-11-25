@@ -6,6 +6,9 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,7 +25,7 @@ public class Resources {
    * The IP address of the server that transmits data to the robot. Set this to the default for the beta demo and
    * competition.
    */
-  public static final String SERVER_IP = "192.168.2.10";
+  public static final String SERVER_IP = "192.168.2.45";
 
   /**
    * Your team number.
@@ -81,7 +84,7 @@ public class Resources {
   /**
    * the robot's track size
    */
-  public static final double TRACK = 15.72; // temporary value 15.1232
+  public static final double TRACK = 15.62; // best value now 15.62
 
   /**
    * the distance at which we want to perform the launch
@@ -116,22 +119,27 @@ public class Resources {
   /**
    * The right light sensor.
    */
-  public static EV3ColorSensor colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
+  public static EV3ColorSensor colorSensorR = null;
 
   /**
    * The left light sensor.
    */
-  public static EV3ColorSensor colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+  public static EV3ColorSensor colorSensorL = null;
 
   /**
-   * The Correction period for the light sensor in millisenconds.
+   * The Correction period for the light sensor in milliseconds.
    */
-  public static final int CORRECTION_PERIOD = 5;
+  public static final int CORRECTION_PERIOD = 60;
 
+  /**
+   * The object detection period for the US sensor.
+   */
+  public static final int AVOIDANCE_PERIOD = 50;
+  
   /**
    * back off distance for robot in cm
    */
-  public static final int REVERSE_DIST = 3;
+  public static final int REVERSE_DIST = 6;
 
   /**
    * The motor acceleration in degrees per second squared.
@@ -169,6 +177,9 @@ public class Resources {
    */
   // public static final int RESET_SPEED = 70;
   public static final int RESET_SPEED = 125;
+
+  public static List<Double> validDistances = new ArrayList<>();
+  public static Map<Double, Integer> distanceToSpeed = new HashMap<>();
 
   /**
    * Represents a coordinate point on the competition map grid.
@@ -210,7 +221,7 @@ public class Resources {
     public Point(Point p) {
       this(p.x, p.y);
     }
-    
+
     /**
      * Constructs a Point from an IntPoint.
      * @param p the integer point
@@ -224,7 +235,7 @@ public class Resources {
     }
 
   }
-  
+
   /**
    * Represents an integer value coordinate point on the competition map grid.
    *

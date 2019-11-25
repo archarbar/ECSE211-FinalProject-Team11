@@ -4,8 +4,9 @@ import lejos.robotics.SampleProvider;
 import static ca.mcgill.ecse211.project.Resources.*;
 
 /**
- * A navigator that actively corrects its heading and position
- * 
+ * A navigator that actively corrects its heading and position.
+ * Named as such t=due to waggling as it corrects its heading and position.
+ *
  * @author Matthew
  *
  */
@@ -15,83 +16,69 @@ public class WaggleNavigation extends Navigation {
   };
   enum Direction {
     POS, NEG
-  };
+  }
 
   Odometer odometer = Odometer.getOdometer();
-  
+
   /**
    * left light sensor data
    */
   private float[] csDataL;
-  
+
   /**
    * right light sensor data
    */
   private float[] csDataR;
-  
+
   /**
    * distance between starting and current positions
    */
   private double distance;
-  
+
   /**
    * initial position of robot from odometer
    */
   private double[] startPos;
-  
+
   /**
    * final position of robot from odometer
    */
   private double[] endPos;
-  
+
   /**
    * difference in theta between starting and current angles
    */
   private double offTheta;
-  
+
   /**
    * boolean to know which side robot is facing
    */
   private boolean isLeft = false;
-  
-  /**
-   * left light sensor sample provider
-   */
-  private SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
-  
-  /**
-   * right light sensor sample provider
-   */
-  private SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
-  
+
   /**
    * red light intensity to compare read colors
    */
   private static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
-  
+
   /**
    * current position from odometer
    */
   double[] position;
-  
+
   /**
    * our line detector controller for left light sensor
    */
   private LineDetectorController detectorL; // use a red light to compare luminence level
-  
+
   /**
    * our line detector controller for right light sensor
    */
   private LineDetectorController detectorR;
 
-  /**
-   * Initializes the navigator with 2 colour sensors.
-   */
   public WaggleNavigation() {
-    csDataL = new float[colorSensorL.sampleSize()];
-    csDataR = new float[colorSensorL.sampleSize()];
+
   }
-  
+
   /**
    * Initializes the navigator with 2 LineDetectors.
    */
@@ -103,7 +90,7 @@ public class WaggleNavigation extends Navigation {
   /**
    * Tells the robot to travel from its current location to a given point in cm travelling parrallel to the gridlines
    * and while actively correcting.
-   * 
+   *
    * @param x in cm
    * @param y in cm
    */
@@ -166,10 +153,17 @@ public class WaggleNavigation extends Navigation {
 
     // turn to heading
     turnToHeading(heading);
-
     toWaggle(dir1, axis1, tileDis1);
+    if (avoided) {
+      return;
+    }
+    Main.sleep();
     turnToHeading(heading2);
     toWaggle(dir2, axis2, tileDis2);
+    if (avoided) {
+      return;
+    }
+    Main.sleep();
     position = odometer.getXYT();
     System.out.println("(" + position[0] + "," + position[1] + ")");
     System.out.println("(" + x + "," + y + ")");
@@ -179,17 +173,23 @@ public class WaggleNavigation extends Navigation {
     double distance = calculateDistanceTo(x, y);
     System.out.println(distance + " cm");
     moveTo(distance);
+    if (avoided) {
+      return;
+    }
   }
 
   /**
    * sets up the waggle method to happen a given amount of times.
-   * 
+   *
    * @param direction
    * @param axis
    * @param tileDis
    */
   private void toWaggle(Direction direction, Axis axis, int tileDis) {
     for (int i = 0; i < tileDis; ++i) {
+      if (avoided) {
+        return;
+      }
       System.out.println("D:" + (tileDis - i));
       waggle(axis, direction);
     }
@@ -197,7 +197,7 @@ public class WaggleNavigation extends Navigation {
 
   /**
    * sets up the main waggle method.
-   * 
+   *
    * @param a
    * @param d
    */
@@ -218,22 +218,45 @@ public class WaggleNavigation extends Navigation {
     } else {
       waggle(axis, direction, detectorL, detectorR);
     }
-    
+
   }
 
   /**
    * moves forwards until a line is detected, then uses the difference in location to detecting the the same line with
    * the other sensor to correct the angle, it also corrects its position.
-   * 
-   * @param direction 0 for x, 1 for y 
+   *
+   * @param direction 0 for x, 1 for y
    * @param side 1 for positive, -1 for negative
    */
-  private void waggle(int direction, int side) {
-    long correctionStart, correctionEnd, deltaCorrection;
+  private synchronized void waggle(int direction, int side) {
+    /**
+     * left light sensor sample provider
+     */
+    SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
+
+    /**
+     * right light sensor sample provider
+     */
+    SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
+    
+    /**
+     * Initializes the navigator with 2 colour sensors.
+     */
+    csDataL = new float[colorSensorL.sampleSize()];
+    csDataR = new float[colorSensorL.sampleSize()];
+    long correctionStart, correctionEnd;
     stop();
     forwards();
     while (true) {
       correctionStart = System.currentTimeMillis();
+      if (avoided) {
+        try {
+          wait();
+          return;
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
       colorSampleProviderL.fetchSample(csDataL, 0); // get data from sensor
       colorSampleProviderR.fetchSample(csDataR, 0);
       if ((csDataL[0] < LINE_RED_INTENSITY) || (csDataR[0] < LINE_RED_INTENSITY)) { // if light read by sensor is
@@ -264,6 +287,14 @@ public class WaggleNavigation extends Navigation {
     if (isLeft) {
       while (true) {
         correctionStart = System.currentTimeMillis();
+        if (avoided) {
+          try {
+            wait();
+            return;
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
         if (tooFar(startPos)) {
           waggle(direction, side);
           return;
@@ -291,6 +322,14 @@ public class WaggleNavigation extends Navigation {
     } else {
       while (true) {
         correctionStart = System.currentTimeMillis();
+        if (avoided) {
+          try {
+            wait();
+            return;
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
         if (tooFar(startPos)) {
           waggle(direction, side);
           return;
@@ -328,8 +367,8 @@ public class WaggleNavigation extends Navigation {
   /**
    * moves forwards until a line is detected, then uses the difference in location to detecting the the same line with
    * the other sensor to correct the angle, it also corrects its position.
-   * 
-   * @param direction 0 for x, 1 for y 
+   *
+   * @param direction 0 for x, 1 for y
    * @param side 1 for positive, -1 for negative
    * @param detectorL left line detector
    * @param detectorR reight line detector
@@ -430,7 +469,7 @@ public class WaggleNavigation extends Navigation {
   }
   /**
    * given a position on an axis, return the nearest value that's on a gridline.
-   * 
+   *
    * @param pos
    * @return
    */
@@ -441,7 +480,7 @@ public class WaggleNavigation extends Navigation {
 
   /**
    * returns true if its been too far since the last line detected for it to be the same line.
-   * 
+   *
    * @param startPos
    * @return
    */

@@ -5,13 +5,15 @@ import static ca.mcgill.ecse211.project.Resources.*;
 /**
  * Contains all the general navigation related methods. Objects of this type also must implement a travelTo method that
  * takes the robot to a specific location.
- * 
+ *
  * @author Matthew
  *
  */
 public abstract class Navigation {
 
   public static GridRectangle safeArea;
+
+  public boolean avoided = false;
 
   /**
    * this boolean check if the robot's motors are moving and therefore we know if the robot is navigating or not
@@ -84,6 +86,10 @@ public abstract class Navigation {
    * @param theta
    */
   public static void turnTo(double theta) {
+    if(colorSensorR!=null||colorSensorR!=null) {
+      colorSensorL.close();
+      colorSensorR.close();
+    }
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.rotate(convertAngle(minimumAngle(theta)), true);
@@ -104,7 +110,7 @@ public abstract class Navigation {
 
   /**
    * Moves the robot in a straight line by a distance in cm.
-   * 
+   *
    * @param distance to travel in cm.
    */
   public static void moveTo(double distance) {
@@ -117,7 +123,7 @@ public abstract class Navigation {
 
   /**
    * Calculates the distance from the robot's current position and the given location in cm.
-   * 
+   *
    * @param x is the x location in cm.
    * @param y is the y location in cm.
    * @return the distance to this location in cm.
@@ -132,7 +138,7 @@ public abstract class Navigation {
 
   /**
    * Calculates the distance from the robot's current position and the given location in cm.
-   * 
+   *
    * @param x is the x grid location.
    * @param y is the y grid location.
    * @return the distance to this location in cm.
@@ -145,7 +151,7 @@ public abstract class Navigation {
 
   /**
    * Calculates the length of the hypotenuse of a triangle with sides x, and y.
-   * 
+   *
    * @param dX length of side x.
    * @param dY length of side y.
    * @return the length of the hypotenuse.
@@ -156,7 +162,7 @@ public abstract class Navigation {
 
   /**
    * Converts a gridlocation integer into a location double in cm.
-   * 
+   *
    * @param a
    * @return
    */
@@ -166,7 +172,7 @@ public abstract class Navigation {
 
   /**
    * Converts a location double in cm into a gridlocation integer.
-   * 
+   *
    * @param a
    * @return
    */
@@ -220,7 +226,7 @@ public abstract class Navigation {
    * Determines the entrance of a tunnel.
    * Takes 2 Points as inputs, the two tunnel corners
    * Returns the entrance coordinates as an array
-   * 
+   *
    * @param Point 1, first tunnel corner
    * @param Point 2, second tunnel corner
    * @return entrance of tunnel relative to current position
@@ -289,7 +295,7 @@ public abstract class Navigation {
    * closest point on the circle to current position that is inside the launch zone. This second point will be part of
    * the list of edge angle values for the circle. Returns a point, which is the launch point in the zone with the given
    * distance to the bin, within a margin of error of 0.5 cm.
-   * 
+   *
    * @param Point bin location
    * @param GridRectangle for launch zone
    * @param double distance, wanted launch distance
@@ -362,11 +368,15 @@ public abstract class Navigation {
     rightMotor.setSpeed(0);
     leftMotor.stop();
     rightMotor.stop();
+    leftMotor.resetTachoCount();
+    rightMotor.resetTachoCount();
   }
+
+
 
   /**
    * Tells the robot to travel from its current location to the centre of the given tile.
-   * 
+   *
    * @param tile's x value.
    * @param tile's y value.
    */
@@ -382,10 +392,22 @@ public abstract class Navigation {
 
   /**
    * Tells the robot to travel from its current location to a given point in cm.
-   * 
+   *
    * @param x in cm
    * @param y in cm
    */
   public abstract void travelTo(double x, double y);
+
+  public synchronized void avoidanceover() {
+    avoided = false;
+    notifyAll();
+  }
+
+  /**
+   * Waits for thread to pause before continuing.
+   */
+  public synchronized void avoidance() {
+    return;
+  }
 
 }
