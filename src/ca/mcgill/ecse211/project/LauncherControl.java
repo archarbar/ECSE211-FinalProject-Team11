@@ -63,11 +63,10 @@ public class LauncherControl {
    */
   public static void lowerArm() {
     launcher1.setSpeed(LOWER_SPEED);
-    launcher2.flt();
-//    launcher2.setSpeed(LOWER_SPEED);
+    launcher2.setSpeed(LOWER_SPEED);
 
     launcher1.rotate(-LOWER_ANGLE, true);
-//    launcher2.rotate(-LOWER_ANGLE, false);
+    launcher2.rotate(-LOWER_ANGLE, false);
 
     launcher1.stop();
     launcher2.stop();
@@ -78,14 +77,13 @@ public class LauncherControl {
    */
   public static void raiseArm() {
     launcher1.setSpeed(LOWER_SPEED);
-    launcher2.flt();
-//    launcher2.setSpeed(LOWER_SPEED);
+    launcher2.setSpeed(LOWER_SPEED);
 
     launcher1.rotate(LOWER_ANGLE, true);
-//    launcher2.rotate(LOWER_ANGLE, false);
+    launcher2.rotate(LOWER_ANGLE, false);
 
     launcher1.flt();
-//    launcher2.flt();
+    launcher2.flt();
   }
 
   @Deprecated
