@@ -403,8 +403,8 @@ public class Main {
     if (colorSensorL!=null) {
       colorSensorL.close();
     }
-    colorSensorR = null;
-    colorSensorL = null;
+//    colorSensorR = null;
+//    colorSensorL = null;
   }
 
   /**
