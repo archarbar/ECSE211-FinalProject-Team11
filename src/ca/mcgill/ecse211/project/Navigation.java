@@ -86,10 +86,18 @@ public abstract class Navigation {
    * @param theta
    */
   public static void turnTo(double theta) {
+    boolean colourSensors = false;
+    if(colorSensorR!=null||colorSensorR!=null) {
+      colourSensors = true;
+      Main.closeLightSensors();
+    }
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.rotate(convertAngle(minimumAngle(theta)), true);
     rightMotor.rotate(-convertAngle(minimumAngle(theta)), false);// 1.0005
+    if(colourSensors) {
+      Main.initLightSensors();
+    }
   }
 
   /**
@@ -364,6 +372,8 @@ public abstract class Navigation {
     rightMotor.setSpeed(0);
     leftMotor.stop();
     rightMotor.stop();
+    leftMotor.resetTachoCount();
+    rightMotor.resetTachoCount();
   }
 
 

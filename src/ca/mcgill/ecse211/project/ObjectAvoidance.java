@@ -10,6 +10,8 @@ import static ca.mcgill.ecse211.project.Resources.*;
 public class ObjectAvoidance implements Runnable{
   private boolean running = false;
   
+  private double distanceDetected;
+  
   Navigation navigator;
   
   public ObjectAvoidance(Navigation navigator) {
@@ -46,9 +48,9 @@ public class ObjectAvoidance implements Runnable{
     }
   }
   
-  private static void avoid() {
+  private void avoid() {
     boolean avoiding = true;
-    while(avoiding) {
+    while(avoiding && running) {
       double[] xyt = Odometer.getOdometer().getXYT();
       //TODO: determine direction to go (-1 for left, 1 for right)
       int direction = 0;
@@ -59,8 +61,9 @@ public class ObjectAvoidance implements Runnable{
       double diffT = Math.abs(xyt[2]-xyt2[2]);
       if (diffT<90) {
         Navigation.turnTo(direction*(90-diffT));
+        double distanceToTravel = Math.sin(Math.toRadians(diffT))*distanceDetected;
         
-        //distance to travel sin(Math.toRadians(difference))*distance detected = 
+        //distance to travel sin(Math.toRadians(difference))*distance detected
 //        move(distance to travel);
 //        turn back 90
       }

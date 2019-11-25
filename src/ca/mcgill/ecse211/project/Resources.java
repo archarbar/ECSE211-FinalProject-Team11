@@ -119,12 +119,12 @@ public class Resources {
   /**
    * The right light sensor.
    */
-  public static EV3ColorSensor colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
+  public static EV3ColorSensor colorSensorR = null;
 
   /**
    * The left light sensor.
    */
-  public static EV3ColorSensor colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
+  public static EV3ColorSensor colorSensorL = null;
 
   /**
    * The Correction period for the light sensor in milliseconds.

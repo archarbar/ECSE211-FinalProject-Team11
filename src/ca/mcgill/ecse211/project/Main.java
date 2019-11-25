@@ -342,7 +342,7 @@ public class Main {
   /**
    * initialises the light sensors.
    */
-  private static void initLightSensors() {
+  public static void initLightSensors() {
     if (colorSensorR==null) {
       colorSensorR = new EV3ColorSensor(LocalEV3.get().getPort("S4"));
     }
@@ -391,7 +391,7 @@ public class Main {
   /**
    * closes the light sensors.
    */
-  private static void closeLightSensors() {
+  public static void closeLightSensors() {
     if (colorSensorR!=null) {
       colorSensorR.close();
     }
