@@ -179,6 +179,7 @@ public class WaggleNavigation extends Navigation {
     toWaggle(dir1, axis1, tileDis1);
     turnToHeading(heading2);
     toWaggle(dir2, axis2, tileDis2);
+    
     position = odometer.getXYT();
     System.out.println("(" + position[0] + "," + position[1] + ")");
     System.out.println("(" + x + "," + y + ")");

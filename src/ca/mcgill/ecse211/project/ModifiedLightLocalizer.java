@@ -12,16 +12,6 @@ import ca.mcgill.ecse211.project.*;
 public class ModifiedLightLocalizer extends PlainNavigation {
   
   /**
-   * correction period in milliseconds
-   */
-  private static final long CORRECTION_PERIOD = 5;
-  
-  /**
-   * back off distance for robot in cm
-   */
-  private static final int REVERSE_DIST = 3;
-  
-  /**
    * distance between starting and current positions
    */
   private double distance;

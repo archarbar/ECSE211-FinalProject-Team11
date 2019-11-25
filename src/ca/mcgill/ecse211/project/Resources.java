@@ -22,7 +22,7 @@ public class Resources {
    * The IP address of the server that transmits data to the robot. Set this to the default for the beta demo and
    * competition.
    */
-  public static final String SERVER_IP = "192.168.2.38";
+  public static final String SERVER_IP = "192.168.2.45";
 
   /**
    * Your team number.
@@ -32,12 +32,12 @@ public class Resources {
   /**
    * Enables printing of debug info from the WiFi class.
    */
-  public static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
+  public static final boolean ENABLE_DEBUG_WIFI_PRINT = false;
 
   /**
    * Enable this to attempt to receive Wi-Fi parameters at the start of the program.
    */
-  public static final boolean RECEIVE_WIFI_PARAMS = true;
+  public static final boolean RECEIVE_WIFI_PARAMS = false;
 
   // DECLARE YOUR CURRENT RESOURCES HERE
   // eg, motors, sensors, constants, etc
@@ -124,9 +124,14 @@ public class Resources {
   public static EV3ColorSensor colorSensorL = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
 
   /**
-   * The Correction period for the light sensor.
+   * The Correction period for the light sensor in milliseconds.
    */
-  public static final int CORRECTION_PERIOD = 50;
+  public static final int CORRECTION_PERIOD = 80;
+  
+  /**
+   * back off distance for robot in cm
+   */
+  public static final int REVERSE_DIST = 6;
 
   /**
    * The motor acceleration in degrees per second squared.
