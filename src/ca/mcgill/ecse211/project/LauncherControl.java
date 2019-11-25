@@ -63,10 +63,11 @@ public class LauncherControl {
    */
   public static void lowerArm() {
     launcher1.setSpeed(LOWER_SPEED);
-    launcher2.setSpeed(LOWER_SPEED);
+    launcher2.flt();
+//    launcher2.setSpeed(LOWER_SPEED);
 
     launcher1.rotate(-LOWER_ANGLE, true);
-    launcher2.rotate(-LOWER_ANGLE, false);
+//    launcher2.rotate(-LOWER_ANGLE, false);
 
     launcher1.stop();
     launcher2.stop();
@@ -77,13 +78,14 @@ public class LauncherControl {
    */
   public static void raiseArm() {
     launcher1.setSpeed(LOWER_SPEED);
-    launcher2.setSpeed(LOWER_SPEED);
+    launcher2.flt();
+//    launcher2.setSpeed(LOWER_SPEED);
 
     launcher1.rotate(LOWER_ANGLE, true);
-    launcher2.rotate(LOWER_ANGLE, false);
+//    launcher2.rotate(LOWER_ANGLE, false);
 
     launcher1.flt();
-    launcher2.flt();
+//    launcher2.flt();
   }
 
   @Deprecated
@@ -123,7 +125,7 @@ public class LauncherControl {
    * Calculates required motor speed in degrees/sec given a tangential speed in cm/s.
    */
   public static int calculateMotorSpeed(double tangentialV) {
-    double angularV = tangentialV / LAUNCH_ARM_LENGTH;
-    return (int) angularV;
+//    double angularV = tangentialV / LAUNCH_ARM_LENGTH;
+    return (int) (tangentialV / LAUNCH_ARM_LENGTH);
   }
 }
