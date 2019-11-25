@@ -25,12 +25,12 @@ public class Main {
 //  /**
 //   * tunnel corners and bin location imported from resources
 //   */
-  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN = greenBin;
+  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN;
 
   /**
    *
    */
-  private static IntPoint home = new IntPoint(1,1); //TODO: depends on team Red:1,9. Green:14,1
+  private static IntPoint home = new IntPoint(1,1); //default home for simple test purposes.
 
   /**
    * use waggle navigation type
@@ -92,7 +92,8 @@ public class Main {
     startOdometer();
 
     // localize
-    localize(1, 1); //TODO: get the value based on team
+    
+    localize(home.x, home.y);
     beep(3);
   }
 
@@ -151,6 +152,25 @@ public class Main {
     System.out.println("Island Zone, upper right: " + island.ur);
     System.out.println("Red Bin location: x=" + redBin.x + ", y=" + redBin.y);
     System.out.println("Green Bin location: x=" + greenBin.x + ", y=" + greenBin.y);
+    
+    int corner = -1;
+    if (redTeam == TEAM_NUMBER) {
+      corner = redCorner;
+      BIN = redBin;
+    } else if(greenTeam == TEAM_NUMBER) {
+      corner = greenCorner;
+      BIN = greenBin;
+    }
+    if (corner == 0) {
+      home = new IntPoint(1,1);
+    } else if (corner == 1) {
+      home = new IntPoint(14,1);
+    } else if (corner == 2) {
+      home = new IntPoint(14,8);
+    } else if (corner == 3) {
+      home = new IntPoint(1,8);
+    }
+    
   }
 
   /**
