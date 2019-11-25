@@ -22,7 +22,7 @@ public class Resources {
    * The IP address of the server that transmits data to the robot. Set this to the default for the beta demo and
    * competition.
    */
-  public static final String SERVER_IP = "192.168.2.22";
+  public static final String SERVER_IP = "192.168.2.38";
 
   /**
    * Your team number.
@@ -81,7 +81,7 @@ public class Resources {
   /**
    * the robot's track size
    */
-  public static final double TRACK = 15.72; // temporary value 15.1232
+  public static final double TRACK = 15.62; // best value now 15.62
 
   /**
    * the distance at which we want to perform the launch

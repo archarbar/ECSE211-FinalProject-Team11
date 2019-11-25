@@ -16,7 +16,7 @@ public class LightLocalizer extends PlainNavigation {
   /**
    * back off distance for robot in cm
    */
-  private static final int REVERSE_DIST = 3;
+  private static final int REVERSE_DIST = 6;
 
   /**
    * left light sensor data
