@@ -38,7 +38,7 @@ public class Main {
   /**
    * use waggle navigation type
    */
-  private static Navigation navigator = new WaggleNavigation();
+  private static Navigation navigator = new ReLocalizeNavigation(); //new WaggleNavigation();
   private static ObjectAvoidance avoider = null;
 
 
@@ -233,7 +233,7 @@ public class Main {
     closeUSSensor();
     Navigation.moveTo(-2);
     // Navigation.turnTo(-2);
-//    initLightSensors();
+    initLightSensors();
     lsLocalizer.localize(x, y, theta);
     sleep();
   }
@@ -268,8 +268,12 @@ public class Main {
     double aveX, aveY, theta;
     aveX = (TNG_LL.x + TNG_UR.x) / 2;
     aveY = (TNG_LL.y + TNG_UR.y) / 2;
-    theta = Navigation.angleToTarget(aveX, aveY);
-    Navigation.turnTo(theta);
+    if (navigator instanceof ReLocalizeNavigation) {
+      ((ReLocalizeNavigation) navigator).reLocalize(aveX, aveY);
+    } else {
+      theta = Navigation.angleToTarget(aveX, aveY);
+      Navigation.turnTo(theta);
+    }
     sleep();
     initLaunchers();
     LauncherControl.lowerArm();

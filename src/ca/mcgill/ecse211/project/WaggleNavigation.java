@@ -251,7 +251,7 @@ public class WaggleNavigation extends Navigation {
    * @param direction 0 for x, 1 for y
    * @param side 1 for positive, -1 for negative
    */
-  private synchronized void waggle(int direction, int side) {
+  public synchronized void waggle(int direction, int side) {
     long correctionStart, correctionEnd;
     stop();
     forwards();
