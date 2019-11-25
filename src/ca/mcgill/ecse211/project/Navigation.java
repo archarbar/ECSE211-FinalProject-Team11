@@ -88,8 +88,9 @@ public abstract class Navigation {
   public static void turnTo(double theta) {
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);
-    leftMotor.rotate(convertAngle(minimumAngle(theta)), true);
-    rightMotor.rotate(-convertAngle(minimumAngle(theta)), false);// 1.0005
+    int angle = convertAngle(minimumAngle(theta));
+    leftMotor.rotate(angle, true);
+    rightMotor.rotate(-angle, false);// 1.0005
   }
 
   /**
