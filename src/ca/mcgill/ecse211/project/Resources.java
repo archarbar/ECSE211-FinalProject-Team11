@@ -6,6 +6,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -127,6 +128,11 @@ public class Resources {
    * The Correction period for the light sensor.
    */
   public static final int CORRECTION_PERIOD = 50;
+  
+  /**
+   * The object detection period for the US sensor.
+   */
+  public static final int AVOIDANCE_PERIOD = 50;
 
   /**
    * The motor acceleration in degrees per second squared.
@@ -163,6 +169,8 @@ public class Resources {
    */
   // public static final int RESET_SPEED = 70;
   public static final int RESET_SPEED = 125;
+  
+  public static HashMap<Double, Integer> distanceToSpeed = new HashMap<>();
 
   /**
    * Represents a coordinate point on the competition map grid.

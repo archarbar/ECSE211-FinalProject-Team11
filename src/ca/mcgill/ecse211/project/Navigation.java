@@ -12,6 +12,8 @@ import static ca.mcgill.ecse211.project.Resources.*;
 public abstract class Navigation {
 
   public static GridRectangle safeArea;
+  
+  public boolean avoided = false;
 
   /**
    * this boolean check if the robot's motors are moving and therefore we know if the robot is navigating or not
@@ -364,6 +366,8 @@ public abstract class Navigation {
     rightMotor.stop();
   }
 
+
+
   /**
    * Tells the robot to travel from its current location to the centre of the given tile.
    * 
@@ -387,5 +391,17 @@ public abstract class Navigation {
    * @param y in cm
    */
   public abstract void travelTo(double x, double y);
+  
+  public synchronized void avoidanceover() {
+    avoided = false;
+    notifyAll();
+  }
+  
+  /**
+   * Waits for thread to pause before continuing.
+   */
+  public synchronized void avoidance() {
+    return;
+  }
 
 }

@@ -1,13 +1,11 @@
 package ca.mcgill.ecse211.project;
 
 import lejos.hardware.Sound;
-import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
-import ca.mcgill.ecse211.project.*;
 import static ca.mcgill.ecse211.project.Resources.*;
 
 /**
@@ -100,34 +98,6 @@ public class Main {
     returnToBase();
   }
 
-  private static void tempDemo() {
-	  Resources.SILENT_VERIFICATION = true;
-	    // import wifi data is done by default
-	    importData();
-	    // odometry start
-	    startOdometer();
-
-	    // localize
-	    localize(1, 1);
-	    beep(1);
-
-	    // navigate to tunnel
-	    navigateThroughTunnel(new WaggleNavigation());
-
-	    // navigate to specified coords
-	    // turn to specified angle
-	    navigateToLaunch(new WaggleNavigation(), BIN.x, BIN.y);
-	    beep(3);
-	    // launch
-	    int maxSpeed = 1300;
-	    launch(1, maxSpeed);
-	    beep(1);
-
-	    System.exit(0);
-
-  }
-
-
   /**
    * Handles the initialization step of the main flow.
    */
@@ -155,6 +125,9 @@ public class Main {
     Point launchLocation = new Point(0.0,0.0);  //TODO calculate
     int launchSpeed = 0;                        //TODO based on launch distance
     //enable obstacle avoidance
+    avoider = new ObjectAvoidance(navigator);
+    new Thread(avoider).start();
+    
     navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
     //disable obstacle avoidance
     Navigation.stop();
@@ -219,6 +192,11 @@ public class Main {
       home = new IntPoint(1,8);
     }
 
+    distanceToSpeed.put(3.5*TILE_SIZE, 210);
+    distanceToSpeed.put(4.5*TILE_SIZE, 230);
+    distanceToSpeed.put(5.5*TILE_SIZE, 250);
+    distanceToSpeed.put(6.5*TILE_SIZE, 280);
+    distanceToSpeed.put(7.5*TILE_SIZE, 380);
   }
 
   /**
@@ -262,7 +240,15 @@ public class Main {
     Point tunnelEntr = Navigation.findTunnelEntrance(TNG_LL, TNG_UR);
     System.out.println("X val:" + tunnelEntr.x);
     System.out.println("Y val:" + tunnelEntr.y);
-    navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
+    if (avoider!=null) {
+      do {
+        navigator.avoided = false;
+        navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
+      } while(navigator.avoided);
+    }
+    else {
+      navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
+    }
     Navigation.moveTo(0.1);
     sleep();
 
@@ -297,7 +283,10 @@ public class Main {
   private static void navigateToLaunch(Navigation navigator, double x, double y) {
     System.out.println("(" + BIN.x + "," + BIN.y + ")");
     System.out.println("(" + odometer.getXYT()[0] + "," + odometer.getXYT()[1] + ")");
-    navigator.travelTo(x,y);
+    do {
+      navigator.avoided = false;
+      navigator.travelTo(x,y);
+    } while(navigator.avoided);
     Navigation.turnTo(Navigation.angleToTarget(BIN.x, BIN.y));
     sleep();
   }
@@ -416,7 +405,7 @@ public class Main {
     US_SENSOR = null;
   }
 
-  private static void sleep() {
+  public static void sleep() {
     try {
       Thread.sleep(500);
     } catch (InterruptedException e) {
@@ -424,6 +413,26 @@ public class Main {
     }
   }
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   /**
    * flow to test the plain navigation technique.
    */

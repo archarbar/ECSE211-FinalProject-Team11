@@ -4,7 +4,8 @@ import lejos.robotics.SampleProvider;
 import static ca.mcgill.ecse211.project.Resources.*;
 
 /**
- * A navigator that actively corrects its heading and position
+ * A navigator that actively corrects its heading and position.
+ * Named as such t=due to waggling as it corrects its heading and position.
  * 
  * @author Matthew
  *
@@ -15,7 +16,7 @@ public class WaggleNavigation extends Navigation {
   };
   enum Direction {
     POS, NEG
-  };
+  }
 
   Odometer odometer = Odometer.getOdometer();
   
@@ -175,10 +176,17 @@ public class WaggleNavigation extends Navigation {
 
     // turn to heading
     turnToHeading(heading);
-
     toWaggle(dir1, axis1, tileDis1);
+    if (avoided) {
+      return;
+    }
+    Main.sleep();
     turnToHeading(heading2);
     toWaggle(dir2, axis2, tileDis2);
+    if (avoided) {
+      return;
+    }
+    Main.sleep();
     position = odometer.getXYT();
     System.out.println("(" + position[0] + "," + position[1] + ")");
     System.out.println("(" + x + "," + y + ")");
@@ -188,6 +196,9 @@ public class WaggleNavigation extends Navigation {
     double distance = calculateDistanceTo(x, y);
     System.out.println(distance + " cm");
     moveTo(distance);
+    if (avoided) {
+      return;
+    }
   }
 
   /**
@@ -199,6 +210,9 @@ public class WaggleNavigation extends Navigation {
    */
   private void toWaggle(Direction direction, Axis axis, int tileDis) {
     for (int i = 0; i < tileDis; ++i) {
+      if (avoided) {
+        return;
+      }
       System.out.println("D:" + (tileDis - i));
       waggle(axis, direction);
     }
@@ -237,12 +251,20 @@ public class WaggleNavigation extends Navigation {
    * @param direction 0 for x, 1 for y 
    * @param side 1 for positive, -1 for negative
    */
-  private void waggle(int direction, int side) {
+  private synchronized void waggle(int direction, int side) {
     long correctionStart, correctionEnd;
     stop();
     forwards();
     while (true) {
       correctionStart = System.currentTimeMillis();
+      if (avoided) {
+        try {
+          wait();
+          return;
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
       colorSampleProviderL.fetchSample(csDataL, 0); // get data from sensor
       colorSampleProviderR.fetchSample(csDataR, 0);
       if ((csDataL[0] < LINE_RED_INTENSITY) || (csDataR[0] < LINE_RED_INTENSITY)) { // if light read by sensor is
@@ -271,6 +293,14 @@ public class WaggleNavigation extends Navigation {
     if (isLeft) {
       while (true) {
         correctionStart = System.currentTimeMillis();
+        if (avoided) {
+          try {
+            wait();
+            return;
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
         if (tooFar(startPos)) {
           waggle(direction, side);
           return;
@@ -297,6 +327,14 @@ public class WaggleNavigation extends Navigation {
     } else {
       while (true) {
         correctionStart = System.currentTimeMillis();
+        if (avoided) {
+          try {
+            wait();
+            return;
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
         if (tooFar(startPos)) {
           waggle(direction, side);
           return;
