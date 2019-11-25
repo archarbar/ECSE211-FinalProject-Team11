@@ -88,7 +88,7 @@ public class LightLocalizer extends PlainNavigation {
     csDataL = new float[colorSensorL.sampleSize()];
     csDataR = new float[colorSensorR.sampleSize()];
     odometer.setXYT(0, 0, 0);
-    long correctionStart, correctionEnd;
+    long correctionStart, correctionEnd, deltaCorrection;
     try {
       Thread.sleep(1000);
     } catch (InterruptedException e) {
@@ -116,9 +116,10 @@ public class LightLocalizer extends PlainNavigation {
         break;
       }
       correctionEnd = System.currentTimeMillis();
-      if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+      deltaCorrection = correctionEnd-correctionStart;
+      if (deltaCorrection < CORRECTION_PERIOD) {
         try {
-          Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+          Thread.sleep(CORRECTION_PERIOD - deltaCorrection);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -139,9 +140,10 @@ public class LightLocalizer extends PlainNavigation {
           break;
         }
         correctionEnd = System.currentTimeMillis();
-        if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+        deltaCorrection = correctionEnd-correctionStart;
+        if (deltaCorrection < CORRECTION_PERIOD) {
           try {
-            Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+            Thread.sleep(CORRECTION_PERIOD - deltaCorrection);
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
@@ -161,9 +163,10 @@ public class LightLocalizer extends PlainNavigation {
           break;
         }
         correctionEnd = System.currentTimeMillis();
-        if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+        deltaCorrection = correctionEnd-correctionStart;
+        if (deltaCorrection < CORRECTION_PERIOD) {
           try {
-            Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+            Thread.sleep(CORRECTION_PERIOD - deltaCorrection);
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
@@ -193,9 +196,10 @@ public class LightLocalizer extends PlainNavigation {
         break;
       }
       correctionEnd = System.currentTimeMillis();
-      if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+      deltaCorrection = correctionEnd-correctionStart;
+      if (deltaCorrection < CORRECTION_PERIOD) {
         try {
-          Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+          Thread.sleep(CORRECTION_PERIOD - deltaCorrection);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -217,9 +221,10 @@ public class LightLocalizer extends PlainNavigation {
           break;
         }
         correctionEnd = System.currentTimeMillis();
-        if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+        deltaCorrection = correctionEnd-correctionStart;
+        if (deltaCorrection < CORRECTION_PERIOD) {
           try {
-            Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+            Thread.sleep(CORRECTION_PERIOD - deltaCorrection);
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
@@ -240,9 +245,10 @@ public class LightLocalizer extends PlainNavigation {
           break;
         }
         correctionEnd = System.currentTimeMillis();
-        if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
+        deltaCorrection = correctionEnd-correctionStart;
+        if (deltaCorrection < CORRECTION_PERIOD) {
           try {
-            Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
+            Thread.sleep(CORRECTION_PERIOD - deltaCorrection);
           } catch (InterruptedException e) {
             e.printStackTrace();
           }

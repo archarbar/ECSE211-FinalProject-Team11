@@ -164,7 +164,8 @@ public class Resources {
   /**
    * Speed to lower arm in degrees/s.
    */
-  public static final int LOWER_SPEED = 50;
+  //public static final int LOWER_SPEED = 50;
+  public static final int LOWER_SPEED = 300;
 
   /**
    * The speed at which the launcher rotates in degrees per second.

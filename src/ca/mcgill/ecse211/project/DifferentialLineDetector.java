@@ -11,7 +11,6 @@ import lejos.robotics.SampleProvider;
  */
 public class DifferentialLineDetector implements LineDetectorController {
 
-
   // mean filter
   
   /*
@@ -136,12 +135,12 @@ public class DifferentialLineDetector implements LineDetectorController {
    */
   protected double meanFilter(double lightVal) {
     buffer[filterIndex++] = lightVal;
-    filterIndex %= buffer.length;
-    if (filterCount < buffer.length) {
+    filterIndex %= BUFFER_SIZE; 
+    if (filterCount < BUFFER_SIZE) {
       filterCount++;
     }
     float mean = 0;
-    for (int i = 0; i < buffer.length && i < filterCount; i++) {
+    for (int i = 0; i < BUFFER_SIZE && i < filterCount; i++) {
       mean += buffer[i];
     }
     mean /= filterCount;
