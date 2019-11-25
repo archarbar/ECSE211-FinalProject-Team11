@@ -51,7 +51,7 @@ public class Main {
   public static void main(String[] args) {
 	  	//turnTest();
 //    betaDemo();
-//    startOdometer();
+    startOdometer();
 //    for (int a=0; a<20; a++) {
 //      Navigation.turnTo(180);
 //    }
