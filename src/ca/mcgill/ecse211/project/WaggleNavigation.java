@@ -244,7 +244,7 @@ public class WaggleNavigation extends Navigation {
      */
     csDataL = new float[colorSensorL.sampleSize()];
     csDataR = new float[colorSensorL.sampleSize()];
-    long correctionStart, correctionEnd;
+    long correctionStart, correctionEnd, deltaCorrection;
     stop();
     forwards();
     while (true) {
