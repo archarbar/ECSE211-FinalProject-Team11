@@ -6,7 +6,7 @@ import static ca.mcgill.ecse211.project.Resources.*;
 /**
  * A navigator that actively corrects its heading and position.
  * Named as such t=due to waggling as it corrects its heading and position.
- * 
+ *
  * @author Matthew
  *
  */
@@ -19,7 +19,7 @@ public class WaggleNavigation extends Navigation {
   }
 
   Odometer odometer = Odometer.getOdometer();
-  
+
   /**
    * correction period in milliseconds
    */
@@ -28,67 +28,67 @@ public class WaggleNavigation extends Navigation {
    * back off distance for robot in cm
    */
   private static final int REVERSE_DIST = 3;
-  
+
   /**
    * left light sensor data
    */
   private float[] csDataL;
-  
+
   /**
    * right light sensor data
    */
   private float[] csDataR;
-  
+
   /**
    * distance between starting and current positions
    */
   private double distance;
-  
+
   /**
    * initial position of robot from odometer
    */
   private double[] startPos;
-  
+
   /**
    * final position of robot from odometer
    */
   private double[] endPos;
-  
+
   /**
    * difference in theta between starting and current angles
    */
   private double offTheta;
-  
+
   /**
    * boolean to know which side robot is facing
    */
   private boolean isLeft = false;
-  
+
   /**
    * left light sensor sample provider
    */
   private SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
-  
+
   /**
    * right light sensor sample provider
    */
   private SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
-  
+
   /**
    * red light intensity to compare read colors
    */
   private static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
-  
+
   /**
    * current position from odometer
    */
   double[] position;
-  
+
   /**
    * our line detector controller for left light sensor
    */
   private LineDetectorController detectorL; // use a red light to compare luminence level
-  
+
   /**
    * our line detector controller for right light sensor
    */
@@ -101,7 +101,7 @@ public class WaggleNavigation extends Navigation {
     csDataL = new float[colorSensorL.sampleSize()];
     csDataR = new float[colorSensorL.sampleSize()];
   }
-  
+
   /**
    * Initializes the navigator with 2 LineDetectors.
    */
@@ -113,7 +113,7 @@ public class WaggleNavigation extends Navigation {
   /**
    * Tells the robot to travel from its current location to a given point in cm travelling parrallel to the gridlines
    * and while actively correcting.
-   * 
+   *
    * @param x in cm
    * @param y in cm
    */
@@ -203,7 +203,7 @@ public class WaggleNavigation extends Navigation {
 
   /**
    * sets up the waggle method to happen a given amount of times.
-   * 
+   *
    * @param direction
    * @param axis
    * @param tileDis
@@ -220,7 +220,7 @@ public class WaggleNavigation extends Navigation {
 
   /**
    * sets up the main waggle method.
-   * 
+   *
    * @param a
    * @param d
    */
@@ -241,14 +241,14 @@ public class WaggleNavigation extends Navigation {
     } else {
       waggle(axis, direction, detectorL, detectorR);
     }
-    
+
   }
 
   /**
    * moves forwards until a line is detected, then uses the difference in location to detecting the the same line with
    * the other sensor to correct the angle, it also corrects its position.
-   * 
-   * @param direction 0 for x, 1 for y 
+   *
+   * @param direction 0 for x, 1 for y
    * @param side 1 for positive, -1 for negative
    */
   private synchronized void waggle(int direction, int side) {
@@ -371,8 +371,8 @@ public class WaggleNavigation extends Navigation {
   /**
    * moves forwards until a line is detected, then uses the difference in location to detecting the the same line with
    * the other sensor to correct the angle, it also corrects its position.
-   * 
-   * @param direction 0 for x, 1 for y 
+   *
+   * @param direction 0 for x, 1 for y
    * @param side 1 for positive, -1 for negative
    * @param detectorL left line detector
    * @param detectorR reight line detector
@@ -465,7 +465,7 @@ public class WaggleNavigation extends Navigation {
   }
   /**
    * given a position on an axis, return the nearest value that's on a gridline.
-   * 
+   *
    * @param pos
    * @return
    */
@@ -476,7 +476,7 @@ public class WaggleNavigation extends Navigation {
 
   /**
    * returns true if its been too far since the last line detected for it to be the same line.
-   * 
+   *
    * @param startPos
    * @return
    */

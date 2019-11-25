@@ -31,6 +31,11 @@ public class Main {
   private static IntPoint home = new IntPoint(1,1); //default home for simple test purposes.
 
   /**
+   * Starting theta
+   */
+  private static double startingT = 0;
+
+  /**
    * use waggle navigation type
    */
   private static Navigation navigator = new WaggleNavigation();
@@ -44,32 +49,26 @@ public class Main {
    */
   public static void main(String[] args) {
 	  	//turnTest();
-////    betaDemo();
+//    betaDemo();
     startOdometer();
-////    for (int a=0; a<20; a++) {
-////      Navigation.turnTo(180);
-////    }
-     Resources.SILENT_VERIFICATION = true;
+//    for (int a=0; a<20; a++) {
+//      Navigation.turnTo(180);
+//    }
      // importData();
-//	  	localize(1,1);
-
-     LightLocalizer lsLocalizer = new LightLocalizer();
+	localize(1,1, startingT);
 
      // Navigation.turnTo(-2);
 //     initLightSensors();
-     lsLocalizer.localize(1, 1);
 
-//    //// localizationTimeTest();
-//    // // lineNavigationTest();
-//    // // plainNavigationTest();
-//    //
-//    // tunnelTest();
-////     waggleNavigationTest();
-//    // launchTest();
+    // localizationTimeTest();
+     // lineNavigationTest();
+     // plainNavigationTest();
+
+     tunnelTest();
+//     waggleNavigationTest();
+//     launchTest();
 //    mainFlow();
 	// set to silent verification
-
-//	    Resources.SILENT_VERIFICATION = true;
 //	    // import wifi data is done by default
 //	    importData();
 //	    // odometry start
@@ -111,7 +110,7 @@ public class Main {
 
     // localize
 
-    localize(home.x, home.y);
+    localize(home.x, home.y, startingT);
     beep(3);
   }
 
@@ -127,7 +126,7 @@ public class Main {
     //enable obstacle avoidance
     avoider = new ObjectAvoidance(navigator);
     new Thread(avoider).start();
-    
+
     navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
     //disable obstacle avoidance
     Navigation.stop();
@@ -184,14 +183,22 @@ public class Main {
     }
     if (corner == 0) {
       home = new IntPoint(1,1);
+      startingT = 0;
     } else if (corner == 1) {
       home = new IntPoint(14,1);
+      startingT = 270;
     } else if (corner == 2) {
       home = new IntPoint(14,8);
+      startingT = 180;
     } else if (corner == 3) {
       home = new IntPoint(1,8);
+      startingT = 90;
     }
-
+    validDistances.add(3.5*TILE_SIZE);
+    validDistances.add(4.5*TILE_SIZE);
+    validDistances.add(5.5*TILE_SIZE);
+    validDistances.add(6.5*TILE_SIZE);
+    validDistances.add(7.5*TILE_SIZE);
     distanceToSpeed.put(3.5*TILE_SIZE, 210);
     distanceToSpeed.put(4.5*TILE_SIZE, 230);
     distanceToSpeed.put(5.5*TILE_SIZE, 250);
@@ -216,7 +223,7 @@ public class Main {
    * @param x
    * @param y
    */
-  private static void localize(int x, int y) {
+  private static void localize(int x, int y, double theta) {
 //    initUSSensor();
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
     LightLocalizer lsLocalizer = new LightLocalizer();
@@ -227,7 +234,7 @@ public class Main {
     Navigation.moveTo(-2);
     // Navigation.turnTo(-2);
 //    initLightSensors();
-    lsLocalizer.localize(x, y);
+    lsLocalizer.localize(x, y, theta);
     sleep();
   }
 
@@ -413,26 +420,26 @@ public class Main {
     }
   }
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
    * flow to test the plain navigation technique.
    */
@@ -459,7 +466,7 @@ public class Main {
    */
   private static void localizationTimeTest() {
     long startTime = System.currentTimeMillis();
-    localize(1, 1);
+    localize(1, 1, startingT);
     long endTime = System.currentTimeMillis();
     long totalTime = endTime - startTime;
     if (totalTime > 30 * 1000)
@@ -472,8 +479,8 @@ public class Main {
    * flow to test the tunnel navigation method.
    */
   private static void tunnelTest() {
-//    TNG_LL = new Point(4, 4);
-//    TNG_UR = new Point(6, 5);
+    TNG_LL = new Point(4, 3);
+    TNG_UR = new Point(6, 4);
     navigateThroughTunnel(navigator);
   }
 
@@ -515,7 +522,7 @@ public class Main {
     startOdometer();
 
     // localize
-    localize(1, 1);
+    localize(1, 1, startingT);
     beep(1);
 
     // navigate to tunnel

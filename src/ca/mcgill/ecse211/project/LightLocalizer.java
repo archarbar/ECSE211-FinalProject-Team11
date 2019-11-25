@@ -9,16 +9,6 @@ import lejos.robotics.SampleProvider;
 public class LightLocalizer extends PlainNavigation {
 
   /**
-   * correction period in milliseconds
-   */
-  private static final long CORRECTION_PERIOD = 5;
-
-  /**
-   * back off distance for robot in cm
-   */
-  private static final int REVERSE_DIST = 6;
-
-  /**
    * left light sensor data
    */
   private float[] csDataL;
@@ -83,8 +73,8 @@ public class LightLocalizer extends PlainNavigation {
    * @param x
    * @param y
    */
-  public void localize(int x, int y) {
-    findDistance(x, y);
+  public void localize(int x, int y, double theta) {
+    findDistance(x, y, theta);
   }
 
   /**
@@ -93,7 +83,7 @@ public class LightLocalizer extends PlainNavigation {
    * @param x
    * @param y
    */
-  private void findDistance(int x, int y) {
+  private void findDistance(int x, int y, double theta) {
     odometer.setXYT(0, 0, 0);
     long correctionStart, correctionEnd;
     try {
@@ -283,7 +273,7 @@ public class LightLocalizer extends PlainNavigation {
 
     odometer.setX(x * TILE_SIZE);
     odometer.setY(y * TILE_SIZE);
-    odometer.setTheta(0);
+    odometer.setTheta(theta);
   }
 
 
