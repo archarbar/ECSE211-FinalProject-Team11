@@ -44,27 +44,15 @@ public class LightLocalizer extends PlainNavigation {
   private boolean isLeft = false;
 
   /**
-   * left light sensor sample provider
-   */
-  private SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
-
-  /**
-   * right light sensor sample provider
-   */
-  private SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
-
-  /**
    * red light intensity to compare read colors
    */
   private static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
 
   /**
-   * initialises 2 light sensors and gets the odometer.
+   * gets the odometer.
    */
   public LightLocalizer() {
     this.odometer = Odometer.getOdometer();
-    csDataL = new float[colorSensorL.sampleSize()];
-    csDataR = new float[colorSensorR.sampleSize()];
   }
 
   /**
@@ -84,6 +72,21 @@ public class LightLocalizer extends PlainNavigation {
    * @param y
    */
   private void findDistance(int x, int y, double theta) {
+    /**
+     * left light sensor sample provider
+     */
+    SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
+
+    /**
+     * right light sensor sample provider
+     */
+    SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
+    
+    /**
+     * initialize the two light sensors
+     */
+    csDataL = new float[colorSensorL.sampleSize()];
+    csDataR = new float[colorSensorR.sampleSize()];
     odometer.setXYT(0, 0, 0);
     long correctionStart, correctionEnd;
     try {

@@ -65,16 +65,6 @@ public class WaggleNavigation extends Navigation {
   private boolean isLeft = false;
 
   /**
-   * left light sensor sample provider
-   */
-  private SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
-
-  /**
-   * right light sensor sample provider
-   */
-  private SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
-
-  /**
    * red light intensity to compare read colors
    */
   private static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
@@ -94,12 +84,8 @@ public class WaggleNavigation extends Navigation {
    */
   private LineDetectorController detectorR;
 
-  /**
-   * Initializes the navigator with 2 colour sensors.
-   */
   public WaggleNavigation() {
-    csDataL = new float[colorSensorL.sampleSize()];
-    csDataR = new float[colorSensorL.sampleSize()];
+
   }
 
   /**
@@ -252,6 +238,21 @@ public class WaggleNavigation extends Navigation {
    * @param side 1 for positive, -1 for negative
    */
   public synchronized void waggle(int direction, int side) {
+    /**
+     * left light sensor sample provider
+     */
+    SampleProvider colorSampleProviderL = colorSensorL.getRedMode(); // use a red light to compare luminence level
+
+    /**
+     * right light sensor sample provider
+     */
+    SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
+
+    /**
+     * Initializes the navigator with 2 colour sensors.
+     */
+    csDataL = new float[colorSensorL.sampleSize()];
+    csDataR = new float[colorSensorL.sampleSize()];
     long correctionStart, correctionEnd;
     stop();
     forwards();
