@@ -45,23 +45,44 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
-    // turnTest();
-//    betaDemo();
+	  	//turnTest();
+////    betaDemo();
     startOdometer();
-//    for (int a=0; a<20; a++) {
-//      Navigation.turnTo(180);
-//    }
-    // Resources.SILENT_VERIFICATION = true;
-    //// importData();
-    // localize(1,1);
-    //// localizationTimeTest();
-    // // lineNavigationTest();
-    // // plainNavigationTest();
-    //
-    // tunnelTest();
-//     waggleNavigationTest();
-    // launchTest();
-    mainFlow();
+////    for (int a=0; a<20; a++) {
+////      Navigation.turnTo(180);
+////    }
+     Resources.SILENT_VERIFICATION = true;
+     // importData();
+//	  	localize(1,1);
+
+     LightLocalizer lsLocalizer = new LightLocalizer();
+
+     // Navigation.turnTo(-2);
+//     initLightSensors();
+     lsLocalizer.localize(1, 1);
+
+//    //// localizationTimeTest();
+//    // // lineNavigationTest();
+//    // // plainNavigationTest();
+//    //
+//    // tunnelTest();
+////     waggleNavigationTest();
+//    // launchTest();
+//    mainFlow();
+	// set to silent verification
+
+//	    Resources.SILENT_VERIFICATION = true;
+//	    // import wifi data is done by default
+//	    importData();
+//	    // odometry start
+//	    startOdometer();
+//
+//	    // localize
+//	    localize(1, 1);
+//	    beep(1);
+//
+//	    // navigate to tunnel
+//	    navigateThroughTunnel(new WaggleNavigation());
   }
 
 
@@ -79,6 +100,33 @@ public class Main {
     returnToBase();
   }
 
+  private static void tempDemo() {
+	  Resources.SILENT_VERIFICATION = true;
+	    // import wifi data is done by default
+	    importData();
+	    // odometry start
+	    startOdometer();
+
+	    // localize
+	    localize(1, 1);
+	    beep(1);
+
+	    // navigate to tunnel
+	    navigateThroughTunnel(new WaggleNavigation());
+
+	    // navigate to specified coords
+	    // turn to specified angle
+	    navigateToLaunch(new WaggleNavigation(), BIN.x, BIN.y);
+	    beep(3);
+	    // launch
+	    int maxSpeed = 1300;
+	    launch(1, maxSpeed);
+	    beep(1);
+
+	    System.exit(0);
+
+  }
+
 
   /**
    * Handles the initialization step of the main flow.
@@ -92,7 +140,7 @@ public class Main {
     startOdometer();
 
     // localize
-    
+
     localize(home.x, home.y);
     beep(3);
   }
@@ -152,7 +200,7 @@ public class Main {
     System.out.println("Island Zone, upper right: " + island.ur);
     System.out.println("Red Bin location: x=" + redBin.x + ", y=" + redBin.y);
     System.out.println("Green Bin location: x=" + greenBin.x + ", y=" + greenBin.y);
-    
+
     int corner = -1;
     if (redTeam == TEAM_NUMBER) {
       corner = redCorner;
@@ -170,7 +218,7 @@ public class Main {
     } else if (corner == 3) {
       home = new IntPoint(1,8);
     }
-    
+
   }
 
   /**
