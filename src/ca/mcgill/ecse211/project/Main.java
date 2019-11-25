@@ -37,6 +37,7 @@ public class Main {
 
   /**
    * use waggle navigation type
+   * 
    */
   private static Navigation navigator = new WaggleNavigation();
   private static ObjectAvoidance avoider = null;
@@ -63,7 +64,7 @@ public class Main {
     // localizationTimeTest();
      // lineNavigationTest();
      // plainNavigationTest();
-
+	
      tunnelTest();
 //     waggleNavigationTest();
 //     launchTest();
@@ -226,14 +227,14 @@ public class Main {
   private static void localize(int x, int y, double theta) {
 //    initUSSensor();
     SampleProvider usDistance = US_SENSOR.getMode("Distance");
-    LightLocalizer lsLocalizer = new LightLocalizer();
     UltrasonicLocalizer usLocalizer = new UltrasonicLocalizer(UltrasonicLocalizer.edgeType.FallingEdge, usDistance);
     usLocalizer.localize();
     sleep();
     closeUSSensor();
     Navigation.moveTo(-2);
     // Navigation.turnTo(-2);
-//    initLightSensors();
+    initLightSensors();
+    LightLocalizer lsLocalizer = new LightLocalizer();
     lsLocalizer.localize(x, y, theta);
     sleep();
   }
