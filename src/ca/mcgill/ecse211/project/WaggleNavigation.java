@@ -201,7 +201,7 @@ public class WaggleNavigation extends Navigation {
    * @param a
    * @param d
    */
-  private void waggle(Axis a, Direction d) {
+  void waggle(Axis a, Direction d) {
     int axis = 0, direction = 0;
     if (a == Axis.X) {
       axis = 0;
@@ -218,7 +218,6 @@ public class WaggleNavigation extends Navigation {
     } else {
       waggle(axis, direction, detectorL, detectorR);
     }
-
   }
 
   /**

@@ -1,13 +1,17 @@
 package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
+import ca.mcgill.ecse211.project.WaggleNavigation.Axis;
+import ca.mcgill.ecse211.project.WaggleNavigation.Direction;
 
 /**
  * Main class for methods that control the launcher
- * @author Victor
+ * @author Team 11
  *
  */
 public class LauncherControl {
+  
+  Odometer odometer = Odometer.getOdometer();
 
   /**
    * Launch the ping pong ball at the given speed in degrees/s.
@@ -40,6 +44,7 @@ public class LauncherControl {
    * Move the launcher to the ready position.
    */
   public static void reset() {
+    reposition();
     launcher1.setSpeed(RESET_SPEED);
     launcher2.setSpeed(RESET_SPEED);
 
@@ -56,6 +61,32 @@ public class LauncherControl {
 
     launcher1.stop();
     launcher2.stop();
+  }
+  
+  /**
+   * reposition the robot position after each launch
+   */
+  public static void reposition() {
+    Direction dir;
+    Axis axis;
+    double angle = Odometer.getOdometer().getXYT()[2];
+    if (Math.abs(angle - 90) < 45) {
+      axis = Axis.X;
+      dir = Direction.POS;
+    }
+    else if (Math.abs(angle - 180) < 45) {
+      axis = Axis.Y;
+      dir = Direction.NEG;
+    }
+    else if (Math.abs(angle - 270) < 45) {
+      axis = Axis.X;
+      dir = Direction.NEG;
+    }
+    else {
+      axis = Axis.Y;
+      dir = Direction.POS;
+    }
+    new WaggleNavigation().waggle(axis, dir);
   }
 
   /**

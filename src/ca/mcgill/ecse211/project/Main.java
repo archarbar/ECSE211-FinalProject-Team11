@@ -36,7 +36,7 @@ public class Main {
   private static double startingT = 0;
 
   /**
-   * use waggle navigation type
+   * use relocalize navigation type
    *
    */
   private static Navigation navigator = new ReLocalizeNavigation(); //new WaggleNavigation();
