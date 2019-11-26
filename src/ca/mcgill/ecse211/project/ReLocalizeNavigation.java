@@ -13,9 +13,11 @@ public class ReLocalizeNavigation extends WaggleNavigation {
   
   @Override
   public void travelTo(double x, double y) {
-    colorSensorR.close();
-    colorSensorL.close();
+//    colorSensorR.close();
+//    colorSensorL.close();
     new PlainNavigation().travelTo(x, y);
+    System.out.println("X:"+x);
+    System.out.println("Y:"+y);
   }
   
   public void reLocalize(double x, double y) {

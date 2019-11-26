@@ -237,6 +237,7 @@ public class Main {
     LightLocalizer lsLocalizer = new LightLocalizer();
     lsLocalizer.localize(x, y, theta);
     sleep();
+    Sound.beep();
   }
 
   /**
