@@ -29,7 +29,7 @@ public class UltrasonicLocalizer extends PlainNavigation {
   /**
    * distance to wall in cm
    */
-  private static final int WALL_DISTANCE = 22;
+  private static final int WALL_DISTANCE = 27; //22
   
   /**
    * error margin of 3 cm to counter the effect of noise

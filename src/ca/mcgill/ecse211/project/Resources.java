@@ -84,7 +84,7 @@ public class Resources {
   /**
    * the robot's track size
    */
-  public static final double TRACK = 15.35; // best value now 15.62
+  public static final double TRACK = 15.40; // best value now 15.62
 
   /**
    * the distance at which we want to perform the launch
@@ -159,13 +159,13 @@ public class Resources {
   /**
    * Angle to lower launcher arm by in order to pass through the tunnel.
    */
-  public static final int LOWER_ANGLE = 70;
+  public static final int LOWER_ANGLE = 90;
 
   /**
    * Speed to lower arm in degrees/s.
    */
   //public static final int LOWER_SPEED = 50;
-  public static final int LOWER_SPEED = 300;
+  public static final int LOWER_SPEED = 100;
 
   /**
    * The speed at which the launcher rotates in degrees per second.

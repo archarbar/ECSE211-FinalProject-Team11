@@ -140,6 +140,15 @@ public class ReLocalizeNavigation extends WaggleNavigation {
         }
       }
     }
+    Odometer odometer = Odometer.getOdometer();
+    double[] xyt = odometer.getXYT();
+    xyt[2] = Math.round(xyt[2]/90)*90;
+    if (xyt[2] == 90 || xyt[2] == 270) {
+      xyt[0] = Math.round(xyt[0]/TILE_SIZE)*TILE_SIZE;
+    } else {
+      xyt[1] = Math.round(xyt[1]/TILE_SIZE)*TILE_SIZE;
+    }
+    odometer.setXYT(xyt[0], xyt[1], xyt[2]);
     
     moveTo(-TILE_SIZE/2+sensorOffset);
     turnTo(90);
@@ -228,8 +237,18 @@ public class ReLocalizeNavigation extends WaggleNavigation {
         }
       }
     }
+    xyt = odometer.getXYT();
+    xyt[2] = Math.round(xyt[2]/90)*90;
+    if (xyt[2] == 90 || xyt[2] == 270) {
+      xyt[0] = Math.round(xyt[0]/TILE_SIZE)*TILE_SIZE;
+    } else {
+      xyt[1] = Math.round(xyt[1]/TILE_SIZE)*TILE_SIZE;
+    }
+    odometer.setXYT(xyt[0], xyt[1], xyt[2]);
     moveTo(-TILE_SIZE/2+sensorOffset);
-    turnTo(Navigation.angleToTarget(x,y));
+//    System.out.println("(x,y): ("+x+","+y+")");
+//    turnTo(Navigation.angleToTarget(x,y));
+    turnTo(90);
   }
 //    double[] xyt = Odometer.getOdometer().getXYT();
 //    double dx, dy;
@@ -271,12 +290,6 @@ public class ReLocalizeNavigation extends WaggleNavigation {
 //      turnTo(Navigation.angleToTarget(x, y));
 //    }
 //  }
-  private void left() {
-    leftMotor.setSpeed(ROTATE_SPEED);
-    leftMotor.forward();
-  }
-  private void right() {
-    rightMotor.setSpeed(ROTATE_SPEED);
-    rightMotor.forward();
-  }
+  
+  
 }

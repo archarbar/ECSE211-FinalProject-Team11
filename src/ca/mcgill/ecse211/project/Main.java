@@ -24,7 +24,7 @@ public class Main {
 //   * tunnel corners and bin location imported from resources
 //   */
 //  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN;
-  private static Point TNG_LL = new Point(1,2), TNG_UR = new Point(2,4), BIN;
+  private static Point TNG_LL = new Point(1,2), TNG_UR = new Point(2,4), BIN; //TODO
 
   /**
    *
@@ -50,7 +50,7 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
-	  	//turnTest();
+//	  	turnTest();
 //    betaDemo();
 //    startOdometer();
 //    for (int a=0; a<20; a++) {
@@ -274,6 +274,7 @@ public class Main {
     aveX = (TNG_LL.x + TNG_UR.x) / 2;
     aveY = (TNG_LL.y + TNG_UR.y) / 2;
     if (navigator instanceof ReLocalizeNavigation) {
+      System.out.println("point towards("+aveX+","+aveY+")");
       ((ReLocalizeNavigation) navigator).reLocalize(aveX, aveY);
     } else {
       theta = Navigation.angleToTarget(aveX, aveY);

@@ -372,11 +372,21 @@ public abstract class Navigation {
     rightMotor.setSpeed(0);
     leftMotor.stop();
     rightMotor.stop();
-    leftMotor.resetTachoCount();
-    rightMotor.resetTachoCount();
   }
 
+  public static void right() {
+    rightMotor.setSpeed(ROTATE_SPEED);
+    leftMotor.setSpeed(0);
+    leftMotor.stop();
+    rightMotor.forward();
+  }
 
+  public static void left() {
+    leftMotor.setSpeed(ROTATE_SPEED);
+    rightMotor.setSpeed(0);
+    rightMotor.stop();
+    leftMotor.forward();
+  }
 
   /**
    * Tells the robot to travel from its current location to the centre of the given tile.

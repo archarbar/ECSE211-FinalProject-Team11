@@ -320,14 +320,4 @@ public class LightLocalizer extends PlainNavigation {
     odometer.setTheta(theta);
     
   }
-
-
-  private void left() {
-    leftMotor.setSpeed(ROTATE_SPEED);
-    leftMotor.forward();
-  }
-  private void right() {
-    rightMotor.setSpeed(ROTATE_SPEED);
-    rightMotor.forward();
-  }
 }
