@@ -110,7 +110,7 @@ public class Main {
     startOdometer();
 
     // localize
-
+    initLightSensors();
     localize(home.x, home.y, startingT);
     beep(3);
   }
@@ -149,7 +149,7 @@ public class Main {
   }
   /**
    * makes the robot beep a specified number of times
-   * @param n
+   * @param n is the number of beeps
    */
   private static void beep(int n) {
     for(;n>0;n--) {
