@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
+import static ca.mcgill.ecse211.project.Main.*;
 
 /**
  * Contains all the general navigation related methods. Objects of this type also must implement a travelTo method that
@@ -287,9 +288,35 @@ public abstract class Navigation {
     }
     return location;
   }
-
+  
   /**
-   * Finds the point in the launching zone that is at a given distance to the bin Takes 3 inputs: the point representing
+   * Takes all the distance from valid distances and finds the points corresponding them with findLaunchPoint. 
+   * Then check each point and return the one closest to current position.
+   * 
+   * @return point closest to current position from all points at valid distances
+   */
+  public static Point findBestLaunchPoint() {
+    double minDist = -1;
+    double newDist;
+    Point newP = new Point(0, 0);
+    Point bestP = new Point(0, 0);
+    for (double dist: validDistances) {
+      newP = findLaunchPoint(BIN, islandRectangle, dist);
+      newDist = calculateDistanceTo(newP.x, newP.y);
+      if ((minDist == -1) || (newDist < minDist)) {
+        minDist = newDist;
+        bestP = newP;
+      }
+      else {
+        continue;
+      }
+    }
+    return bestP;
+  }
+    
+  
+  /**
+   * Finds the point in the launching zone that is at a given distance to the bin. Takes 3 inputs: the point representing
    * the coordinates of the bin, a GridRectagle for the launch zone, and the desired distance in cm First, checks if the
    * point on the circle closest to current position is in the launch zone. If it is, return it, if not, then find the
    * closest point on the circle to current position that is inside the launch zone. This second point will be part of
@@ -333,12 +360,12 @@ public abstract class Navigation {
         Point edgePoint = new Point(distance * Math.cos(angle), distance * Math.sin(angle));
         if (launchZone.contains(edgePoint)) {
           newDist = calculateDistanceTo(edgePoint.x, edgePoint.y);
-          if (minDist == -1) {
+          if ((minDist == -1) || (newDist < minDist)) {
             minDist = newDist;
             minAngle = angle;
-          } else if (newDist < minDist) {
-            minDist = newDist;
-            minAngle = angle;
+          }
+          else {
+            continue;
           }
         }
       }

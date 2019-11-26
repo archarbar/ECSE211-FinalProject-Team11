@@ -23,7 +23,7 @@ public class Main {
 //  /**
 //   * tunnel corners and bin location imported from resources
 //   */
-  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN;
+  public static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN;
 
   /**
    *
