@@ -20,16 +20,21 @@ public class Main {
    */
   private static Odometer odometer;
 
-//  /**
-//   * tunnel corners and bin location imported from resources
-//   */
+  /**
+   * tunnel corners and bin location imported from resources
+   */
 //  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN;
   private static Point TNG_LL = new Point(1,2), TNG_UR = new Point(2,4), BIN;
 
   /**
-   *
+   * home point to go back to after launching
    */
   private static IntPoint home = new IntPoint(1,1); //default home for simple test purposes.
+  
+  /**
+   * the distance between the selected launch point and the bin
+   */
+  public static double launchDist;
 
   /**
    * Starting theta
@@ -37,7 +42,7 @@ public class Main {
   private static double startingT = 0;
 
   /**
-   * use waggle navigation type
+   * use relocalize navigation type
    *
    */
   private static Navigation navigator = new ReLocalizeNavigation(); //new WaggleNavigation();
@@ -124,13 +129,14 @@ public class Main {
    */
   private static int travelToLaunch() {
     navigateThroughTunnel(navigator);
-    //TODO: get launch location
-    Point launchLocation = new Point(0.0,0.0);  //TODO calculate
-    int launchSpeed = 0;                        //TODO based on launch distance
+    // get launch location
+    Point launchLocation = Navigation.findBestLaunchPoint(BIN);
+    // get launch speed depending on location distance to bin
+    int launchSpeed = distanceToSpeed.get(launchDist);
     //enable obstacle avoidance
     avoider = new ObjectAvoidance(navigator);
     new Thread(avoider).start();
-
+    // navigate to launch location
     navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
     //disable obstacle avoidance
     Navigation.stop();
@@ -244,7 +250,7 @@ public class Main {
   }
 
   /**
-   * Navigates to, and through the tunnel to the launching side.
+   * Navigates to, and through the tunnel to the launching side. 
    *
    * @param navigator to determine navigation type.
    */
