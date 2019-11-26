@@ -293,15 +293,16 @@ public abstract class Navigation {
    * Takes all the distance from valid distances and finds the points corresponding them with findLaunchPoint. 
    * Then check each point and return the one closest to current position.
    * 
+   * @param point for bin location
    * @return point closest to current position from all points at valid distances
    */
-  public static Point findBestLaunchPoint() {
+  public static Point findBestLaunchPoint(Point bin) {
     double minDist = -1;
     double newDist;
     Point newP = new Point(0, 0);
     Point bestP = new Point(0, 0);
     for (double dist: validDistances) {
-      newP = findLaunchPoint(BIN, islandRectangle, dist);
+      newP = findLaunchPoint(bin, islandRectangle, dist);
       newDist = calculateDistanceTo(newP.x, newP.y);
       if ((minDist == -1) || (newDist < minDist)) {
         minDist = newDist;
