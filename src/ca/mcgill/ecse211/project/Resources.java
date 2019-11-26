@@ -84,7 +84,7 @@ public class Resources {
   /**
    * the robot's track size
    */
-  public static final double TRACK = 15.62; // best value now 15.62
+  public static final double TRACK = 15.35; // best value now 15.62
 
   /**
    * the distance at which we want to perform the launch
@@ -129,7 +129,7 @@ public class Resources {
   /**
    * The Correction period for the light sensor in milliseconds.
    */
-  public static final int CORRECTION_PERIOD = 50;
+  public static final int CORRECTION_PERIOD = 25;
 
   /**
    * The object detection period for the US sensor.

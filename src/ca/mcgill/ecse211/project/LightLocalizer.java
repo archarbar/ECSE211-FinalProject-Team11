@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
+import lejos.hardware.Sound;
 import lejos.robotics.SampleProvider;
 
 /**
@@ -105,13 +106,22 @@ public class LightLocalizer extends PlainNavigation {
                                                                                     // smaller (darker) than red light,
                                                                                     // eg., black lines
         // sound alert to know when the sensor hits a line
+//        Sound.beep();
+        
         stop();
         if (csDataR[0] < LINE_RED_INTENSITY) {
           isLeft = false;
         } else if (csDataL[0] < LINE_RED_INTENSITY) {
           isLeft = true;
         }
+        try {
+          Thread.sleep(10);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
         startPos = odometer.getXYT();
+//        System.out.println("y:"+startPos[1]);
+        
         // new Thread(odometer).start();
         break;
       }
@@ -125,20 +135,27 @@ public class LightLocalizer extends PlainNavigation {
         }
       }
     }
-    forwards();
+    
     if (isLeft) {
       while (true) {
         correctionStart = System.currentTimeMillis();
         colorSampleProviderR.fetchSample(csDataR, 0);
         if (csDataR[0] < LINE_RED_INTENSITY) {
           stop();
-          distance = (odometer.getXYT())[1] - startPos[1];
-          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          turnTo(-offTheta);
-          moveTo(-REVERSE_DIST);
-          turnTo(90);
+//          Sound.beep();
+//          System.out.println("y:"+Odometer.getOdometer().getXYT()[1]);
+//          distance = (odometer.getXYT())[1] - startPos[1];
+//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
+//          System.out.println("dis:"+distance);
+//          System.out.println("theta:"+offTheta);
+//          turnTo(-offTheta);
+//          Sound.beepSequenceUp();
+//          moveTo(-REVERSE_DIST);
+//          Sound.beepSequence();
           break;
         }
+//        forwards();
+        right();
         correctionEnd = System.currentTimeMillis();
         deltaCorrection = correctionEnd-correctionStart;
         if (deltaCorrection < CORRECTION_PERIOD) {
@@ -155,13 +172,20 @@ public class LightLocalizer extends PlainNavigation {
         colorSampleProviderL.fetchSample(csDataL, 0);
         if (csDataL[0] < LINE_RED_INTENSITY) {
           stop();
-          distance = (odometer.getXYT())[1] - startPos[1];
-          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          turnTo(offTheta);
-          moveTo(-REVERSE_DIST);
-          turnTo(90);
+//          Sound.beep();
+//          System.out.println("y:"+Odometer.getOdometer().getXYT()[1]);
+//          distance = (odometer.getXYT())[1] - startPos[1];
+//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
+//          System.out.println("dis:"+distance);
+//          System.out.println("theta:"+offTheta);
+//          turnTo(offTheta);
+//          Sound.beepSequenceUp();
+//          moveTo(-REVERSE_DIST);
+//          Sound.beepSequence();
           break;
         }
+//        forwards();
+        left();
         correctionEnd = System.currentTimeMillis();
         deltaCorrection = correctionEnd-correctionStart;
         if (deltaCorrection < CORRECTION_PERIOD) {
@@ -173,10 +197,10 @@ public class LightLocalizer extends PlainNavigation {
         }
       }
     }
-
+    moveTo(sensorOffset);
+    turnTo(90);
     stop();
     forwards();
-
     while (true) {
       correctionStart = System.currentTimeMillis();
       int loc = 0;
@@ -193,10 +217,15 @@ public class LightLocalizer extends PlainNavigation {
         } else if (csDataL[0] < LINE_RED_INTENSITY) {
           isLeft = true;
         }
+        try {
+          Thread.sleep(10);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
         startPos = odometer.getXYT();
-        // new Thread(odometer).start();
         break;
       }
+      
       correctionEnd = System.currentTimeMillis();
       deltaCorrection = correctionEnd-correctionStart;
       if (deltaCorrection < CORRECTION_PERIOD) {
@@ -214,14 +243,16 @@ public class LightLocalizer extends PlainNavigation {
         colorSampleProviderR.fetchSample(csDataR, 0);
         if (csDataR[0] < LINE_RED_INTENSITY) {
           stop();
-          distance = (odometer.getXYT())[1] - startPos[1];
-          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          turnTo(-offTheta);
+//          distance = (odometer.getXYT())[1] - startPos[1];
+//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
+//          turnTo(-offTheta);
           moveTo(sensorOffset);
           turnTo(-90);
-          moveTo(5 + sensorOffset);
+//          moveTo(sensorOffset);//+reverse_dist
           break;
         }
+//        forwards();
+        right();
         correctionEnd = System.currentTimeMillis();
         deltaCorrection = correctionEnd-correctionStart;
         if (deltaCorrection < CORRECTION_PERIOD) {
@@ -238,14 +269,16 @@ public class LightLocalizer extends PlainNavigation {
         colorSampleProviderL.fetchSample(csDataL, 0);
         if (csDataL[0] < LINE_RED_INTENSITY) {
           stop();
-          distance = (odometer.getXYT())[1] - startPos[1];
-          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-          turnTo(offTheta);
+//          distance = (odometer.getXYT())[1] - startPos[1];
+//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
+//          turnTo(offTheta);
           moveTo(sensorOffset);
           turnTo(-90);
-          moveTo(REVERSE_DIST + sensorOffset);
+//          moveTo(sensorOffset); //+reverse_dist
           break;
         }
+//        forwards();
+        left();
         correctionEnd = System.currentTimeMillis();
         deltaCorrection = correctionEnd-correctionStart;
         if (deltaCorrection < CORRECTION_PERIOD) {
@@ -285,7 +318,16 @@ public class LightLocalizer extends PlainNavigation {
     odometer.setX(x * TILE_SIZE);
     odometer.setY(y * TILE_SIZE);
     odometer.setTheta(theta);
+    
   }
 
 
+  private void left() {
+    leftMotor.setSpeed(ROTATE_SPEED);
+    leftMotor.forward();
+  }
+  private void right() {
+    rightMotor.setSpeed(ROTATE_SPEED);
+    rightMotor.forward();
+  }
 }

@@ -23,7 +23,8 @@ public class Main {
 //  /**
 //   * tunnel corners and bin location imported from resources
 //   */
-  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN;
+//  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN;
+  private static Point TNG_LL = new Point(1,2), TNG_UR = new Point(2,4), BIN;
 
   /**
    *
@@ -51,12 +52,12 @@ public class Main {
   public static void main(String[] args) {
 	  	//turnTest();
 //    betaDemo();
-    startOdometer();
+//    startOdometer();
 //    for (int a=0; a<20; a++) {
 //      Navigation.turnTo(180);
 //    }
      // importData();
-	localize(1,1, startingT);
+//	localize(1,1, startingT);
 
      // Navigation.turnTo(-2);
 //     initLightSensors();
@@ -65,10 +66,11 @@ public class Main {
      // lineNavigationTest();
      // plainNavigationTest();
 
-     tunnelTest();
+//	relocalizationTest();
+//     tunnelTest();
 //     waggleNavigationTest();
 //     launchTest();
-//    mainFlow();
+    mainFlow();
 	// set to silent verification
 //	    // import wifi data is done by default
 //	    importData();
@@ -112,6 +114,7 @@ public class Main {
     // localize
     initLightSensors();
     localize(home.x, home.y, startingT);
+    System.out.println("localize to ("+home.x+","+home.y+","+startingT+")");
     beep(3);
   }
 
@@ -467,6 +470,12 @@ public class Main {
     Navigation.turnToHeading(135);
   }
 
+  private static void relocalizationTest() {
+    int x=4,y=3;
+    navigator = new ReLocalizeNavigation();
+    navigator.travelTo(x, y);
+    ((ReLocalizeNavigation) navigator).reLocalize(x, y);
+  }
   /**
    * flow to test the localization method and time.
    */
