@@ -4,7 +4,9 @@ import static ca.mcgill.ecse211.project.Resources.*;
 import lejos.robotics.SampleProvider;
 
 /**
- * A navigator that actively corrects its heading and position.
+ * A navigator that can corrects its heading and position.
+ * It will first travel directly to its destination, then correct its position and 
+ * angle within the destination tile.
  *
  *
  * @author Matthew
