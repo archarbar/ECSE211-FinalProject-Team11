@@ -376,6 +376,10 @@ public abstract class Navigation {
       return location;
     }
   }
+  
+//  public static Point findClostestOf(List<Point> aList) {
+//    double[] xyt = Odometer.getOdometer().getXYT;
+//  }
 
   /**
    * Tells the robot to move forwards until otherwise directed.

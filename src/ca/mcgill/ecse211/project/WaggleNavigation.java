@@ -23,12 +23,12 @@ public class WaggleNavigation extends Navigation {
   /**
    * left light sensor data
    */
-  private float[] csDataL;
+  float[] csDataL;
 
   /**
    * right light sensor data
    */
-  private float[] csDataR;
+  float[] csDataR;
 
   /**
    * distance between starting and current positions
@@ -38,27 +38,27 @@ public class WaggleNavigation extends Navigation {
   /**
    * initial position of robot from odometer
    */
-  private double[] startPos;
+  double[] startPos;
 
   /**
    * final position of robot from odometer
    */
-  private double[] endPos;
+  double[] endPos;
 
   /**
    * difference in theta between starting and current angles
    */
-  private double offTheta;
+  double offTheta;
 
   /**
    * boolean to know which side robot is facing
    */
-  private boolean isLeft = false;
+  boolean isLeft = false;
 
   /**
    * red light intensity to compare read colors
    */
-  private static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
+  static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
 
   /**
    * current position from odometer
