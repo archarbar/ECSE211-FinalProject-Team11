@@ -18,9 +18,12 @@ public class PlainNavigation extends Navigation {
     turnTo(angleToTarget(x, y));
     double dist = calculateDistanceTo(x, y);
     moveTo(dist);
-    turnTo(angleToTarget(x, y));
     dist = calculateDistanceTo(x, y);
-    moveTo(dist);
+    while (dist>1) {
+      turnTo(angleToTarget(x, y));
+      moveTo(dist);
+      dist = calculateDistanceTo(x, y);
+    }
   }
 
 }
