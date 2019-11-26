@@ -306,6 +306,7 @@ public abstract class Navigation {
       if ((minDist == -1) || (newDist < minDist)) {
         minDist = newDist;
         bestP = newP;
+        launchDist = dist;
       }
       else {
         continue;
