@@ -110,7 +110,7 @@ public class Main {
     startOdometer();
 
     // localize
-
+    initLightSensors();
     localize(home.x, home.y, startingT);
     beep(3);
   }

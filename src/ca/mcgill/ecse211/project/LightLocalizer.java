@@ -179,7 +179,9 @@ public class LightLocalizer extends PlainNavigation {
 
     while (true) {
       correctionStart = System.currentTimeMillis();
-      colorSampleProviderL.fetchSample(csDataL, 0); // get data from sensor
+      int loc = 0;
+
+      colorSampleProviderL.fetchSample(csDataL, loc); // get data from sensor
       colorSampleProviderR.fetchSample(csDataR, 0);
       if ((csDataL[0] < LINE_RED_INTENSITY) || (csDataR[0] < LINE_RED_INTENSITY)) { // if light read by sensor is
                                                                                     // smaller (darker) than red light,
