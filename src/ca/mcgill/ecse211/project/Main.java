@@ -112,12 +112,12 @@ public class Main {
  // set to silent verification
     Resources.SILENT_VERIFICATION = true;
     // import wifi data is done by default
+    initLightSensors();
     importData();
     // odometry start
     startOdometer();
 
     // localize
-    initLightSensors();
     localize(home.x, home.y, startingT);
     System.out.println("localize to ("+home.x+","+home.y+","+startingT+")");
     beep(3);
@@ -138,6 +138,11 @@ public class Main {
 //    new Thread(avoider).start();
     // navigate to launch location
     navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
+    if (navigator instanceof ReLocalizeNavigation) {
+      double xyt[] = Odometer.getOdometer().getXYT();
+      ((ReLocalizeNavigation) navigator).reLocalize(xyt[0]+TILE_SIZE, xyt[1]);
+      navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
+    }
     //disable obstacle avoidance
     Navigation.stop();
     beep(3);
@@ -161,7 +166,7 @@ public class Main {
    * @param n is the number of beeps
    */
   private static void beep(int n) {
-    for(;n>0;n--) {
+    for(;n>0;--n) {
       Sound.beep();
     }
   }
@@ -250,7 +255,6 @@ public class Main {
     LightLocalizer lsLocalizer = new LightLocalizer();
     lsLocalizer.localize(x, y, theta);
     sleep();
-    Sound.beep();
   }
 
   /**
