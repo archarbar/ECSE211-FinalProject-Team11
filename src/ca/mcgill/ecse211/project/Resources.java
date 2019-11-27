@@ -154,7 +154,7 @@ public class Resources {
   /**
    * Extra angle to lower the launcher by.
    */
-  public static final int extra_angle = 15;
+  public static final int extra_angle = 12;
 
   /**
    * Angle to lower launcher arm by in order to pass through the tunnel.
@@ -171,12 +171,11 @@ public class Resources {
    * The speed at which the launcher rotates in degrees per second.
    */
   public static final int LAUNCH_SPEED = 326;
-  // public static final int LAUNCH_SPEED = 1300;
+  
   /**
    * The speed at which the launcher rotates in degrees per second.
    */
-  // public static final int RESET_SPEED = 70;
-  public static final int RESET_SPEED = 140;
+  public static final int RESET_SPEED = 150;
 
   public static List<Double> validDistances = new ArrayList<>();
   public static Map<Double, Integer> distanceToSpeed = new HashMap<>();
@@ -304,16 +303,22 @@ public class Resources {
    */
   public static final double LSwidth = 11.6;
 
-  // public static final int ROTATE_SPEED = 175;
   // public static final int MOTOR_SPEED = 250;
   /**
    * Speed of motors when turning in degrees/s.
    */
   public static final int ROTATE_SPEED = 150;
+  
   /**
    * Speed of motors when moving straight in degrees/s.
    */
   public static final int MOTOR_SPEED = 150;
+  
+  /**
+   *  Speed of motors when going through tunnel in degrees/s.
+   */
+  public static final int TUNNEL_SPEED = 300;
+  
 
   /**
    * Offset of the light sensors perpendicular to the wheelbase.

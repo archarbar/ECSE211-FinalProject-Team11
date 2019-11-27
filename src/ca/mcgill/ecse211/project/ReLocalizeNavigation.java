@@ -247,7 +247,7 @@ public class ReLocalizeNavigation extends WaggleNavigation {
       xyt[1] = Math.round(xyt[1]/TILE_SIZE)*TILE_SIZE;
     }
     odometer.setXYT(xyt[0], xyt[1], xyt[2]);
-    moveTo(-TILE_SIZE/2+sensorOffset-1.5);
+    moveTo(-TILE_SIZE/2+sensorOffset-1.2);
 //    System.out.println("(x,y): ("+x+","+y+")");
 //    turnTo(Navigation.angleToTarget(x,y));
     turnTo(90);

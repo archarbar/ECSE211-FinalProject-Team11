@@ -29,7 +29,7 @@ public class Main {
   /**
    * home point to go back to after launching
    */
-  private static IntPoint home;
+  private static IntPoint home, homeLocalize;
   
   /**
    * the distance between the selected launch point and the bin
@@ -118,8 +118,8 @@ public class Main {
     startOdometer();
 
     // localize
-    localize(home.x, home.y, startingT);
-    System.out.println("localize to ("+home.x+","+home.y+","+startingT+")");
+    localize(homeLocalize.x, homeLocalize.y, startingT);
+    System.out.println("localize to ("+homeLocalize.x+","+homeLocalize.y+","+startingT+")");
     beep(3);
   }
 
@@ -200,17 +200,22 @@ public class Main {
       TNG_LL = tng.ll;
       TNG_UR = tng.ur;
     }
+    // set point to localize to, home to come back to, and starting angle relative to origin depending on starting corner
     if (corner == 0) {
-      home = new IntPoint(1,1);
+      homeLocalize = new IntPoint(1, 1);
+      home = new IntPoint(0,0);
       startingT = 0;
     } else if (corner == 1) {
-      home = new IntPoint(14,1);
+      homeLocalize = new IntPoint(14, 1);
+      home = new IntPoint(15,0);
       startingT = 270;
     } else if (corner == 2) {
-      home = new IntPoint(14,8);
+      homeLocalize = new IntPoint(14, 8);
+      home = new IntPoint(15,9);
       startingT = 180;
     } else if (corner == 3) {
-      home = new IntPoint(1,8);
+      homeLocalize = new IntPoint(1, 8);
+      home = new IntPoint(0,9);
       startingT = 90;
     }
     validDistances.add(3.5*TILE_SIZE);
@@ -218,11 +223,11 @@ public class Main {
     validDistances.add(5.5*TILE_SIZE);
     validDistances.add(6.5*TILE_SIZE);
     validDistances.add(7.5*TILE_SIZE);
-    distanceToSpeed.put(3.5*TILE_SIZE, 210);
-    distanceToSpeed.put(4.5*TILE_SIZE, 230);
-    distanceToSpeed.put(5.5*TILE_SIZE, 250);
-    distanceToSpeed.put(6.5*TILE_SIZE, 280);
-    distanceToSpeed.put(7.5*TILE_SIZE, 380);
+    distanceToSpeed.put(3.5*TILE_SIZE, 190);
+    distanceToSpeed.put(4.5*TILE_SIZE, 210);
+    distanceToSpeed.put(5.5*TILE_SIZE, 230);
+    distanceToSpeed.put(6.5*TILE_SIZE, 250);
+    distanceToSpeed.put(7.5*TILE_SIZE, 280);
   }
 
   /**
@@ -298,7 +303,7 @@ public class Main {
     initLaunchers();
     LauncherControl.lowerArm();
     closeLightSensors();
-    Navigation.moveTo(4 * TILE_SIZE);
+    Navigation.moveThroughTunnel();
     sleep();
     initLightSensors();
     LauncherControl.raiseArm();

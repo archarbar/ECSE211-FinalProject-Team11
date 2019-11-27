@@ -121,6 +121,19 @@ public abstract class Navigation {
     leftMotor.rotate(angle, true);
     rightMotor.rotate(angle, false);
   }
+  
+  /**
+   * Moves the robot in a straight line by a distance in cm.
+   *
+   * @param distance to travel in cm.
+   */
+  public static void moveThroughTunnel() {
+    leftMotor.setSpeed(TUNNEL_SPEED);
+    rightMotor.setSpeed(TUNNEL_SPEED);
+    int angle = convertDistance(4 * TILE_SIZE);
+    leftMotor.rotate(angle, true);
+    rightMotor.rotate(angle, false);
+  }
 
   /**
    * Calculates the distance from the robot's current position and the given location in cm.
