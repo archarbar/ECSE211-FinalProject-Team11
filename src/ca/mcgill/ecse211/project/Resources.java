@@ -154,12 +154,12 @@ public class Resources {
   /**
    * Extra angle to lower the launcher by.
    */
-  public static final int extra_angle = 30;
+  public static final int extra_angle = 35;
 
   /**
    * Angle to lower launcher arm by in order to pass through the tunnel.
    */
-  public static final int LOWER_ANGLE = 90;
+  public static final int LOWER_ANGLE = 85;
 
   /**
    * Speed to lower arm in degrees/s.
