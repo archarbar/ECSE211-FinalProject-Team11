@@ -220,22 +220,21 @@ public class Main {
     }
     // fine tuned launch distances obtained from trial and error lanches
     // each distance is mapped to an appropriate launch speed
-    validDistances.add(3.3*TILE_SIZE);
-    validDistances.add(4.6*TILE_SIZE);
-    validDistances.add(5.1*TILE_SIZE);
-    validDistances.add(5.6*TILE_SIZE);
+    validDistances.add(3.7*TILE_SIZE);
+    validDistances.add(5*TILE_SIZE);
+    validDistances.add(5.5*TILE_SIZE);
     validDistances.add(6*TILE_SIZE);
-    validDistances.add(6.3*TILE_SIZE);
+    validDistances.add(6.4*TILE_SIZE);
+    validDistances.add(6.7*TILE_SIZE);
     validDistances.add(8*TILE_SIZE);
-    validDistances.add(9.5*TILE_SIZE);
-    distanceToSpeed.put(3.3*TILE_SIZE, 230);
-    distanceToSpeed.put(4.6*TILE_SIZE, 240);
-    distanceToSpeed.put(5.1*TILE_SIZE, 250);
-    distanceToSpeed.put(5.6*TILE_SIZE, 260);
-    distanceToSpeed.put(6*TILE_SIZE, 280);
-    distanceToSpeed.put(6.3*TILE_SIZE, 300);
+    validDistances.add(10*TILE_SIZE);
+    distanceToSpeed.put(3.7*TILE_SIZE, 240);
+    distanceToSpeed.put(5*TILE_SIZE, 250);
+    distanceToSpeed.put(6*TILE_SIZE, 260);
+    distanceToSpeed.put(6.4*TILE_SIZE, 280);
+    distanceToSpeed.put(6.7*TILE_SIZE, 300);
     distanceToSpeed.put(8*TILE_SIZE, 325);
-    distanceToSpeed.put(9.5*TILE_SIZE, 400);
+    distanceToSpeed.put(10*TILE_SIZE, 400);
   }
 
   /**

@@ -54,11 +54,13 @@ public class LauncherControl {
     launcher1.rotate(-LAUNCHER_ANGLE, true);
     launcher2.rotate(-LAUNCHER_ANGLE, false);
     try {
-      Thread.sleep(500);
+      Thread.sleep(1000);
       // Thread.sleep(5000);
     } catch (Exception e) {
       // do nothing
     }
+    launcher1.setSpeed(RESET_SPEED/2);
+    launcher2.setSpeed(RESET_SPEED/2);
     launcher1.rotate(-extra_angle, true);
     launcher2.rotate(-extra_angle, false);
 
@@ -70,7 +72,7 @@ public class LauncherControl {
    * reposition the robot position after each launch (3 degrees left)
    */
   public static void reposition() {
-    Navigation.turnTo(-3);
+    Navigation.turnTo(-1);
   }
 
   /**
