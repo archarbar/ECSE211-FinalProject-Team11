@@ -44,7 +44,7 @@ public class LauncherControl {
    * Move the launcher to the ready position.
    */
   public static void reset() {
-    reposition();
+//    reposition();
     launcher1.setSpeed(RESET_SPEED);
     launcher2.setSpeed(RESET_SPEED);
 

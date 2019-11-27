@@ -23,13 +23,13 @@ public class Main {
   /**
    * tunnel corners and bin location imported from resources
    */
-//  private static Point TNG_LL = tng.ll, TNG_UR = tng.ur, BIN;
-  private static Point TNG_LL = new Point(1,2), TNG_UR = new Point(2,4), BIN; //TODO
+  private static Point TNG_LL, TNG_UR, BIN;
+//  private static Point TNG_LL = new Point(1,2), TNG_UR = new Point(2,4), BIN = new Point(-2, 6); //TODO
 
   /**
    * home point to go back to after launching
    */
-  private static IntPoint home = new IntPoint(1,1); //default home for simple test purposes.
+  private static IntPoint home;
   
   /**
    * the distance between the selected launch point and the bin
@@ -134,8 +134,8 @@ public class Main {
     // get launch speed depending on location distance to bin
     int launchSpeed = distanceToSpeed.get(launchDist);
     //enable obstacle avoidance
-    avoider = new ObjectAvoidance(navigator);
-    new Thread(avoider).start();
+//    avoider = new ObjectAvoidance(navigator);
+//    new Thread(avoider).start();
     // navigate to launch location
     navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
     //disable obstacle avoidance
@@ -152,7 +152,7 @@ public class Main {
     //enable obstacle avoidance
     navigateThroughTunnel(navigator);
     //disable obstacle avoidance
-    navigator.travelTo(home.x, home.y);
+    navigator.travelTo(home.x, home.y, false); // navigate back to home, false for no need to go to center of tile
     Navigation.stop();
     beep(5);
   }
@@ -187,9 +187,13 @@ public class Main {
     if (redTeam == TEAM_NUMBER) {
       corner = redCorner;
       BIN = redBin;
+      TNG_LL = tnr.ll;
+      TNG_UR = tnr.ur;
     } else if(greenTeam == TEAM_NUMBER) {
       corner = greenCorner;
       BIN = greenBin;
+      TNG_LL = tng.ll;
+      TNG_UR = tng.ur;
     }
     if (corner == 0) {
       home = new IntPoint(1,1);
@@ -394,26 +398,26 @@ public class Main {
    * closes the movement motors.
    */
   private static void closeMotors() {
-    if (leftMotor!=null) {
-      leftMotor.close();
-    }
-    if (rightMotor!=null) {
-      rightMotor.close();
-    }
-    leftMotor = null;
-    rightMotor = null;
+//    if (leftMotor!=null) {
+//      leftMotor.close();
+//    }
+//    if (rightMotor!=null) {
+//      rightMotor.close();
+//    }
+//    leftMotor = null;
+//    rightMotor = null;
   }
 
   /**
    * closes the light sensors.
    */
   public static void closeLightSensors() {
-    if (colorSensorR!=null) {
-      colorSensorR.close();
-    }
-    if (colorSensorL!=null) {
-      colorSensorL.close();
-    }
+//    if (colorSensorR!=null) {
+//      colorSensorR.close();
+//    }
+//    if (colorSensorL!=null) {
+//      colorSensorL.close();
+//    }
 //    colorSensorR = null;
 //    colorSensorL = null;
   }

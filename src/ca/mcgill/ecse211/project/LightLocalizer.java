@@ -115,7 +115,7 @@ public class LightLocalizer extends PlainNavigation {
           isLeft = true;
         }
         try {
-          Thread.sleep(10);
+          Thread.sleep(CORRECTION_PERIOD);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -218,7 +218,7 @@ public class LightLocalizer extends PlainNavigation {
           isLeft = true;
         }
         try {
-          Thread.sleep(10);
+          Thread.sleep(CORRECTION_PERIOD);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }

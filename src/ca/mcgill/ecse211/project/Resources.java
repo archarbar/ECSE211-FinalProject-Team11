@@ -25,7 +25,7 @@ public class Resources {
    * The IP address of the server that transmits data to the robot. Set this to the default for the beta demo and
    * competition.
    */
-  public static final String SERVER_IP = "192.168.2.45";
+  public static final String SERVER_IP = "192.168.2.10";
 
   /**
    * Your team number.
@@ -35,12 +35,12 @@ public class Resources {
   /**
    * Enables printing of debug info from the WiFi class.
    */
-  public static final boolean ENABLE_DEBUG_WIFI_PRINT = false;
+  public static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
 
   /**
    * Enable this to attempt to receive Wi-Fi parameters at the start of the program.
    */
-  public static final boolean RECEIVE_WIFI_PARAMS = false;
+  public static final boolean RECEIVE_WIFI_PARAMS = true;
 
   // DECLARE YOUR CURRENT RESOURCES HERE
   // eg, motors, sensors, constants, etc
@@ -84,7 +84,7 @@ public class Resources {
   /**
    * the robot's track size
    */
-  public static final double TRACK = 15.40; // best value now 15.62
+  public static final double TRACK = 15.55; // best value now 15.64
 
   /**
    * the distance at which we want to perform the launch
@@ -159,7 +159,7 @@ public class Resources {
   /**
    * Angle to lower launcher arm by in order to pass through the tunnel.
    */
-  public static final int LOWER_ANGLE = 90;
+  public static final int LOWER_ANGLE = 95;
 
   /**
    * Speed to lower arm in degrees/s.
@@ -176,7 +176,7 @@ public class Resources {
    * The speed at which the launcher rotates in degrees per second.
    */
   // public static final int RESET_SPEED = 70;
-  public static final int RESET_SPEED = 125;
+  public static final int RESET_SPEED = 140;
 
   public static List<Double> validDistances = new ArrayList<>();
   public static Map<Double, Integer> distanceToSpeed = new HashMap<>();
