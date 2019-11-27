@@ -91,6 +91,11 @@ public abstract class Navigation {
 //      colorSensorL.close();
 //      colorSensorR.close();
 //    }
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.rotate(convertAngle(minimumAngle(theta)), true);
@@ -417,6 +422,11 @@ public abstract class Navigation {
   }
 
   public static void right() {
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
     rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.setSpeed(0);
     leftMotor.stop();
@@ -424,6 +434,11 @@ public abstract class Navigation {
   }
 
   public static void left() {
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(0);
     rightMotor.stop();

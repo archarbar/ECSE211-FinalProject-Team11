@@ -38,6 +38,9 @@ public class LauncherControl {
     } catch (Exception e) {
       // do nothing
     }
+    if (speed > 300) {
+      reposition();
+    }
   }
 
   /**
@@ -64,29 +67,10 @@ public class LauncherControl {
   }
   
   /**
-   * reposition the robot position after each launch
+   * reposition the robot position after each launch (3 degrees left)
    */
   public static void reposition() {
-    Direction dir;
-    Axis axis;
-    double angle = Odometer.getOdometer().getXYT()[2];
-    if (Math.abs(angle - 90) < 45) {
-      axis = Axis.X;
-      dir = Direction.POS;
-    }
-    else if (Math.abs(angle - 180) < 45) {
-      axis = Axis.Y;
-      dir = Direction.NEG;
-    }
-    else if (Math.abs(angle - 270) < 45) {
-      axis = Axis.X;
-      dir = Direction.NEG;
-    }
-    else {
-      axis = Axis.Y;
-      dir = Direction.POS;
-    }
-    new WaggleNavigation().waggle(axis, dir);
+    Navigation.turnTo(-3);
   }
 
   /**

@@ -274,6 +274,11 @@ public class UltrasonicLocalizer extends PlainNavigation {
    * makes the robot turn clockwise
    */
   public void turnClockwise() {
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.forward();
@@ -284,6 +289,11 @@ public class UltrasonicLocalizer extends PlainNavigation {
    * makes the robot turn counterclockwise
    */
   public void turnCounterclockwise() {
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);
     leftMotor.backward();

@@ -74,8 +74,8 @@ public class Main {
 //	relocalizationTest();
 //     tunnelTest();
 //     waggleNavigationTest();
-//     launchTest();
-    mainFlow();
+     launchTest();
+//    mainFlow();
 	// set to silent verification
 //	    // import wifi data is done by default
 //	    importData();
@@ -226,7 +226,6 @@ public class Main {
     validDistances.add(5.6*TILE_SIZE);
     validDistances.add(6*TILE_SIZE);
     validDistances.add(6.3*TILE_SIZE);
-    validDistances.add(7*TILE_SIZE);
     validDistances.add(8*TILE_SIZE);
     validDistances.add(9.5*TILE_SIZE);
     distanceToSpeed.put(3.3*TILE_SIZE, 230);
@@ -235,8 +234,7 @@ public class Main {
     distanceToSpeed.put(5.6*TILE_SIZE, 260);
     distanceToSpeed.put(6*TILE_SIZE, 280);
     distanceToSpeed.put(6.3*TILE_SIZE, 300);
-    distanceToSpeed.put(7*TILE_SIZE, 325);
-    distanceToSpeed.put(8*TILE_SIZE, 350);
+    distanceToSpeed.put(8*TILE_SIZE, 325);
     distanceToSpeed.put(9.5*TILE_SIZE, 400);
   }
 
@@ -534,8 +532,8 @@ public class Main {
    */
   private static void launchTest() {
     int maxSpeed = 1300;
-    maxSpeed = 500;
-    launch(3, maxSpeed);
+    maxSpeed = 325;
+    launch(4, maxSpeed);
   }
 
   /**

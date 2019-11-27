@@ -35,12 +35,12 @@ public class Resources {
   /**
    * Enables printing of debug info from the WiFi class.
    */
-  public static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
+  public static final boolean ENABLE_DEBUG_WIFI_PRINT = false;
 
   /**
    * Enable this to attempt to receive Wi-Fi parameters at the start of the program.
    */
-  public static final boolean RECEIVE_WIFI_PARAMS = true;
+  public static final boolean RECEIVE_WIFI_PARAMS = false;
 
   // DECLARE YOUR CURRENT RESOURCES HERE
   // eg, motors, sensors, constants, etc
@@ -154,7 +154,7 @@ public class Resources {
   /**
    * Extra angle to lower the launcher by.
    */
-  public static final int extra_angle = 12;
+  public static final int extra_angle = 10;
 
   /**
    * Angle to lower launcher arm by in order to pass through the tunnel.
@@ -175,7 +175,7 @@ public class Resources {
   /**
    * The speed at which the launcher rotates in degrees per second.
    */
-  public static final int RESET_SPEED = 150;
+  public static final int RESET_SPEED = 155;
 
   public static List<Double> validDistances = new ArrayList<>();
   public static Map<Double, Integer> distanceToSpeed = new HashMap<>();
@@ -312,7 +312,7 @@ public class Resources {
   /**
    * Speed of motors when moving straight in degrees/s.
    */
-  public static final int MOTOR_SPEED = 150;
+  public static final int MOTOR_SPEED = 185;
   
   /**
    *  Speed of motors when going through tunnel in degrees/s.
