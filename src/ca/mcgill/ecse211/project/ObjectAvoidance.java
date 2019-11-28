@@ -5,14 +5,25 @@ import java.util.Arrays;
 import lejos.hardware.Sound;
 import lejos.robotics.SampleProvider;
 /**
- * The class to use to avoid objects.
+ * The class concerning everything to use to avoid objects.
+ * Running it in a thread allows it to act independently of navigation.
  * 
  * @author Matthew
  *
  */
 public class ObjectAvoidance implements Runnable{
+  /**
+   * if obstacle avoidance is currently active. Setting to false will cause the thread to end.
+   */
   private boolean running = false;
+  
+  /**
+   * the safe area to be in during object avoidance
+   */
   private GridRectangle safeArea = islandRectangle;
+  /**
+   * original distance from obstacle as detected by ultrasonic.
+   */
   private double distanceDetected;
   
   /**
@@ -54,17 +65,30 @@ public class ObjectAvoidance implements Runnable{
    */
   int[] sortedSamples = new int[filterSize];
   
+  /**
+   * the navigator object that is concurrently navigating.
+   */
   Navigation navigator;
   
+  /**
+   * create an object avoider using a navigator that is running concurrently.
+   * @param navigator that is navigating.
+   */
   public ObjectAvoidance(Navigation navigator) {
     this.navigator = navigator;
   }
   
+  /**
+   * stops it from running after the next loop of object detection ends.
+   */
   public void stop() {
     running = false;
   }
 
   @Override
+  /**
+   * obstacle avoidance thread.
+   */
   public void run() {
     fillFilter();
     running = true;

@@ -19,13 +19,13 @@ public class Resources {
   /**
    * The default server IP used by the profs and TA's.
    */
-  public static final String DEFAULT_SERVER_IP = "192.168.2.53";
+  public static final String DEFAULT_SERVER_IP = "192.168.2.3";//192.168.2.3  //102   172.20.10.7
 
   /**
    * The IP address of the server that transmits data to the robot. Set this to the default for the beta demo and
    * competition.
    */
-  public static final String SERVER_IP = "192.168.2.10";
+  public static final String SERVER_IP = DEFAULT_SERVER_IP;
 
   /**
    * Your team number.
@@ -35,12 +35,12 @@ public class Resources {
   /**
    * Enables printing of debug info from the WiFi class.
    */
-  public static final boolean ENABLE_DEBUG_WIFI_PRINT = false;
+  public static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
 
   /**
    * Enable this to attempt to receive Wi-Fi parameters at the start of the program.
    */
-  public static final boolean RECEIVE_WIFI_PARAMS = false;
+  public static final boolean RECEIVE_WIFI_PARAMS = true;
 
   // DECLARE YOUR CURRENT RESOURCES HERE
   // eg, motors, sensors, constants, etc
@@ -84,7 +84,7 @@ public class Resources {
   /**
    * the robot's track size
    */
-  public static final double TRACK = 15.55; // best value now 15.64
+  public static final double TRACK = 15.45; // best value now 15.55
 
   /**
    * the distance at which we want to perform the launch
@@ -129,7 +129,7 @@ public class Resources {
   /**
    * The Correction period for the light sensor in milliseconds.
    */
-  public static final int CORRECTION_PERIOD = 25;
+  public static final int CORRECTION_PERIOD = 50;//25
 
   /**
    * The object detection period for the US sensor.
@@ -159,13 +159,13 @@ public class Resources {
   /**
    * Angle to lower launcher arm by in order to pass through the tunnel.
    */
-  public static final int LOWER_ANGLE = 85;
+  public static final int LOWER_ANGLE = 80; //85
 
   /**
    * Speed to lower arm in degrees/s.
    */
   //public static final int LOWER_SPEED = 50;
-  public static final int LOWER_SPEED = 100;
+  public static final int LOWER_SPEED = 60;
 
   /**
    * The speed at which the launcher rotates in degrees per second.
@@ -175,7 +175,7 @@ public class Resources {
   /**
    * The speed at which the launcher rotates in degrees per second.
    */
-  public static final int RESET_SPEED = 155;
+  public static final int RESET_SPEED = 150;
 
   public static List<Double> validDistances = new ArrayList<>();
   public static Map<Double, Integer> distanceToSpeed = new HashMap<>();

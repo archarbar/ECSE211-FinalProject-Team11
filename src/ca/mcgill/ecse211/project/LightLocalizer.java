@@ -1,7 +1,6 @@
 package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
-import lejos.hardware.Sound;
 import lejos.robotics.SampleProvider;
 
 /**
@@ -20,24 +19,9 @@ public class LightLocalizer extends PlainNavigation {
   private float[] csDataR;
 
   /**
-   * distance between starting and current positions
-   */
-  private double distance;
-
-  /**
-   * initial position of robot from odometer
-   */
-  private double[] startPos;
-
-  /**
    * our odometer
    */
   private Odometer odometer;
-
-  /**
-   * difference in theta between starting and current angles
-   */
-  private double offTheta;
 
   /**
    * boolean to know which side robot is facing
@@ -47,7 +31,7 @@ public class LightLocalizer extends PlainNavigation {
   /**
    * red light intensity to compare read colors
    */
-  private static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
+  private static final float LINE_RED_INTENSITY = 0.35f; // cast to float since default is double
 
   /**
    * gets the odometer.
@@ -119,7 +103,6 @@ public class LightLocalizer extends PlainNavigation {
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
-        startPos = odometer.getXYT();
 //        System.out.println("y:"+startPos[1]);
         
         // new Thread(odometer).start();
@@ -140,6 +123,7 @@ public class LightLocalizer extends PlainNavigation {
       while (true) {
         correctionStart = System.currentTimeMillis();
         colorSampleProviderR.fetchSample(csDataR, 0);
+//        System.out.println();
         if (csDataR[0] < LINE_RED_INTENSITY) {
           stop();
 //          Sound.beep();
@@ -198,6 +182,11 @@ public class LightLocalizer extends PlainNavigation {
       }
     }
     moveTo(sensorOffset);
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e1) {
+      e1.printStackTrace();
+    }
     turnTo(90);
     stop();
     forwards();
@@ -222,7 +211,6 @@ public class LightLocalizer extends PlainNavigation {
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
-        startPos = odometer.getXYT();
         break;
       }
       

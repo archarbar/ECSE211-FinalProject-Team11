@@ -58,7 +58,7 @@ public class WaggleNavigation extends Navigation {
   /**
    * red light intensity to compare read colors
    */
-  static final float LINE_RED_INTENSITY = 0.3f; // cast to float since default is double
+  static final float LINE_RED_INTENSITY = 0.35f; // cast to float since default is double
 
   /**
    * current position from odometer

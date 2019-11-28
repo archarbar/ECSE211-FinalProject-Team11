@@ -74,8 +74,8 @@ public class Main {
 //	relocalizationTest();
 //     tunnelTest();
 //     waggleNavigationTest();
-     launchTest();
-//    mainFlow();
+//     launchTest();
+    mainFlow();
 	// set to silent verification
 //	    // import wifi data is done by default
 //	    importData();
@@ -96,12 +96,16 @@ public class Main {
    */
   private static void mainFlow() {
     //section 1
+    System.out.println("init");
     initialization();
     //section 2
+    System.out.println("travel to launch");
     int launchSpeed = travelToLaunch();
     //section3
+    System.out.println("launch");
     launch(4, launchSpeed);
     //section4
+    System.out.println("return");
     returnToBase();
   }
 
@@ -118,6 +122,7 @@ public class Main {
     startOdometer();
 
     // localize
+    System.out.println("localizing...");
     localize(homeLocalize.x, homeLocalize.y, startingT);
     System.out.println("localize to ("+homeLocalize.x+","+homeLocalize.y+","+startingT+")");
     beep(3);
@@ -132,17 +137,22 @@ public class Main {
     // get launch location
     Point launchLocation = Navigation.findBestLaunchPoint(BIN);
     // get launch speed depending on location distance to bin
+//    System.out.println(distanceToSpeed);
     int launchSpeed = distanceToSpeed.get(launchDist);
     //enable obstacle avoidance
-//    avoider = new ObjectAvoidance(navigator);
-//    new Thread(avoider).start();
+    avoider = new ObjectAvoidance(navigator);
+    new Thread(avoider).start();
     // navigate to launch location
     navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
     if (navigator instanceof ReLocalizeNavigation) {
-      double xyt[] = Odometer.getOdometer().getXYT();
-      ((ReLocalizeNavigation) navigator).reLocalize(xyt[0]+TILE_SIZE, xyt[1]);
-      navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
+      if (Navigation.calculateDistanceTo(launchLocation.x, launchLocation.y)>1.5*TILE_SIZE) {
+        double xyt[] = Odometer.getOdometer().getXYT();
+        ((ReLocalizeNavigation) navigator).reLocalize(xyt[0]+TILE_SIZE, xyt[1]); 
+      }
     }
+    initUSSensor();
+    navigateToLaunch(navigator, launchLocation.x, launchLocation.y);
+    
     //disable obstacle avoidance
     Navigation.stop();
     beep(3);
@@ -156,6 +166,7 @@ public class Main {
   private static void returnToBase() {
     //enable obstacle avoidance
     navigateThroughTunnel(navigator);
+    closeUSSensor();
     //disable obstacle avoidance
     navigator.travelTo(home.x, home.y, false); // navigate back to home, false for no need to go to center of tile
     Navigation.stop();
@@ -190,17 +201,20 @@ public class Main {
 
     int corner = -1;
     if (redTeam == TEAM_NUMBER) {
+      System.out.println("red");
       corner = redCorner;
       BIN = redBin;
       TNG_LL = tnr.ll;
       TNG_UR = tnr.ur;
     } else if(greenTeam == TEAM_NUMBER) {
+      System.out.println("green");
       corner = greenCorner;
       BIN = greenBin;
       TNG_LL = tng.ll;
       TNG_UR = tng.ur;
     }
     // set point to localize to, home to come back to, and starting angle relative to origin depending on starting corner
+    System.out.println("corner"+corner);
     if (corner == 0) {
       homeLocalize = new IntPoint(1, 1);
       home = new IntPoint(0,0);
@@ -218,6 +232,8 @@ public class Main {
       home = new IntPoint(0,9);
       startingT = 90;
     }
+    System.out.println("tngLL"+TNG_LL.x+","+ TNG_LL.y);
+    System.out.println("tngUR"+TNG_UR.x+","+ TNG_UR.y);
     // fine tuned launch distances obtained from trial and error lanches
     // each distance is mapped to an appropriate launch speed
     validDistances.add(3.7*TILE_SIZE);
@@ -230,6 +246,7 @@ public class Main {
     validDistances.add(10*TILE_SIZE);
     distanceToSpeed.put(3.7*TILE_SIZE, 240);
     distanceToSpeed.put(5*TILE_SIZE, 250);
+    distanceToSpeed.put(5.5*TILE_SIZE, 250);
     distanceToSpeed.put(6*TILE_SIZE, 260);
     distanceToSpeed.put(6.4*TILE_SIZE, 280);
     distanceToSpeed.put(6.7*TILE_SIZE, 300);
@@ -285,10 +302,12 @@ public class Main {
       } while(navigator.avoided);
     }
     else {
+      System.out.println("going to tunnel");
       navigator.travelTo(tunnelEntr.x, tunnelEntr.y);
     }
     Navigation.moveTo(0.1);
     sleep();
+    System.out.println("arrived before tunnel");
 
     //if obstacle avoidance exists, stop it for the sake of going through the tunnel.
     if (avoider!=null) {
@@ -341,6 +360,7 @@ public class Main {
    * @param speed
    */
   private static void launch(int numLaunches, int speed) {
+    System.out.println("launching "+ numLaunches+" times at "+speed+" speed");
     closeMotors();
     initLaunchers();
     sleep();

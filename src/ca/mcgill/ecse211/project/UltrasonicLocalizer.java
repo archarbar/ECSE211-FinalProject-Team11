@@ -125,7 +125,6 @@ public class UltrasonicLocalizer extends PlainNavigation {
    */
   public void fallingEdge() {
 
-
     while (getDistance() < WALL_DISTANCE + errorMargin) {
       turnCounterclockwise();
     }

@@ -133,6 +133,7 @@ public abstract class Navigation {
    * @param distance to travel in cm.
    */
   public static void moveThroughTunnel() {
+    System.out.println("moving through tunnel");
     leftMotor.setSpeed(TUNNEL_SPEED);
     rightMotor.setSpeed(TUNNEL_SPEED);
     int angle = convertDistance(4 * TILE_SIZE);
@@ -280,6 +281,8 @@ public abstract class Navigation {
     }
     entrance.x += TILE_SIZE / 2;
     entrance.y += TILE_SIZE / 2;
+    System.out.println("entx"+entrance.x);
+    System.out.println("enty"+entrance.y);
     return entrance;
   }
 
@@ -405,8 +408,8 @@ public abstract class Navigation {
   public static void forwards() {
     leftMotor.setAcceleration(ACCELERATION);
     rightMotor.setAcceleration(ACCELERATION);
-    leftMotor.setSpeed(ROTATE_SPEED);
-    rightMotor.setSpeed(ROTATE_SPEED);
+    leftMotor.setSpeed(ROTATE_SPEED/5);
+    rightMotor.setSpeed(ROTATE_SPEED/5);
     leftMotor.forward();
     rightMotor.forward();
   }
@@ -427,7 +430,7 @@ public abstract class Navigation {
     } catch (InterruptedException e) {
         e.printStackTrace();
     }
-    rightMotor.setSpeed(ROTATE_SPEED);
+    rightMotor.setSpeed(ROTATE_SPEED/5);
     leftMotor.setSpeed(0);
     leftMotor.stop();
     rightMotor.forward();
@@ -439,7 +442,7 @@ public abstract class Navigation {
     } catch (InterruptedException e) {
         e.printStackTrace();
     }
-    leftMotor.setSpeed(ROTATE_SPEED);
+    leftMotor.setSpeed(ROTATE_SPEED/5);
     rightMotor.setSpeed(0);
     rightMotor.stop();
     leftMotor.forward();

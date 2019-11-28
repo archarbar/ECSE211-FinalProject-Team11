@@ -14,12 +14,14 @@ import lejos.robotics.SampleProvider;
  */
 public class ReLocalizeNavigation extends WaggleNavigation {
 
+  public double distance;
   @Override
   public void travelTo(double x, double y) {
     // colorSensorR.close();
     // colorSensorL.close();
+    distance = calculateDistanceTo(x,y);
     do {
-    new PlainNavigation().travelTo(x, y);
+      new PlainNavigation().travelTo(x, y);
     } while(avoided);
   }
 
@@ -31,6 +33,7 @@ public class ReLocalizeNavigation extends WaggleNavigation {
     SampleProvider colorSampleProviderR = colorSensorR.getRedMode();
     
     turnTo(Navigation.angleToTarget(x, y));
+    moveTo(-5);
     try {
       Thread.sleep(10);
     } catch (InterruptedException e) {
@@ -152,7 +155,13 @@ public class ReLocalizeNavigation extends WaggleNavigation {
     }
     odometer.setXYT(xyt[0], xyt[1], xyt[2]);
     
-    moveTo(-TILE_SIZE/2+sensorOffset);
+    moveTo(-TILE_SIZE*0.3+sensorOffset);
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e1) {
+      e1.printStackTrace();
+    }
+
     turnTo(90);
     stop();
     forwards();
@@ -247,10 +256,12 @@ public class ReLocalizeNavigation extends WaggleNavigation {
       xyt[1] = Math.round(xyt[1]/TILE_SIZE)*TILE_SIZE;
     }
     odometer.setXYT(xyt[0], xyt[1], xyt[2]);
-    moveTo(-TILE_SIZE/2+sensorOffset-1.2);
+    moveTo(-TILE_SIZE/2+sensorOffset-1.5);
 //    System.out.println("(x,y): ("+x+","+y+")");
 //    turnTo(Navigation.angleToTarget(x,y));
+    
     turnTo(90);
+    moveTo(TILE_SIZE*0.2);
   }
 //    double[] xyt = Odometer.getOdometer().getXYT();
 //    double dx, dy;
