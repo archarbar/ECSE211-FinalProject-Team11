@@ -40,12 +40,7 @@ public class OldLightLocalizer extends PlainNavigation {
   private EV3ColorSensor centreLightSensor;
 
   /**
-   * 
-   * @param leftMotor
-   * @param rightMotor
-   * @param odometer
-   * @param TRACK
-   * @param WHEEL_RAD
+   * create a light localizer.
    */
   public OldLightLocalizer() {
     centreLightSensor.setCurrentMode("Red");
@@ -67,7 +62,8 @@ public class OldLightLocalizer extends PlainNavigation {
    * the heading of the robot, this is done by reading the angle reported by the odometer and make the robot rotate by
    * the negative of this value, this way the robot will be on the 0-degree axis.
    * 
-   * 
+   * @param x is x location to localize to.
+   * @param y is y location to localize to.
    */
   public void mainMethod(int x, int y) {
 

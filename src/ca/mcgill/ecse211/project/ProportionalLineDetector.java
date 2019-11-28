@@ -43,7 +43,7 @@ public class ProportionalLineDetector implements LineDetectorController {
   /**
    * Create a ProportionalLineDetector with a lightSensor's sample provider.
    * 
-   * @param cs
+   * @param cs is the colour sensor to use.
    */
   public ProportionalLineDetector(SampleProvider cs) {
     lastEdge = Edge.NoEdge;

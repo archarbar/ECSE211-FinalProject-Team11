@@ -25,6 +25,11 @@ public class ReLocalizeNavigation extends WaggleNavigation {
     } while(avoided);
   }
 
+  /**
+   * relocalizes the robot to be called after travelling.
+   * @param x value of the point to face at the end.
+   * @param y value of the point to face at the end.
+   */
   public void reLocalize(double x, double y) {
     long correctionStart, correctionEnd, deltaCorrection;
     csDataR = new float[colorSensorR.sampleSize()];
@@ -90,16 +95,6 @@ public class ReLocalizeNavigation extends WaggleNavigation {
         colorSampleProviderR.fetchSample(csDataR, 0);
         if (csDataR[0] < LINE_RED_INTENSITY) {
           stop();
-//          Sound.beep();
-//          System.out.println("y:"+Odometer.getOdometer().getXYT()[1]);
-//          distance = (odometer.getXYT())[1] - startPos[1];
-//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-//          System.out.println("dis:"+distance);
-//          System.out.println("theta:"+offTheta);
-//          turnTo(-offTheta);
-//          Sound.beepSequenceUp();
-//          moveTo(-REVERSE_DIST);
-//          Sound.beepSequence();
           break;
         }
 //        forwards();
@@ -120,16 +115,6 @@ public class ReLocalizeNavigation extends WaggleNavigation {
         colorSampleProviderL.fetchSample(csDataL, 0);
         if (csDataL[0] < LINE_RED_INTENSITY) {
           stop();
-//          Sound.beep();
-//          System.out.println("y:"+Odometer.getOdometer().getXYT()[1]);
-//          distance = (odometer.getXYT())[1] - startPos[1];
-//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-//          System.out.println("dis:"+distance);
-//          System.out.println("theta:"+offTheta);
-//          turnTo(offTheta);
-//          Sound.beepSequenceUp();
-//          moveTo(-REVERSE_DIST);
-//          Sound.beepSequence();
           break;
         }
 //        forwards();
@@ -207,12 +192,8 @@ public class ReLocalizeNavigation extends WaggleNavigation {
         colorSampleProviderR.fetchSample(csDataR, 0);
         if (csDataR[0] < LINE_RED_INTENSITY) {
           stop();
-//          distance = (odometer.getXYT())[1] - startPos[1];
-//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-//          turnTo(-offTheta);
           break;
         }
-//        forwards();
         right();
         correctionEnd = System.currentTimeMillis();
         deltaCorrection = correctionEnd-correctionStart;
@@ -230,12 +211,8 @@ public class ReLocalizeNavigation extends WaggleNavigation {
         colorSampleProviderL.fetchSample(csDataL, 0);
         if (csDataL[0] < LINE_RED_INTENSITY) {
           stop();
-//          distance = (odometer.getXYT())[1] - startPos[1];
-//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-//          turnTo(offTheta);
           break;
         }
-//        forwards();
         left();
         correctionEnd = System.currentTimeMillis();
         deltaCorrection = correctionEnd-correctionStart;
@@ -257,52 +234,8 @@ public class ReLocalizeNavigation extends WaggleNavigation {
     }
     odometer.setXYT(xyt[0], xyt[1], xyt[2]);
     moveTo(-TILE_SIZE/2+sensorOffset-1.5);
-//    System.out.println("(x,y): ("+x+","+y+")");
-//    turnTo(Navigation.angleToTarget(x,y));
     
     turnTo(90);
     moveTo(TILE_SIZE*0.2);
-  }
-//    double[] xyt = Odometer.getOdometer().getXYT();
-//    double dx, dy;
-//    int direction, axis;
-//    dx = Math.abs(xyt[0]-x);
-//    dy = Math.abs(xyt[1]-y);
-//    if(dx>dy) {
-//      direction = 0;
-//      if(xyt[0]>x) {
-//        axis = 1;
-//      } else {
-//        axis = -1;
-//      }
-//      waggle(axis, direction);
-//      moveTo(-TILE_SIZE/2);
-//
-//      direction = 1;
-//      axis = 1;
-//      turnToHeading(0);
-//      waggle(axis, direction);
-//      moveTo(-TILE_SIZE/2);
-//      turnTo(Navigation.angleToTarget(x, y));
-//
-//    } else {  //dy>dx
-//      direction = 1;
-//      if(xyt[1]>y) {
-//        axis = 1;
-//      } else {
-//        axis = -1;
-//      }
-//      waggle(axis, direction);
-//      moveTo(-TILE_SIZE/2);
-//
-//      direction = 0;
-//      axis = 1;
-//      turnToHeading(90);
-//      waggle(axis, direction);
-//      moveTo(-TILE_SIZE/2);
-//      turnTo(Navigation.angleToTarget(x, y));
-//    }
-//  }
-  
-  
+  }  
 }

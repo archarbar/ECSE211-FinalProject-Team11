@@ -12,14 +12,20 @@ import static ca.mcgill.ecse211.project.Main.*;
  */
 public abstract class Navigation {
 
+  /**
+   * the safe area to travel in without going into the water.
+   */
   public static GridRectangle safeArea;
 
+  /**
+   * tells the navigator if avoidance has been triggered.
+   */
   public boolean avoided = false;
 
   /**
    * this boolean check if the robot's motors are moving and therefore we know if the robot is navigating or not
    *
-   * @return
+   * @return if nagivation.
    */
   public static boolean isNavigating() {
     boolean result = false;
@@ -32,9 +38,8 @@ public abstract class Navigation {
   /**
    * Converts a distance in cm into angle turned by the wheels in degrees.
    *
-   * @param radius
-   * @param distance
-   * @return
+   * @param distance to travel in cm.
+   * @return angles for wheels to turn to travel given distance.
    */
   public static int convertDistance(double distance) {
     return (int) ((180.0 * distance) / (Math.PI * WHEEL_RAD));
@@ -43,8 +48,8 @@ public abstract class Navigation {
   /**
    * Converts an angle in degrees into a number of degrees the wheels must turn in order to turn the robot.
    *
-   * @param angle
-   * @return
+   * @param angle in degrees to turn the robot
+   * @return angles for wheels to turn to turn given angle.
    */
   public static int convertAngle(double angle) {
     return convertDistance(Math.PI * TRACK * angle / 360.0);
@@ -53,9 +58,9 @@ public abstract class Navigation {
   /**
    * determines if a given (x,y) point (in cm) is safe to travel to.
    *
-   * @param x
-   * @param y
-   * @return
+   * @param x location in cm
+   * @param y location in cm
+   * @return if the point is not within the safe zone
    */
   public static boolean outOfBounds(double x, double y) {
     double width = 0.75 * TRACK;
@@ -66,8 +71,8 @@ public abstract class Navigation {
   /**
    * calculates the equivalent angle that is closest to 0.
    *
-   * @param theta
-   * @return
+   * @param theta input angle
+   * @return same relative angle but from [-179, 180]
    */
   public static double minimumAngle(double theta) {
     while (Math.abs(theta) > 180) {
@@ -84,13 +89,9 @@ public abstract class Navigation {
   /**
    * Turns the robot by a given angle.
    *
-   * @param theta
+   * @param theta angle to turn by.
    */
   public static void turnTo(double theta) {
-//    if(colorSensorR!=null||colorSensorR!=null) {
-//      colorSensorL.close();
-//      colorSensorR.close();
-//    }
     try {
       Thread.sleep(50);
     } catch (InterruptedException e) {
@@ -105,7 +106,7 @@ public abstract class Navigation {
   /**
    * Turns the robot to a face a given heading.
    *
-   * @param theta
+   * @param theta heading angle to face.
    */
   public static void turnToHeading(double theta) {
     double[] positions = Odometer.getOdometer().getXYT();
@@ -128,9 +129,8 @@ public abstract class Navigation {
   }
   
   /**
-   * Moves the robot in a straight line by a distance in cm.
-   *
-   * @param distance to travel in cm.
+   * Moves the robot in a straight line by a distance in cm at a 
+   * higher speed to travel through the tunnel.
    */
   public static void moveThroughTunnel() {
     System.out.println("moving through tunnel");
@@ -183,8 +183,8 @@ public abstract class Navigation {
   /**
    * Converts a gridlocation integer into a location double in cm.
    *
-   * @param a
-   * @return
+   * @param a gridlocation value.
+   * @return distance along axis from 0,0 in cm.
    */
   public static double convertGridToLocation(int a) {
     return a * TILE_SIZE;
@@ -193,8 +193,8 @@ public abstract class Navigation {
   /**
    * Converts a location double in cm into a gridlocation integer.
    *
-   * @param a
-   * @return
+   * @param a position along axis in cm.
+   * @return closest gridlocation value.
    */
   public static int convertLocationToGrid(double a) {
     return (int) Math.round(a / TILE_SIZE);
@@ -203,8 +203,8 @@ public abstract class Navigation {
   /**
    * Determines the relative angle between heading and target angle.
    *
-   *@param double x, x coordinate of target in cm
-   *@param double y, y coordinate of target in cm
+   * @param x, x coordinate of target in cm
+   * @param y, y coordinate of target in cm
    * @return minimum angle to target
    */
   public static double angleToTarget(double x, double y) {
@@ -232,8 +232,8 @@ public abstract class Navigation {
   /**
    * Determines the relative angle between heading and target angle.
    *
-   * @param int x, x coordinate of target, in tiles
-   * @param int y, y coordinate of target, in tiles
+   * @param x, x coordinate of target, in tiles
+   * @param y, y coordinate of target, in tiles
    * @return minimum angle to target
    */
   public static double angleToTarget(int x, int y) {
@@ -247,8 +247,8 @@ public abstract class Navigation {
    * Takes 2 Points as inputs, the two tunnel corners
    * Returns the entrance coordinates as an array
    *
-   * @param Point 1, first tunnel corner
-   * @param Point 2, second tunnel corner
+   * @param hole1 is Point 1, first tunnel corner
+   * @param hole2 is Point 2, second tunnel corner
    * @return entrance of tunnel relative to current position
    */
   public static Point findTunnelEntrance(Point hole1, Point hole2) {
@@ -290,6 +290,11 @@ public abstract class Navigation {
    * Finds the point in the launching zone that is closest to the bin Takes 2 inputs: the point representing the
    * coordinates of the bin, and a GridRectagle for the launch zone returns a point, which is the closest launch point
    * in the zone
+   * 
+   * @param binLocation Point representing the bin's location.
+   * @param launchZone Gridrectangle representing the launch island.
+   * 
+   * @return Point that represents the launch point.
    */
   public static Point findClosestLaunchPoint(Point binLocation, GridRectangle launchZone) {
     Point location = new Point(0, 0);
@@ -314,7 +319,7 @@ public abstract class Navigation {
    * Takes all the distance from valid distances and finds the points corresponding them with findLaunchPoint. 
    * Then check each point and return the one closest to current position.
    * 
-   * @param point for bin location
+   * @param bin point for bin location
    * @return point closest to current position from all points at valid distances
    */
   public static Point findBestLaunchPoint(Point bin) {
@@ -346,9 +351,9 @@ public abstract class Navigation {
    * the list of edge angle values for the circle. Returns a point, which is the launch point in the zone with the given
    * distance to the bin, within a margin of error of 0.5 cm.
    *
-   * @param Point bin location
-   * @param GridRectangle for launch zone
-   * @param double distance, wanted launch distance
+   * @param bin Point bin location
+   * @param launchZone GridRectangle for launch zone
+   * @param distance, wanted launch distance
    * @return Point launch point at wanted distance from bin
    */
   public static Point findLaunchPoint(Point bin, GridRectangle launchZone, double distance) {
@@ -424,6 +429,9 @@ public abstract class Navigation {
     rightMotor.stop();
   }
 
+  /**
+   * tells the robot to only move the right motor, so that it turns left.
+   */
   public static void right() {
     try {
       Thread.sleep(50);
@@ -436,6 +444,9 @@ public abstract class Navigation {
     rightMotor.forward();
   }
 
+  /**
+   * tells the robot to only move the left motor, so that it turns right.
+   */
   public static void left() {
     try {
       Thread.sleep(50);
@@ -451,8 +462,9 @@ public abstract class Navigation {
   /**
    * Tells the robot to travel from its current location to the centre of the given tile.
    *
-   * @param tile's x value.
-   * @param tile's y value.
+   * @param x tile's x value.
+   * @param y tile's y value.
+   * @param centre tells the robot if it should go to the centre of the tile, or to the given intersection.
    */
   public void travelTo(int x, int y, boolean centre) {
     double aX = x;

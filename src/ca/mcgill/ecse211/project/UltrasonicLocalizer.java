@@ -77,8 +77,8 @@ public class UltrasonicLocalizer extends PlainNavigation {
    * This is the constructor of the class. It sets up both motors, the odometer, the track between the wheels, the
    * radius of the wheels, the edgetype and the ultrasonic sensor
    * 
-   * @param type
-   * @param usSamples
+   * @param type of edge to use.
+   * @param usSamples is the US sample provider.
    */
   public UltrasonicLocalizer(edgeType type, SampleProvider usSamples) {
 
@@ -260,7 +260,7 @@ public class UltrasonicLocalizer extends PlainNavigation {
   /**
    * this is a simple getter method that gets the distance from the ultrasonic sensor
    * 
-   * @return
+   * @return distance detected by US sensor.
    */
   public int getDistance() {
     usSamples.fetchSample(usData, 0);
@@ -313,8 +313,8 @@ public class UltrasonicLocalizer extends PlainNavigation {
   /**
    * A median filter for the ultrasonic sensor.
    * 
-   * @param distance
-   * @return int filtered distance
+   * @param distance detected by US sensor.
+   * @return filtered distance in cm.
    */
   private int medianFilter(int distance) {
     sample[filterControl] = distance;

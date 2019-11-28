@@ -81,6 +81,8 @@ public class WaggleNavigation extends Navigation {
 
   /**
    * Initializes the navigator with 2 LineDetectors.
+   * @param l the left line detector.
+   * @param r the right line detector.
    */
   public WaggleNavigation(LineDetectorController l, LineDetectorController r) {
     detectorL = l;
@@ -181,10 +183,10 @@ public class WaggleNavigation extends Navigation {
   /**
    * sets up the waggle method to happen a given amount of times.
    *
-   * @param direction
-   * @param axis
-   * @param tileDis
-   */
+   * @param direction that the robot is facing
+   * @param axis that the robot is aligned to
+   * @param tileDis to travel
+   */ 
   private void toWaggle(Direction direction, Axis axis, int tileDis) {
     for (int i = 0; i < tileDis; ++i) {
       if (avoided) {
@@ -198,8 +200,8 @@ public class WaggleNavigation extends Navigation {
   /**
    * sets up the main waggle method.
    *
-   * @param a
-   * @param d
+   * @param a is the axis that the robot is aligned to
+   * @param d is the direction that the robot is facing
    */
   void waggle(Axis a, Direction d) {
     int axis = 0, direction = 0;
@@ -370,7 +372,7 @@ public class WaggleNavigation extends Navigation {
    * @param direction 0 for x, 1 for y
    * @param side 1 for positive, -1 for negative
    * @param detectorL left line detector
-   * @param detectorR reight line detector
+   * @param detectorR right line detector
    */
   private void waggle(int direction, int side, LineDetectorController detectorL, LineDetectorController detectorR) {
     long correctionStart, correctionEnd,deltaCorrection;
@@ -469,8 +471,8 @@ public class WaggleNavigation extends Navigation {
   /**
    * given a position on an axis, return the nearest value that's on a gridline.
    *
-   * @param pos
-   * @return
+   * @param pos is the position on an axis
+   * @return nearest value that's on a gridline
    */
   private static double roundToLine(double pos) {
     double round = Math.round(pos / TILE_SIZE) * TILE_SIZE;
@@ -480,8 +482,8 @@ public class WaggleNavigation extends Navigation {
   /**
    * returns true if its been too far since the last line detected for it to be the same line.
    *
-   * @param startPos
-   * @return
+   * @param startPos is a given starting location.
+   * @return if it has traveled too far for it to be the same line.
    */
   private static boolean tooFar(double[] startPos) {
     double position[] = Odometer.getOdometer().getXYT();

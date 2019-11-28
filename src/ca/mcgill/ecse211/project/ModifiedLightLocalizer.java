@@ -48,6 +48,8 @@ public class ModifiedLightLocalizer extends PlainNavigation {
 
   /**
    * initialises 2 light sensors and gets the odometer.
+   * @param detectorL is the left line detector
+   * @param detectorR is the right line detector
    */
   public ModifiedLightLocalizer(LineDetectorController detectorL, LineDetectorController detectorR) {
     this.odometer = Odometer.getOdometer();
@@ -58,8 +60,8 @@ public class ModifiedLightLocalizer extends PlainNavigation {
   /**
    * tells the robot to localise and set the given point as its given location.
    * 
-   * @param x
-   * @param y
+   * @param x position to localize to.
+   * @param y position to localize to.
    */
   public void localize(int x, int y) {
     findDistance(x, y);
@@ -68,8 +70,8 @@ public class ModifiedLightLocalizer extends PlainNavigation {
   /**
    * Localizes the robot then sets its final position to the given values.
    * 
-   * @param x
-   * @param y
+   * @param x position to localize to.
+   * @param y position to localize to.
    */
   private void findDistance(int x, int y) {
     odometer.setXYT(0, 0, 0);
@@ -232,30 +234,6 @@ public class ModifiedLightLocalizer extends PlainNavigation {
         }
       }
     }
-
-    // while (true) {
-    // correctionStart = System.currentTimeMillis();
-    // colorSampleProviderL.fetchSample(csDataL, 0); // get data from sensor
-    // colorSampleProviderR.fetchSample(csDataR, 0);
-    // if ((csDataL[0] < LINE_RED_INTENSITY) || (csDataR[0] < LINE_RED_INTENSITY)) {
-    // // if light read by sensor is smaller (darker) than red light, eg., black lines
-    // // Sound.beep();
-    // moveTo(sensorOffset);
-    // leftMotor.rotate(-convertAngle(90.0), true);
-    // rightMotor.rotate(convertAngle(90.0), false);
-    // moveTo(5+sensorOffset);
-    // break;
-    // // motor.stop();
-    // }
-    // correctionEnd = System.currentTimeMillis();
-    // if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
-    // try {
-    // Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
-    // } catch (InterruptedException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // }
 
     odometer.setX(x * TILE_SIZE);
     odometer.setY(y * TILE_SIZE);

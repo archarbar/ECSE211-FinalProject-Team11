@@ -24,7 +24,6 @@ public class Main {
    * tunnel corners and bin location imported from resources
    */
   private static Point TNG_LL, TNG_UR, BIN;
-//  private static Point TNG_LL = new Point(1,2), TNG_UR = new Point(2,4), BIN = new Point(-2, 6); //TODO
 
   /**
    * home point to go back to after launching
@@ -46,48 +45,19 @@ public class Main {
    *
    */
   private static Navigation navigator = new ReLocalizeNavigation(); //new WaggleNavigation();
+  /**
+   * Avoidance type;
+   */
   private static ObjectAvoidance avoider = null;
 
 
   /**
    * The main method initializes all the threads and runs the main flow.
    *
-   * @param args
+   * @param args no command line use.
    */
   public static void main(String[] args) {
-//	  	turnTest();
-//    betaDemo();
-//    startOdometer();
-//    for (int a=0; a<20; a++) {
-//      Navigation.turnTo(180);
-//    }
-     // importData();
-//	localize(1,1, startingT);
-
-     // Navigation.turnTo(-2);
-//     initLightSensors();
-
-    // localizationTimeTest();
-     // lineNavigationTest();
-     // plainNavigationTest();
-
-//	relocalizationTest();
-//     tunnelTest();
-//     waggleNavigationTest();
-//     launchTest();
     mainFlow();
-	// set to silent verification
-//	    // import wifi data is done by default
-//	    importData();
-//	    // odometry start
-//	    startOdometer();
-//
-//	    // localize
-//	    localize(1, 1);
-//	    beep(1);
-//
-//	    // navigate to tunnel
-//	    navigateThroughTunnel(new WaggleNavigation());
   }
 
 
@@ -268,8 +238,9 @@ public class Main {
    * Localises the robot once using the ultrasonic localizer, and once with the light localizer, and sets its location
    * to the given grid coords.
    *
-   * @param x
-   * @param y
+   * @param x grid location
+   * @param y grid location
+   * @param theta is angle relative to 0 degrees at the start.
    */
   private static void localize(int x, int y, double theta) {
 //    initUSSensor();
@@ -328,7 +299,6 @@ public class Main {
     sleep();
     initLaunchers();
     LauncherControl.lowerArm();
-    closeLightSensors();
     Navigation.moveThroughTunnel();
     sleep();
     initLightSensors();
@@ -341,6 +311,8 @@ public class Main {
    * navigates from the tunnel exit to the launch location.
    *
    * @param navigator to determine navigation type.
+   * @param x position to launch from.
+   * @param y position to launch from.
    */
   private static void navigateToLaunch(Navigation navigator, double x, double y) {
     System.out.println("(" + BIN.x + "," + BIN.y + ")");
@@ -356,12 +328,11 @@ public class Main {
   /**
    * Launches the ping-pong balls a given number of times at a given speed.
    *
-   * @param numLaunches
-   * @param speed
+   * @param numLaunches is the number of launches to make.
+   * @param speed is the motor speed to launch at.
    */
   private static void launch(int numLaunches, int speed) {
     System.out.println("launching "+ numLaunches+" times at "+speed+" speed");
-    closeMotors();
     initLaunchers();
     sleep();
     for (int i = 0; i < numLaunches; ++i) {
@@ -431,34 +402,6 @@ public class Main {
   }
 
   /**
-   * closes the movement motors.
-   */
-  private static void closeMotors() {
-//    if (leftMotor!=null) {
-//      leftMotor.close();
-//    }
-//    if (rightMotor!=null) {
-//      rightMotor.close();
-//    }
-//    leftMotor = null;
-//    rightMotor = null;
-  }
-
-  /**
-   * closes the light sensors.
-   */
-  public static void closeLightSensors() {
-//    if (colorSensorR!=null) {
-//      colorSensorR.close();
-//    }
-//    if (colorSensorL!=null) {
-//      colorSensorL.close();
-//    }
-//    colorSensorR = null;
-//    colorSensorL = null;
-  }
-
-  /**
    * closes the ultrasonic sensor.
    */
   private static void closeUSSensor() {
@@ -468,6 +411,9 @@ public class Main {
     US_SENSOR = null;
   }
 
+  /**
+   * sleeps the thread for 500 ms.
+   */
   public static void sleep() {
     try {
       Thread.sleep(500);
@@ -517,6 +463,9 @@ public class Main {
     Navigation.turnToHeading(135);
   }
 
+  /**
+   * flow to test the relocalization navigation.
+   */
   private static void relocalizationTest() {
     int x=4,y=3;
     navigator = new ReLocalizeNavigation();

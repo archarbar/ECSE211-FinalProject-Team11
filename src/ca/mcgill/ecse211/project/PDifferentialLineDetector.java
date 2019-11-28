@@ -18,7 +18,7 @@ public class PDifferentialLineDetector extends DifferentialLineDetector {
   /**
    * Calls the DifferentialLineDetector constructor.
    * 
-   * @param colorsensor the colour sensor you want the line detector to track.
+   * @param cs stands for colorsensor the colour sensor you want the line detector to track.
    */
   public PDifferentialLineDetector(EV3ColorSensor cs) {
     super(cs);
@@ -27,7 +27,7 @@ public class PDifferentialLineDetector extends DifferentialLineDetector {
   /**
    * Processes the data proportional to the difference in values.
    * 
-   * @param newColourVal the most recent light value detected.
+   * @param newVal is the new Colour Value AKA. the most recent light value detected.
    * @return light value
    */
   @Override

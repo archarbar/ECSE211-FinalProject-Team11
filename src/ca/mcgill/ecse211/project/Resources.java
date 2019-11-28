@@ -164,7 +164,6 @@ public class Resources {
   /**
    * Speed to lower arm in degrees/s.
    */
-  //public static final int LOWER_SPEED = 50;
   public static final int LOWER_SPEED = 60;
 
   /**
@@ -177,7 +176,14 @@ public class Resources {
    */
   public static final int RESET_SPEED = 150;
 
+  /**
+   * The list of valid launch distances.
+   */
   public static List<Double> validDistances = new ArrayList<>();
+  
+  /**
+   * speed to launch at given a valid distance.
+   */
   public static Map<Double, Integer> distanceToSpeed = new HashMap<>();
 
   /**
@@ -303,7 +309,6 @@ public class Resources {
    */
   public static final double LSwidth = 11.6;
 
-  // public static final int MOTOR_SPEED = 250;
   /**
    * Speed of motors when turning in degrees/s.
    */

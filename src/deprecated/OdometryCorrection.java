@@ -133,8 +133,8 @@ public class OdometryCorrection implements Runnable {
   /**
    * given a position on an axis, return the nearest value that's on a gridline.
    * 
-   * @param pos
-   * @return
+   * @param pos in cm.
+   * @return position of nearest line.
    */
   private static double roundToLine(double pos) {
     double round = Math.round(pos / TILE_SIZE) * TILE_SIZE;
@@ -143,8 +143,8 @@ public class OdometryCorrection implements Runnable {
   
   /**
    * sets the thread to pause while executing.
-   * @param mainThread
-   * @return
+   * @param mainThread thread that runs this for reference
+   * @return this thread.
    */
   public OdometryCorrection setLineThread(Thread mainThread) {
     this.mainThread = mainThread;

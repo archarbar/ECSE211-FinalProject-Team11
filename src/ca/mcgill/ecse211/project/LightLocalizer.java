@@ -43,8 +43,9 @@ public class LightLocalizer extends PlainNavigation {
   /**
    * tells the robot to localise and set the given point as its given location.
    * 
-   * @param x
-   * @param y
+   * @param x position to localize to.
+   * @param y position to localize to.
+   * @param theta angle to set at end of localization.
    */
   public void localize(int x, int y, double theta) {
     findDistance(x, y, theta);
@@ -53,8 +54,9 @@ public class LightLocalizer extends PlainNavigation {
   /**
    * Localizes the robot then sets its final position to the given values.
    * 
-   * @param x
-   * @param y
+   * @param x position to localize to.
+   * @param y position to localize to.
+   * @param theta angle to set at end of localization.
    */
   private void findDistance(int x, int y, double theta) {
     /**
@@ -126,19 +128,8 @@ public class LightLocalizer extends PlainNavigation {
 //        System.out.println();
         if (csDataR[0] < LINE_RED_INTENSITY) {
           stop();
-//          Sound.beep();
-//          System.out.println("y:"+Odometer.getOdometer().getXYT()[1]);
-//          distance = (odometer.getXYT())[1] - startPos[1];
-//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-//          System.out.println("dis:"+distance);
-//          System.out.println("theta:"+offTheta);
-//          turnTo(-offTheta);
-//          Sound.beepSequenceUp();
-//          moveTo(-REVERSE_DIST);
-//          Sound.beepSequence();
           break;
         }
-//        forwards();
         right();
         correctionEnd = System.currentTimeMillis();
         deltaCorrection = correctionEnd-correctionStart;
@@ -156,19 +147,8 @@ public class LightLocalizer extends PlainNavigation {
         colorSampleProviderL.fetchSample(csDataL, 0);
         if (csDataL[0] < LINE_RED_INTENSITY) {
           stop();
-//          Sound.beep();
-//          System.out.println("y:"+Odometer.getOdometer().getXYT()[1]);
-//          distance = (odometer.getXYT())[1] - startPos[1];
-//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-//          System.out.println("dis:"+distance);
-//          System.out.println("theta:"+offTheta);
-//          turnTo(offTheta);
-//          Sound.beepSequenceUp();
-//          moveTo(-REVERSE_DIST);
-//          Sound.beepSequence();
           break;
         }
-//        forwards();
         left();
         correctionEnd = System.currentTimeMillis();
         deltaCorrection = correctionEnd-correctionStart;
@@ -231,15 +211,10 @@ public class LightLocalizer extends PlainNavigation {
         colorSampleProviderR.fetchSample(csDataR, 0);
         if (csDataR[0] < LINE_RED_INTENSITY) {
           stop();
-//          distance = (odometer.getXYT())[1] - startPos[1];
-//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-//          turnTo(-offTheta);
           moveTo(sensorOffset);
           turnTo(-90);
-//          moveTo(sensorOffset);//+reverse_dist
           break;
         }
-//        forwards();
         right();
         correctionEnd = System.currentTimeMillis();
         deltaCorrection = correctionEnd-correctionStart;
@@ -257,15 +232,10 @@ public class LightLocalizer extends PlainNavigation {
         colorSampleProviderL.fetchSample(csDataL, 0);
         if (csDataL[0] < LINE_RED_INTENSITY) {
           stop();
-//          distance = (odometer.getXYT())[1] - startPos[1];
-//          offTheta = Math.toDegrees(Math.atan(distance / LSwidth));
-//          turnTo(offTheta);
           moveTo(sensorOffset);
           turnTo(-90);
-//          moveTo(sensorOffset); //+reverse_dist
           break;
         }
-//        forwards();
         left();
         correctionEnd = System.currentTimeMillis();
         deltaCorrection = correctionEnd-correctionStart;
@@ -278,30 +248,6 @@ public class LightLocalizer extends PlainNavigation {
         }
       }
     }
-
-    // while (true) {
-    // correctionStart = System.currentTimeMillis();
-    // colorSampleProviderL.fetchSample(csDataL, 0); // get data from sensor
-    // colorSampleProviderR.fetchSample(csDataR, 0);
-    // if ((csDataL[0] < LINE_RED_INTENSITY) || (csDataR[0] < LINE_RED_INTENSITY)) {
-    // // if light read by sensor is smaller (darker) than red light, eg., black lines
-    // // Sound.beep();
-    // moveTo(sensorOffset);
-    // leftMotor.rotate(-convertAngle(90.0), true);
-    // rightMotor.rotate(convertAngle(90.0), false);
-    // moveTo(5+sensorOffset);
-    // break;
-    // // motor.stop();
-    // }
-    // correctionEnd = System.currentTimeMillis();
-    // if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
-    // try {
-    // Thread.sleep(CORRECTION_PERIOD - (correctionEnd - correctionStart));
-    // } catch (InterruptedException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // }
 
     odometer.setX(x * TILE_SIZE);
     odometer.setY(y * TILE_SIZE);

@@ -190,7 +190,7 @@ public class ObjectAvoidance implements Runnable{
   /**
    * A median filter for the ultrasonic sensor.
    * 
-   * @param distance
+   * @param distance that was detected
    * @return int filtered distance
    */
   private int medianFilter(int distance) {
@@ -228,7 +228,7 @@ public class ObjectAvoidance implements Runnable{
   /**
    * this is a simple getter method that gets the distance from the ultrasonic sensor
    * 
-   * @return
+   * @return the distance detected by the US sensor
    */
   public int getDistance() {
     usSamples.fetchSample(usData, 0);

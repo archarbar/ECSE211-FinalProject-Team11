@@ -23,8 +23,14 @@ public class DifferentialLineDetector implements LineDetectorController {
    */
   private double buffer[] = new double[BUFFER_SIZE];
   
+  /**
+   * filter index value.
+   */
   private int filterIndex = 0;
   
+  /**
+   * filter counter that increments until buffer is filled.
+   */
   private int filterCount = 0;
 
   // differential
@@ -71,7 +77,7 @@ public class DifferentialLineDetector implements LineDetectorController {
   /**
    * Create a DifferentialLineDetector with a lightSensor's sample provider.
    * 
-   * @param cs
+   * @param cs sample provider.
    */
   public DifferentialLineDetector(SampleProvider cs) {
     this.cs = cs;

@@ -147,7 +147,7 @@ public class LineNavigation extends Navigation {
 
   /**
    * finds the nearest intersection point to the robots current position
-   * @return
+   * @return {x,y} value of nearest intersection in cm.
    */
   private static double[] nearestIntersect() {
     double position[] = Odometer.getOdometer().getXYT();

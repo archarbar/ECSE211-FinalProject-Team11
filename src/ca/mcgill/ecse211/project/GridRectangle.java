@@ -13,10 +13,10 @@ public class GridRectangle {
   /**
    * construct a grid rectangle using grid locations
    * 
-   * @param x1
-   * @param y1
-   * @param x2
-   * @param y2
+   * @param x1 grid location.
+   * @param y1 grid location.
+   * @param x2 grid location.
+   * @param y2 grid location.
    */
   public GridRectangle(int x1, int y1, int x2, int y2) {
     if (x1 < x2) {
@@ -39,10 +39,10 @@ public class GridRectangle {
   /**
    * construct a grid rectangle using locations in cm. converts to grid locations automatically.
    * 
-   * @param x1
-   * @param y1
-   * @param x2
-   * @param y2
+   * @param x1 location in cm.
+   * @param y1 location in cm.
+   * @param x2 location in cm.
+   * @param y2 location in cm.
    */
   public GridRectangle(double x1, double y1, double x2, double y2) {
     x1 = Math.floor(x1 / TILE_SIZE);
@@ -97,7 +97,7 @@ public class GridRectangle {
   /**
    * determines if a point (in cm) is within the grid rectangle.
    * 
-   * @param point
+   * @param point to test
    * @return true if it is within the rectangle.
    */
   public boolean contains(Point point) {

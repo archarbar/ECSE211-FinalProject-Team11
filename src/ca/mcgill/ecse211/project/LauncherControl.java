@@ -16,7 +16,7 @@ public class LauncherControl {
   /**
    * Launch the ping pong ball at the given speed in degrees/s.
    *
-   * @param speed
+   * @param speed motorSpeed to launch the ball at
    */
   public static void launch(int speed) {
     reset();
@@ -69,7 +69,7 @@ public class LauncherControl {
   }
   
   /**
-   * reposition the robot position after each launch (3 degrees left)
+   * reposition the robot position after each launch (1 degrees left)
    */
   public static void reposition() {
     Navigation.turnTo(-1);
@@ -107,7 +107,7 @@ public class LauncherControl {
   /**
    * Calculates the needed speed to launch the necessary distance.
    *
-   * @return
+   * @return launchSpeed in degrees/sec
    */
   public static int calculateSpeed() {
     int speed;
@@ -121,8 +121,8 @@ public class LauncherControl {
    * An improved method of calculating the speed of the launcher. Source:
    * https://en.wikipedia.org/wiki/Range_of_a_projectile.
    * 
-   * @param distance
-   * @return
+   * @param distance to launch in cm.
+   * @return launchSpeed in degrees/sec
    */
   public static int calculateSpeed(double distance) {
     int speed = 0;
@@ -138,6 +138,9 @@ public class LauncherControl {
 
   /*
    * Calculates required motor speed in degrees/sec given a tangential speed in cm/s.
+   * 
+   * @param desired tangential velocity
+   * @return launchSpeed in degrees/sec
    */
   public static int calculateMotorSpeed(double tangentialV) {
 //    double angularV = tangentialV / LAUNCH_ARM_LENGTH;
